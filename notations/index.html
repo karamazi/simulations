@@ -37,7 +37,7 @@
 
 	// create an new instance of a pixi stage
 	var stage = new PIXI.Stage(0xffffff);
-	var renderer = PIXI.autoDetectRenderer(640, 780);
+	var renderer = PIXI.autoDetectRenderer(640, 480);
 	document.body.appendChild(renderer.view);
 	requestAnimFrame(animate);
 
@@ -51,8 +51,8 @@
 
 	var initial_value = parseInt(document.getElementById("value").value);
 	var base = parseInt(document.getElementById("base").value);
-	var x_pos=20;
-	var y_pos=20;
+	var x_pos=30;
+	var y_pos=30;
 	var dy=25;
 	var divs = [];
 	var div = new Division(stage, x_pos, y_pos, initial_value,base);
