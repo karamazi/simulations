@@ -9,13 +9,13 @@
             background-color: #000000;
         }
     </style>
-    <script src="../common/pixi.js"></script>
+    <script src="../_common/pixi.js"></script>
 
-    <script src="../common/constants.js"></script>
-    <script src="../common/button.js"></script>
-    <script src="../common/switch.js"></script>
-    <script src="../common/text.js"></script>
-
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/switch.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
     <script src="ant.js"></script>
 
 </head>
@@ -108,6 +108,8 @@ stage.addChild(failImg);
 var help = new PIXI.Sprite(textureHelp);
 help.visible = false;
 stage.addChild(help);
+
+var logo = new Logo(stage, 550, 450);
 
 function animate() {
     requestAnimFrame(animate);

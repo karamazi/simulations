@@ -1,8 +1,4 @@
 //21:10-22:10
-
-var textureHelp = PIXI.Texture.fromImage("imgs/Help.png");
-var textureBackground = PIXI.Texture.fromImage("imgs/background.png");
-
 var textureBlack = PIXI.Texture.fromImage("imgs/block_black.jpg");
 var textureWhite = PIXI.Texture.fromImage("imgs/block_white.jpg");
 var textureAnt = PIXI.Texture.fromImage("imgs/ant.png");
@@ -11,11 +7,6 @@ var texturePortalIn=PIXI.Texture.fromImage("imgs/portal_in.png");
 var texturePortalOut=PIXI.Texture.fromImage("imgs/portal_out.png");
 
 var textureDraggable = PIXI.Texture.fromImage("imgs/finish.png");
-
-
-
-var centeredAnchor = new PIXI.Point(0.5,0.5);
-
 
 
 Draggable=function(stage,x,y){
