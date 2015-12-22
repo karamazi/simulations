@@ -14,6 +14,14 @@ var textureMinusButton = common_texture("button_minus.png");
 var textureMinusButtonDown = common_texture("button_minus.png");
 var textureMinusButtonOver =common_texture("button_minus_hoover.png");
 
+var textureResetButton = common_texture("button_reset.png");
+var textureResetButtonDown = common_texture("button_reset.png");
+var textureResetButtonOver =common_texture("button_reset_hoover.png");
+
+var textureNextButton = common_texture("button_next.png");
+var textureNextButtonDown = common_texture("button_next.png");
+var textureNextButtonOver =common_texture("button_next_hoover.png");
+
 var textureSwitch = common_texture("start.png");
 var textureSwitchDown = common_texture("stop.png");
 var textureSwitchOver = common_texture("start_hoover.png");

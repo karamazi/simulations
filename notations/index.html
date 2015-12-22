@@ -42,10 +42,10 @@
 	requestAnimFrame(animate);
 
 	// load everything below:
-	var helpButton = new Button(stage, 560, 240, "Pomoc", Button.type.Help);
+	var helpButton = new Button(stage, 560, 160, "Pomoc", Button.type.Help);
 	helpButton.sprite.isOver = false;
-	var nextButton = new Button(stage, 560, 200, "Dalej");
-	var resetButton = new Button(stage, 560, 160, "Reset");
+	var nextButton = new Button(stage, 560, 200, "Dalej", Button.type.Next);
+	var resetButton = new Button(stage, 560, 240, "Od nowa", Button.type.Reset);
 
 	var MAX_VAL = 1024;
 
