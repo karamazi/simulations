@@ -10,3 +10,6 @@
 - help
 - Long outputs e.g. on 1000/2
 
+# Golden ball
+- help
+- bigger font (?)
