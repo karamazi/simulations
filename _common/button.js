@@ -15,7 +15,8 @@ Button=function(stage,x,y,text,type){
     this.sprite.anchor = centeredAnchor;
     stage.addChild(this.sprite);
 
-    this.text = new MyText(stage, x, y, text);
+    this.text = new MyText(stage, x-45, y, text, defaultTextStyle);
+    this.text.text.anchor=new PIXI.Point(0, 0.5);
     this.isClicked=false;
 
 
@@ -65,7 +66,7 @@ Button=function(stage,x,y,text,type){
     };
 };
 
-Button.type = Object.freeze({"Help":0, "Plus":1, "Minus":2, "Reset":3, "Next":4});
+Button.type = Object.freeze({"Help":0, "Plus":1, "Minus":2, "Reset":3, "Next":4, "Reroll": 5});
 Button.prototype.setupTextures=function(text){
     switch(text){
         case Button.type.Help:
@@ -97,7 +98,12 @@ Button.prototype.setupTextures=function(text){
             this.textureButtonDown = textureNextButtonDown;
             break;
 
-
+        case Button.type.Reroll:
+            this.textureButton = textureRerollButton;
+            this.textureButtonOver = textureRerollButtonOver;
+            this.textureButtonDown = textureRerollButtonDown;
+            break;
+        
         default:
             break;
     }
@@ -106,4 +112,9 @@ Button.prototype.setupTextures=function(text){
 
 Button.prototype.update=function(){
     this.isClicked=false;
+};
+
+Button.prototype.setActive=function(active){
+    this.sprite.buttonMode = active;
+    this.sprite.interactive = active;
 };

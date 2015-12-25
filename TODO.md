@@ -13,3 +13,7 @@
 # Golden ball
 - help
 - bigger font (?)
+
+# Pattern search
+- help
+- Monospaced font (what to do with it?)

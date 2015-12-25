@@ -1,3 +1,7 @@
 input {
     color: #7f7f7f;
 }
+input {
+    color: #7f7f7f;
+    font-weight: bold;
+}

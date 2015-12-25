@@ -22,6 +22,11 @@ var textureNextButton = common_texture("button_next.png");
 var textureNextButtonDown = common_texture("button_next.png");
 var textureNextButtonOver =common_texture("button_next_hoover.png");
 
+var textureRerollButton = common_texture("button_reroll.png");
+var textureRerollButtonDown = common_texture("button_reroll.png");
+var textureRerollButtonOver =common_texture("button_reroll_hoover.png");
+
+
 var textureSwitch = common_texture("start.png");
 var textureSwitchDown = common_texture("stop.png");
 var textureSwitchOver = common_texture("start_hoover.png");
@@ -37,6 +42,7 @@ var centeredAnchor = new PIXI.Point(0.5,0.5);
 
 var defaultTextStyle = { font: "20px Comic Sans MS", fill: "#ffffff", align: "left" };
 var blueTextStyle = { font: "20px Comic Sans MS", fill: "#369bd7", align: "left" };
+var blueMonoSpacedStyle = { font: "20px Courier New", fill: "#369bd7", align: "left" };
 
 function common_texture(name){
     return PIXI.Texture.fromImage("../_common/imgs/"+name);
