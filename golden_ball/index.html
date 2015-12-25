@@ -13,7 +13,7 @@
 	<script src="../_common/constants.js"></script>
 	<script src="../_common/button.js"></script>
 	<script src="../_common/text.js"></script>
-
+	<script src="../_common/logo.js"></script>
 	<script src="golden_ball.js"></script>
 </head>
 <body>
@@ -37,7 +37,8 @@
 	var resetButton=new Button(stage,550,ball_y,"Od Nowa", Button.type.Reset);
 	var helpButton=new Button(stage,550,ball_y-50,"Pomoc", Button.type.Help);
 	var episodeDone=false;
-	
+	new Logo(stage);
+
 	//moving balls special vars
 	var ballsMoving=false;
 	var startIndex=0;

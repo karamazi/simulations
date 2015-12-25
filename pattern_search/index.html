@@ -27,6 +27,7 @@
 	<script src="../_common/constants.js"></script>
 	<script src="../_common/button.js"></script>
 	<script src="../_common/text.js"></script>
+	<script src="../_common/logo.js"></script>
 </head>
 <body>
     <input type="input" id="text" value="BCA ABCDAB ABCDABCDABDE" />
@@ -68,7 +69,7 @@
 		var nextButton = new Button(stage, 560, 194, "Dalej", Button.type.Next);
 		var resetButton = new Button(stage, 560, 238, "Od nowa", Button.type.Reset);
 
-
+		new Logo(stage);
 	    init();
 
 	    //help

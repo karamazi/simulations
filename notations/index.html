@@ -27,6 +27,7 @@
 	<script src="../_common/constants.js"></script>
 	<script src="../_common/button.js"></script>
 	<script src="../_common/text.js"></script>
+	<script src="../_common/logo.js"></script>
 	<script src="notations.js"></script>
 
 </head>
@@ -46,6 +47,7 @@
 	helpButton.sprite.isOver = false;
 	var nextButton = new Button(stage, 560, 200, "Dalej", Button.type.Next);
 	var resetButton = new Button(stage, 560, 240, "Od nowa", Button.type.Reset);
+	new Logo(stage);
 
 	var MAX_VAL = 1024;
 
