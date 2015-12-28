@@ -3,7 +3,6 @@ Button=function(stage,x,y,text,type){
 
     this.textureButton = textureButton;
     this.textureButtonOver = textureButtonOver;
-    this.textureButtonDown = textureButtonDown;
     this.setupTextures(type);
 
     this.sprite = new PIXI.Sprite(self.textureButton);
@@ -24,7 +23,7 @@ Button=function(stage,x,y,text,type){
     this.sprite.mousedown = this.sprite.touchstart = function(data){
 
         this.isdown = true;
-        this.setTexture(self.textureButtonDown);
+        this.setTexture(self.textureButton);
         this.alpha = 1;
     };
 
@@ -72,60 +71,50 @@ Button.prototype.setupTextures=function(text){
         case Button.type.Help:
             this.textureButton = textureHelpButton;
             this.textureButtonOver = textureHelpButtonOver;
-            this.textureButtonDown = textureHelpButtonDown;
             break;
         
         case Button.type.Plus:
             this.textureButton = texturePlusButton;
             this.textureButtonOver = texturePlusButtonOver;
-            this.textureButtonDown = texturePlusButtonDown;
             break;
         case Button.type.Minus:
             this.textureButton = textureMinusButton;
             this.textureButtonOver = textureMinusButtonOver;
-            this.textureButtonDown = textureMinusButtonDown;
             break;
 
         case Button.type.Reset:
             this.textureButton = textureResetButton;
             this.textureButtonOver = textureResetButtonOver;
-            this.textureButtonDown = textureResetButtonDown;
             break;
 
         case Button.type.Next:
             this.textureButton = textureNextButton;
             this.textureButtonOver = textureNextButtonOver;
-            this.textureButtonDown = textureNextButtonDown;
             break;
 
         case Button.type.Previous:
             this.textureButton = texturePreviousButton;
             this.textureButtonOver = texturePreviousButtonOver;
-            this.textureButtonDown = texturePreviousButtonDown;
             break;
 
         case Button.type.Reroll:
             this.textureButton = textureRerollButton;
             this.textureButtonOver = textureRerollButtonOver;
-            this.textureButtonDown = textureRerollButtonDown;
             break;
 
         case Button.type.PlusText:
             this.textureButton = texturePlusTextButton;
             this.textureButtonOver = texturePlusTextButtonOver;
-            this.textureButtonDown = texturePlusTextButtonDown;
             break;
 
         case Button.type.Encode:
             this.textureButton = textureEncodeButton;
             this.textureButtonOver = textureEncodeButtonOver;
-            this.textureButtonDown = textureEncodeButtonDown;
             break;
 
         case Button.type.Decode:
             this.textureButton = textureDecodeButton;
             this.textureButtonOver = textureDecodeButtonOver;
-            this.textureButtonDown = textureDecodeButtonDown;
             break;
         
         
