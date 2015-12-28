@@ -26,6 +26,10 @@ var textureNextButton = common_texture("button_next.png");
 var textureNextButtonDown = common_texture("button_next.png");
 var textureNextButtonOver =common_texture("button_next_hoover.png");
 
+var texturePreviousButton = common_texture("button_previous.png");
+var texturePreviousButtonDown = common_texture("button_previous.png");
+var texturePreviousButtonOver =common_texture("button_previous_hoover.png");
+
 var textureRerollButton = common_texture("button_reroll.png");
 var textureRerollButtonDown = common_texture("button_reroll.png");
 var textureRerollButtonOver =common_texture("button_reroll_hoover.png");
