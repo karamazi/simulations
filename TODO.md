@@ -10,10 +10,20 @@
 - help
 - Long outputs e.g. on 1000/2
 
-# Golden ball
+## Golden ball
 - help
 - bigger font (?)
 
-# Pattern search
+## Pattern search
 - help
 - Monospaced font (what to do with it?)
+
+## Bubble sort
+- help (revamp)
+- Colored balls?
+
+
+# Skipped
+- tree_build
+- tree_search
+- tree_delete

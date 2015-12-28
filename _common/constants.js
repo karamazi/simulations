@@ -10,6 +10,10 @@ var texturePlusButton = common_texture("button_plus.png");
 var texturePlusButtonDown = common_texture("button_plus.png");
 var texturePlusButtonOver =common_texture("button_plus_hoover.png");
 
+var texturePlusTextButton = common_texture("button_plus_text.png");
+var texturePlusTextButtonDown = common_texture("button_plus_text.png");
+var texturePlusTextButtonOver =common_texture("button_plus_text_hoover.png");
+
 var textureMinusButton = common_texture("button_minus.png");
 var textureMinusButtonDown = common_texture("button_minus.png");
 var textureMinusButtonOver =common_texture("button_minus_hoover.png");
