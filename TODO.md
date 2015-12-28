@@ -2,6 +2,7 @@
 
 ## General
 - Fix font (Comic Sans -> Open sans)
+- Half-bold text (e.g.: Monte Carlo)
 
 ## Ant
 - help
@@ -21,6 +22,9 @@
 ## Bubble sort
 - help (revamp)
 - Colored balls?
+
+## Monte carlo
+- help
 
 
 # Skipped
