@@ -30,6 +30,14 @@ var textureRerollButton = common_texture("button_reroll.png");
 var textureRerollButtonDown = common_texture("button_reroll.png");
 var textureRerollButtonOver =common_texture("button_reroll_hoover.png");
 
+var textureEncodeButton = common_texture("button_encode.png");
+var textureEncodeButtonDown = common_texture("button_encode.png");
+var textureEncodeButtonOver =common_texture("button_encode_hoover.png");
+
+var textureDecodeButton = common_texture("button_decode.png");
+var textureDecodeButtonDown = common_texture("button_decode.png");
+var textureDecodeButtonOver =common_texture("button_decode_hoover.png");
+
 
 var textureSwitch = common_texture("start.png");
 var textureSwitchDown = common_texture("stop.png");
