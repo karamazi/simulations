@@ -31,7 +31,7 @@ document.body.appendChild(renderer.view);
 requestAnimFrame(animate);
 
 
-var stage_size = 20;
+var stage_size = 18;
 var edge_size = 21;
 var start_x = 50;
 var start_y = 50;
@@ -44,7 +44,7 @@ var portalOutcoords = new PIXI.Point(0, 0);
 
 // load everything below:
 var board_background = new PIXI.Sprite(PIXI.Texture.fromImage("imgs/board_background.png"));
-board_background.position = new PIXI.Point(start_x-start_x/4.5, start_y-start_y/4.5);
+board_background.position = new PIXI.Point(start_x - start_x / 4.5, start_y - start_y / 4.5);
 stage.addChild(board_background);
 
 
@@ -70,17 +70,16 @@ portalOut.anchor = centeredAnchor;
 var stepsCount = 0;
 var finish_border = new PIXI.Sprite(PIXI.Texture.fromImage("imgs/border.png"));
 stage.addChild(finish_border);
-finish_border.anchor=centeredAnchor;
+finish_border.anchor = centeredAnchor;
 
 
 var helpButton = new Button(stage, 585, 55, "Pomoc", Button.type.Help);
 var contSwitch = new Switch(stage, 570, 100);
 var plusButton = new Button(stage, 570, 200, "", Button.type.Plus);
-finish_border.position=new PIXI.Point(570,240);
+finish_border.position = new PIXI.Point(570, 240);
 var finish = new Draggable(stage, 520, 240);
 var stepsText = new MyText(stage, 570, 240, stepsCount, blueTextStyle);
 var minusButton = new Button(stage, 570, 280, "", Button.type.Minus);
-
 
 
 var isFinishPlaced = false;

@@ -1,177 +1,206 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>Algorytm KMP</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-		}
-        #text{
-			position: absolute;
-			top: 30px;
-			left: 30px;
-			width: 300px;
-		}
-        #pattern{
-			position: absolute;
-			top: 55px;
-			left: 30px;
-			width: 300px;
-		}
-	</style>
-	<link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <title>Algorytm KMP</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
 
-	<script src="../_common/pixi.js"></script>
-	<script src="../_common/constants.js"></script>
-	<script src="../_common/button.js"></script>
-	<script src="../_common/text.js"></script>
-	<script src="../_common/logo.js"></script>
+        #text {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 300px;
+        }
+
+        #pattern {
+            position: absolute;
+            top: 55px;
+            left: 30px;
+            width: 300px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                main()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
 </head>
 <body>
-    <input type="input" id="text" value="BCA ABCDAB ABCDABCDABDE" />
-    <input type="input" id="pattern" value="ABC" />
-	<script>
-
-	    // create an new instance of a pixi stage
-	    var stage = new PIXI.Stage(0xffffff);
-	    var renderer = PIXI.autoDetectRenderer(640, 480);
-	    document.body.appendChild(renderer.view);
-	    requestAnimFrame(animate);
-
-	    var text_x = 30;
-	    var text_dx = 15;
-	    var text_y = 120;
-        
-	    var textText = new MyText(stage,text_x, text_y, "", blueMonoSpacedStyle, false);
-
-	    var patternText =new MyText(stage,text_x, text_y+20, "", blueMonoSpacedStyle, false);
-	    var shiftsText = new MyText(stage,text_x, text_y+50, "Shifts:", blueMonoSpacedStyle, false);
-
-        // load everything below:
-	    var text = "";
-	    var pattern = "";
-	    var shifts = [];
-	    var shift = 1;
-	    var startPos = 0;
-	    var matchLen = 0;
-	    var matches = [];
-	    var ind = 0;
-	    var initialized = false;
-
-	    var graphics = new PIXI.Graphics();
-	    stage.addChild(graphics);
+<input type="input" id="text" value="BCA ABCDAB ABCDABCDABDE"/>
+<input type="input" id="pattern" value="ABC"/>
+<script>
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
 
 
-		var helpButton = new Button(stage, 560, 150, "Pomoc", Button.type.Help);
-		helpButton.sprite.isOver = false;
-		var nextButton = new Button(stage, 560, 194, "Dalej", Button.type.Next);
-		var resetButton = new Button(stage, 560, 238, "Od nowa", Button.type.Reset);
+    var text_x = 30;
+    var text_dx = 15;
+    var text_y = 120;
+    var textText ;
 
-		new Logo(stage);
-	    init();
+    var patternText;
+    var shiftsText;
 
-	    //help
-	    var help = new PIXI.Sprite(textureHelp);
-	    stage.addChild(help);
+    // load everything below:
+    var text = "";
+    var pattern = "";
+    var shifts = [];
+    var shift = 1;
+    var patternPos = 0;
+    var matchLen = 0;
+    var matches = [];
+    var ind = 0;
+    var shifts_initialized = false;
 
-	    function animate() {
-	        requestAnimFrame( animate );
-	        // loop everything here:
-	        if (nextButton.isClicked) {
-	            if (initialized) {
-	                if (ind < text.length)
-	                {
-	                    if (KNP(ind++)) {
-	                        matches.push(startPos);
-	                        console.log(matches);
-	                    }
-	                    var p = patternText.text.position;
-	                    patternText.text.position = new PIXI.Point(text_x + startPos * text_dx, p.y);
-	                    drawLines();
-	                }
-	            } else {
-	                if (initShifts(ind++)) {
-	                    ind = 0;
-	                    initialized = true;
-	                }
-	            }
-	        }
-	        shiftsText.setText("Shifts: " + shifts);
-
-	        if (resetButton.isClicked) {
-	            init();
-	        }
-	        
-	        resetButton.update();
-	        nextButton.update();
-	        helpButton.update();
-	        help.visible = helpButton.sprite.isOver;
-	        // render the stage
-	        renderer.render(stage);
-	    }
-	    function drawLines() {
-	        graphics.clear();
+    var graphics = new PIXI.Graphics();
+    stage.addChild(graphics);
 
 
-	        graphics.beginFill(0xDDDD00);
-	        graphics.lineStyle(5, 0xDDDD00);
-	        graphics.moveTo(text_x + startPos * text_dx, text_y);
-	        graphics.lineTo(text_x + startPos * text_dx + (matchLen) * text_dx, text_y);
-	        graphics.endFill();
-	        for (var i = 0; i < matches.length; i++) {
-	            graphics.beginFill(0x00DD00);
-	            graphics.lineStyle(5, 0x00DD00);
-	            graphics.moveTo(text_x + matches[i] * text_dx, text_y);
-	            graphics.lineTo(text_x + matches[i] * text_dx + pattern.length * text_dx, text_y);
-	            graphics.endFill();
-	        }
-	    }
+    var helpButton;
+    //helpButton.sprite.isOver = false;
+    var nextButton;
+    var resetButton;
 
-	    var MAX_LENGTH = 40;
-	    function init() {
-	        text = document.getElementById("text").value.substring(0,MAX_LENGTH);
-	        pattern = document.getElementById("pattern").value.substring(0, MAX_LENGTH);
-	        textText.setText(text);
-	        patternText.setText(pattern);
-			patternText.text.position.x=text_x;
-	        matches = [];
-	        shifts = [];
-	        startPos = 0;
-	        matchLen = 0;
-	        while (shifts.length <= pattern.length)
-	            shifts.push(1);
+    new Logo(stage);
+    //help
+    var help = new PIXI.Sprite(textureHelp);
+    stage.addChild(help);
 
-	        shift = 1;
-	        ind = 0;
-	        initialized = false;
-	        graphics.clear();
-	    }
-	    function initShifts(i) {
-	        //for (var i = 0; i < pattern.length; i++) {
-	        while (shift <= i && pattern[i] != pattern[i - shift]) {
-	            shift += shifts[i - shift];
-	        }
-	        shifts[i + 1] = shift;
 
-	        return i == pattern.length - 1;
-	    }
-	    function KNP(i) {
-	        //for (var i = 0; i < text.length; i++) {
-	        var c = text[i];
-	        while (matchLen == pattern.length || matchLen >= 0 && pattern[matchLen] != c) {
-	            startPos += shifts[matchLen];
-	            matchLen -= shifts[matchLen];
-	        }
-	        matchLen += 1;
-	        if (matchLen == pattern.length)
-	            return true;
-	        //}
-	        return false;
-	    }
 
-	</script>
+    function main(){
+        textText = new MyText(stage, text_x, text_y, "", blueMonoSpacedStyle, false);
+        patternText = new MyText(stage, text_x, text_y + 30, "", blueMonoSpacedStyle, false);
+        shiftsText = new MyText(stage, text_x, text_y + 70, "Shifts:", blueMonoSpacedStyle, false);
+        helpButton = new Button(stage, 560, 150, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
 
-	</body>
+        nextButton = new Button(stage, 560, 194, "Dalej", Button.type.Next);
+        resetButton = new Button(stage, 560, 238, "Od nowa", Button.type.Reset);
+        setUp();
+        requestAnimFrame(animate);
+    }
+
+
+
+    function animate() {
+        requestAnimFrame(animate);
+        // loop everything here:
+        if (nextButton.isClicked) {
+            if (shifts_initialized) {
+                if (ind < text.length) {
+                    if (KNP(ind++)) {
+                        matches.push(patternPos);
+                        console.log(matches);
+                    }
+                    var p = patternText.text.position;
+                    patternText.text.position = new PIXI.Point(text_x + patternPos * text_dx, p.y);
+                    drawLines();
+                }
+            } else {
+                if (initShifts(ind++)) {
+                    ind = 0;
+                    shifts_initialized = true;
+                }
+            }
+        }
+        shiftsText.setText("Shifts: " + shifts);
+
+        if (resetButton.isClicked) {
+            setUp();
+        }
+
+        resetButton.update();
+        nextButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+
+    var MAX_LENGTH = 25;
+    function setUp() {
+        text = document.getElementById("text").value.substring(0, MAX_LENGTH).toUpperCase();
+        pattern = document.getElementById("pattern").value.substring(0, MAX_LENGTH).toUpperCase();
+        textText.setText(text);
+        patternText.setText(pattern);
+        patternText.text.position.x = text_x;
+        matches = [];
+        shifts = [];
+        patternPos = 0;
+        matchLen = 0;
+        while (shifts.length <= pattern.length)
+            shifts.push(1);
+
+        shift = 1;
+        ind = 0;
+        shifts_initialized = false;
+        graphics.clear();
+    }
+
+
+    function drawLines() {
+        graphics.clear();
+
+
+        graphics.beginFill(0xDDDD00);
+        graphics.lineStyle(5, 0xDDDD00);
+        graphics.moveTo(text_x + patternPos * text_dx, text_y);
+        graphics.lineTo(text_x + patternPos * text_dx + (matchLen) * text_dx, text_y);
+        graphics.endFill();
+        for (var i = 0; i < matches.length; i++) {
+            graphics.beginFill(0x00DD00);
+            graphics.lineStyle(5, 0x00DD00);
+            graphics.moveTo(text_x + matches[i] * text_dx, text_y);
+            graphics.lineTo(text_x + matches[i] * text_dx + pattern.length * text_dx, text_y);
+            graphics.endFill();
+        }
+    }
+
+
+    function initShifts(i) {
+        //for (var i = 0; i < pattern.length; i++) {
+        while (shift <= i && pattern[i] != pattern[i - shift]) {
+            shift += shifts[i - shift];
+        }
+        shifts[i + 1] = shift;
+
+        return i == pattern.length - 1;
+    }
+    function KNP(i) {
+        //for (var i = 0; i < text.length; i++) {
+        var c = text[i];
+        while (matchLen == pattern.length || matchLen >= 0 && pattern[matchLen] != c) {
+            patternPos += shifts[matchLen];
+            matchLen -= shifts[matchLen];
+        }
+        matchLen += 1;
+        if (matchLen == pattern.length)
+            return true;
+        //}
+        return false;
+    }
+
+</script>
+
+</body>
 </html>

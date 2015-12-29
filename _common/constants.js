@@ -45,9 +45,9 @@ var textureHelp = PIXI.Texture.fromImage("imgs/help.png");
 
 var centeredAnchor = new PIXI.Point(0.5,0.5);
 
-var defaultTextStyle = { font: "20px Comic Sans MS", fill: "#ffffff", align: "left" };
-var blueTextStyle = { font: "20px Comic Sans MS", fill: "#369bd7", align: "left" };
-var blueMonoSpacedStyle = { font: "25px Courier New", fill: "#369bd7", align: "left" };
+var defaultTextStyle = { font: "20px OpenSans", fill: "#ffffff", align: "left" };
+var blueTextStyle = { font: "20px OpenSans", fill: "#369bd7", align: "left" };
+var blueMonoSpacedStyle = { font: "30px Ubuntu", fill: "#369bd7", align: "left" };
 
 function common_texture(name){
     return PIXI.Texture.fromImage("../_common/imgs/"+name);
