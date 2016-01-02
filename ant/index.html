@@ -10,14 +10,24 @@
         }
     </style>
     <script src="../_common/pixi.js"></script>
-
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
     <script src="../_common/constants.js"></script>
     <script src="../_common/button.js"></script>
     <script src="../_common/switch.js"></script>
     <script src="../_common/text.js"></script>
     <script src="../_common/logo.js"></script>
     <script src="ant.js"></script>
-
 </head>
 <body>
 
@@ -28,7 +38,7 @@
 var stage = new PIXI.Stage(0xffffff);
 var renderer = PIXI.autoDetectRenderer(640, 480);
 document.body.appendChild(renderer.view);
-requestAnimFrame(animate);
+
 
 
 var stage_size = 18;
@@ -73,13 +83,13 @@ stage.addChild(finish_border);
 finish_border.anchor = centeredAnchor;
 
 
-var helpButton = new Button(stage, 585, 55, "Pomoc", Button.type.Help);
-var contSwitch = new Switch(stage, 570, 100);
-var plusButton = new Button(stage, 570, 200, "", Button.type.Plus);
+var helpButton;
+var contSwitch;
+var plusButton;
 finish_border.position = new PIXI.Point(570, 240);
-var finish = new Draggable(stage, 520, 240);
-var stepsText = new MyText(stage, 570, 240, stepsCount, blueTextStyle);
-var minusButton = new Button(stage, 570, 280, "", Button.type.Minus);
+var finish;
+var stepsText;
+var minusButton;
 
 
 var isFinishPlaced = false;
@@ -109,6 +119,16 @@ help.visible = false;
 stage.addChild(help);
 
 new Logo(stage, 550, 450);
+
+function init(){
+    helpButton= new Button(stage, 585, 55, "Pomoc", Button.type.Help);
+    contSwitch = new Switch(stage, 570, 100);
+    plusButton = new Button(stage, 570, 200, "", Button.type.Plus);
+    finish = new Draggable(stage, 520, 240);
+    stepsText = new MyText(stage, 570, 240, stepsCount, blueTextStyle);
+    minusButton = new Button(stage, 570, 280, "", Button.type.Minus);
+    requestAnimFrame(animate);
+}
 
 function animate() {
     requestAnimFrame(animate);

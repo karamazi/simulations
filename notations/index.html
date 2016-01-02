@@ -1,141 +1,160 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>Konwersja</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-		}
-        #value{
-			position: absolute;
-			top: 10px;
-			left: 520px;
-			width: 100px;
-		}
-        #base{
-			position: absolute;
-			top: 35px;
-			left: 520px;
-			width: 100px;
-		}
-	</style>
-	<link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <title>Konwersja</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
 
-	<script src="../_common/pixi.js"></script>
-	<script src="../_common/constants.js"></script>
-	<script src="../_common/button.js"></script>
-	<script src="../_common/text.js"></script>
-	<script src="../_common/logo.js"></script>
-	<script src="notations.js"></script>
+        #value {
+            position: absolute;
+            top: 10px;
+            left: 520px;
+            width: 100px;
+        }
+
+        #base {
+            position: absolute;
+            top: 35px;
+            left: 520px;
+            width: 100px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="notations.js"></script>
 
 </head>
 <body>
-    <input type="input" id="value" value="1024"/>
-    <input type="input" id="base" value="16"/>
-	<script>
+<input type="input" id="value" value="1024"/>
+<input type="input" id="base" value="16"/>
+<script>
 
-	// create an new instance of a pixi stage
-	var stage = new PIXI.Stage(0xffffff);
-	var renderer = PIXI.autoDetectRenderer(640, 480);
-	document.body.appendChild(renderer.view);
-	requestAnimFrame(animate);
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
 
-	// load everything below:
-	var helpButton = new Button(stage, 560, 160, "Pomoc", Button.type.Help);
-	helpButton.sprite.isOver = false;
-	var nextButton = new Button(stage, 560, 200, "Dalej", Button.type.Next);
-	var resetButton = new Button(stage, 560, 240, "Od nowa", Button.type.Reset);
-	new Logo(stage);
 
-	var MAX_VAL = 1024;
+    // load everything below:
+    var helpButton;
+    var nextButton;
+    var resetButton;
+    new Logo(stage);
 
-	var initial_value = parseInt(document.getElementById("value").value);
-	var base = parseInt(document.getElementById("base").value);
-	var x_pos=30;
-	var y_pos=30;
-	var dy=25;
-	var divs = [];
-	var div = new Division(stage, x_pos, y_pos, initial_value,base);
-	divs.push(div);
-	var lastDiv = div;
-	var finalText = null;
-	var multBackText = null;
+    var MAX_VAL = 1024;
 
-	var help = new PIXI.Sprite(textureHelp);
-	stage.addChild(help);
+    var initial_value = parseInt(document.getElementById("value").value);
+    var base = parseInt(document.getElementById("base").value);
+    var x_pos = 30;
+    var y_pos = 30;
+    var dy = 25;
+    var divs = [];
+    var lastDiv;
+    var finalText = null;
+    var multBackText = null;
 
-	function animate() {
-	    requestAnimFrame( animate );
+    var help = new PIXI.Sprite(textureHelp);
+    stage.addChild(help);
 
-	    // loop everything here:
-	    if (lastDiv.result != 0 && nextButton.isClicked) {
-	        if (!lastDiv.isCalcd) {
-	            lastDiv.calcResult();
-	        } else {
-	            var newDiv = new Division(stage, x_pos, y_pos + dy * divs.length, lastDiv.result, base);
-	            divs.push(newDiv);
-	            lastDiv = newDiv;
-	        }
-	    } else if(lastDiv.result==0 && nextButton.isClicked && finalText==null){
-	        var final = "";
-	        var multBack = "    ";
-	        var sum = 0;
-	        var j = 0;
-	        for (var i = divs.length - 1; i >= 0; i--,j++) {
-	            final += divs[i].leftOverText;
-	            sum += divs[i].leftOver*Math.pow(base, i);
-	            if (j != 0)
-	                multBack += "\n + ";
-	            
-	            multBack += divs[i].leftOverText + " * " + +base + "^" + i+" = "+sum;//Math.pow(base, i);//
-	            
-	        }
-	        var msg=initial_value+"(base10) ="+final+"(base"+base+")";
-	        finalText = new MyText(stage, x_pos, y_pos + dy + dy * divs.length, msg, blueTextStyle, false);
-	        multBackText = new MyText(stage, x_pos, y_pos + dy * (divs.length + 3), multBack, blueTextStyle, false);
-	        
-	    }
+    function init(){
+        helpButton = new Button(stage, 560, 160, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        nextButton = new Button(stage, 560, 200, "Dalej", Button.type.Next);
+        resetButton = new Button(stage, 560, 240, "Od nowa", Button.type.Reset);
+        var div = new Division(stage, x_pos, y_pos, initial_value, base);
+        divs.push(div);
+        lastDiv = div;
 
-	    if (resetButton.isClicked) {
-	        var tmpValue = parseInt(document.getElementById("value").value);
-	        if (tmpValue > 0 && tmpValue <= MAX_VAL)
-	        {
-	            initial_value = tmpValue;
-	        }
-	        var tmpBase = parseInt(document.getElementById("base").value);
-	        if (tmpBase >= 2 && tmpBase <= 16)
-	        {
-	            base = tmpBase;
-	        }
-			console.log("a");
-	        for (var i = 0; i < divs.length; i++) {
-	            divs[i].clearStage(stage);
-	        }
-			console.log("a");
-	        if (finalText != null) {
-	            finalText.visible = 0;
-	            stage.removeChild(finalText.text);
-	            stage.removeChild(multBackText.text);
-	            finalText = null;
-	        }
-			console.log("a");
-	        divs = [];
-	        var div = new Division(stage, x_pos, y_pos, initial_value, base);
-	        divs.push(div);
-	        lastDiv = div;
+        requestAnimFrame(animate);
+    }
+    function animate() {
+        requestAnimFrame(animate);
 
-	    }
-	    resetButton.update();
-	    nextButton.update();
-	    helpButton.update();
-	    help.visible = helpButton.sprite.isOver;
-	    // render the stage
-	    renderer.render(stage);
-	}
+        // loop everything here:
+        if (lastDiv.result != 0 && nextButton.isClicked) {
+            if (!lastDiv.isCalcd) {
+                lastDiv.calcResult();
+            } else {
+                var newDiv = new Division(stage, x_pos, y_pos + dy * divs.length, lastDiv.result, base);
+                divs.push(newDiv);
+                lastDiv = newDiv;
+            }
+        } else if (lastDiv.result == 0 && nextButton.isClicked && finalText == null) {
+            var final = "";
+            var multBack = "    ";
+            var sum = 0;
+            var j = 0;
+            for (var i = divs.length - 1; i >= 0; i--, j++) {
+                final += divs[i].leftOverText;
+                sum += divs[i].leftOver * Math.pow(base, i);
+                if (j != 0)
+                    multBack += "\n + ";
 
-	</script>
+                multBack += divs[i].leftOverText + " * " + +base + "^" + i + " = " + sum;//Math.pow(base, i);//
 
-	</body>
+            }
+            var msg = initial_value + "(base10) =" + final + "(base" + base + ")";
+            finalText = new MyText(stage, x_pos, y_pos + dy + dy * divs.length, msg, blueTextStyle, false);
+            multBackText = new MyText(stage, x_pos, y_pos + dy * (divs.length + 3), multBack, blueTextStyle, false);
+
+        }
+
+        if (resetButton.isClicked) {
+            var tmpValue = parseInt(document.getElementById("value").value);
+            if (tmpValue > 0 && tmpValue <= MAX_VAL) {
+                initial_value = tmpValue;
+            }
+            var tmpBase = parseInt(document.getElementById("base").value);
+            if (tmpBase >= 2 && tmpBase <= 16) {
+                base = tmpBase;
+            }
+            console.log("a");
+            for (var i = 0; i < divs.length; i++) {
+                divs[i].clearStage(stage);
+            }
+            console.log("a");
+            if (finalText != null) {
+                finalText.visible = 0;
+                stage.removeChild(finalText.text);
+                stage.removeChild(multBackText.text);
+                finalText = null;
+            }
+            console.log("a");
+            divs = [];
+            var div = new Division(stage, x_pos, y_pos, initial_value, base);
+            divs.push(div);
+            lastDiv = div;
+
+        }
+        resetButton.update();
+        nextButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+
+</script>
+
+</body>
 </html>

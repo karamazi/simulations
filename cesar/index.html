@@ -1,159 +1,181 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>Szyfr Cezara</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-		}
-        #in{
-			position: absolute;
-			top: 30px;
-			left: 30px;
-			width: 300px;
-		}
-        #out{
-			position: absolute;
-			top: 55px;
-			left: 30px;
-			width: 300px;
-		}
+    <title>Szyfr Cezara</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #in {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 300px;
+        }
+
+        #out {
+            position: absolute;
+            top: 55px;
+            left: 30px;
+            width: 300px;
+        }
+
         #move {
             position: absolute;
             top: 30px;
             left: 340px;
             width: 25px;
         }
-	</style>
-	<link rel="stylesheet" type="text/css" href="../_common/styles.css">
-
-	<script src="../_common/pixi.js"></script>
-	<script src="../_common/constants.js"></script>
-	<script src="../_common/button.js"></script>
-	<script src="../_common/text.js"></script>
-	<script src="../_common/logo.js"></script>
+    </style>
+    <link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
 
 </head>
 <body>
-    <input id="in" value="buy 10 eggs" />
-    <input id="move" value="3" />
-    <input id="out" value=""/>
-	<script>
+<input id="in" value="buy 10 eggs"/>
+<input id="move" value="3"/>
+<input id="out" value=""/>
+<script>
 
-	    // create an new instance of a pixi stage
-	    var stage = new PIXI.Stage(0xffffff);
-	    var renderer = PIXI.autoDetectRenderer(640, 480);
-	    document.body.appendChild(renderer.view);
-	    requestAnimFrame(animate);
-
-	    // load everything below:
-	    var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-	    var codedAlphabet = [];
-	    var move;
-	    var input;
-
-		var helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
-		helpButton.sprite.isOver = false;
-	    var encodeButton = new Button(stage, 550, 94, "Zaszyfruj", Button.type.Encode);
-	    var decodeButton = new Button(stage, 550, 138, "Odszyfruj", Button.type.Decode);
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
 
 
-	    var blueTextStyleBig = blueTextStyle;
-		blueTextStyleBig.font=blueTextStyleBig.font.replace("20px", "22px");
+    // load everything below:
+    var alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    var codedAlphabet = [];
+    var move;
+    var input;
 
-	    var alphabetText = MyText(stage,30,200, alphabet.join(" "), blueTextStyleBig, false);
-	    var codedAlphabetText = new MyText(stage,30, 230, codedAlphabet.join(" "), blueTextStyleBig, false);
+    var helpButton;
+    var encodeButton;
+    var decodeButton;
 
-		new Logo(stage);
-        //help
-	    var help = new PIXI.Sprite(textureHelp);
-	    stage.addChild(help);
 
-	    function animate() {
-	        requestAnimFrame( animate );
+    var blueTextStyleBig = blueTextStyle;
+    blueTextStyleBig.font = blueTextStyleBig.font.replace("20px", "25px");
 
-	        // loop everything here:
-	        if (encodeButton.isClicked || decodeButton.isClicked) {
-	            var lastMove = move;
-	            var moveElement=document.getElementById("move");
-	            move = parseInt(moveElement.value);
-	            if (isNaN(move)) {
-	                move = 3;
-	            }
-	            if (move < 1)
-	                move = 1;
-	            if (move > 25)
-	                move = 25;
-	            moveElement.value = move;
-	            console.log(move);
-                
-	            input = document.getElementById("in").value;
-	            input = input.substring(0, 100);
-	            input = input.toUpperCase();
-	            document.getElementById("in").value = input;
+    var alphabetText;
+    var codedAlphabetText;
 
-	            if (move != lastMove) {
-	                codedAlphabet = [];
-	                for (var i = 0; i < alphabet.length; i++) {
-	                    codedAlphabet.push(alphabet[(i + move) % alphabet.length]);
-	                }
-	                console.log(codedAlphabet);
-	                codedAlphabetText.setText(codedAlphabet.join(" "));
-	            }
+    new Logo(stage);
+    //help
+    var help = new PIXI.Sprite(textureHelp);
+    stage.addChild(help);
 
-	            if (encodeButton.isClicked) {
-	                var encoded = "";
-	                for(var i=0;i<input.length;i++)
-	                {
-	                    if (inArray(input.charAt(i), alphabet)) {
-	                        var ind = alphabet.indexOf(input.charAt(i));
-	                        encoded += codedAlphabet[ind];
-	                    }
-	                    else {
-	                        encoded += input.charAt(i);
-	                    }
-	                }
-	                document.getElementById("out").value = encoded;
-	            }
-	            if (decodeButton.isClicked) {
-	                var decoded = "";
-	                for (var i = 0; i < input.length; i++) {
-	                    if (inArray(input.charAt(i), codedAlphabet)) {
-	                        var ind = codedAlphabet.indexOf(input.charAt(i));
-	                        decoded += alphabet[ind];
-	                    }
-	                    else {
-	                        decoded += input.charAt(i);
-	                    }
-	                }
-	                document.getElementById("out").value = decoded;
-	            }
+    function init(){
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        encodeButton = new Button(stage, 550, 94, "Zaszyfruj", Button.type.Encode);
+        decodeButton = new Button(stage, 550, 138, "Odszyfruj", Button.type.Decode);
+        alphabetText = MyText(stage, 30, 200, alphabet.join(" "), blueTextStyleBig, false);
+        codedAlphabetText = new MyText(stage, 30, 230, codedAlphabet.join(" "), blueTextStyleBig, false);
+        requestAnimFrame(animate);
+    }
 
-	        }
+    function animate() {
+        requestAnimFrame(animate);
 
-	        encodeButton.update();
-	        decodeButton.update();
-	        helpButton.update();
-	        help.visible = helpButton.sprite.isOver;
-	        // render the stage
-	        renderer.render(stage);
-	    }
+        // loop everything here:
+        if (encodeButton.isClicked || decodeButton.isClicked) {
+            var lastMove = move;
+            var moveElement = document.getElementById("move");
+            move = parseInt(moveElement.value);
+            if (isNaN(move)) {
+                move = 3;
+            }
+            if (move < 1)
+                move = 1;
+            if (move > 25)
+                move = 25;
+            moveElement.value = move;
+            console.log(move);
 
-	    function cesar(input, move) {
+            input = document.getElementById("in").value;
+            input = input.substring(0, 100);
+            input = input.toUpperCase();
+            document.getElementById("in").value = input;
 
-	    }
+            if (move != lastMove) {
+                codedAlphabet = [];
+                for (var i = 0; i < alphabet.length; i++) {
+                    codedAlphabet.push(alphabet[(i + move) % alphabet.length]);
+                }
+                console.log(codedAlphabet);
+                codedAlphabetText.setText(codedAlphabet.join(" "));
+            }
 
-	    function inArray(needle, haystack) {
-	        var length = haystack.length;
-	        for (var i = 0; i < length; i++) {
-	            if (haystack[i] == needle) return true;
-	        }
-	        return false;
-	    }
+            if (encodeButton.isClicked) {
+                var encoded = "";
+                for (var i = 0; i < input.length; i++) {
+                    if (inArray(input.charAt(i), alphabet)) {
+                        var ind = alphabet.indexOf(input.charAt(i));
+                        encoded += codedAlphabet[ind];
+                    }
+                    else {
+                        encoded += input.charAt(i);
+                    }
+                }
+                document.getElementById("out").value = encoded;
+            }
+            if (decodeButton.isClicked) {
+                var decoded = "";
+                for (var i = 0; i < input.length; i++) {
+                    if (inArray(input.charAt(i), codedAlphabet)) {
+                        var ind = codedAlphabet.indexOf(input.charAt(i));
+                        decoded += alphabet[ind];
+                    }
+                    else {
+                        decoded += input.charAt(i);
+                    }
+                }
+                document.getElementById("out").value = decoded;
+            }
 
-	</script>
+        }
 
-	</body>
+        encodeButton.update();
+        decodeButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function cesar(input, move) {
+
+    }
+
+    function inArray(needle, haystack) {
+        var length = haystack.length;
+        for (var i = 0; i < length; i++) {
+            if (haystack[i] == needle) return true;
+        }
+        return false;
+    }
+
+</script>
+
+</body>
 </html>

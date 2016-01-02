@@ -16,6 +16,18 @@
             width: 300px;
         }
     </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
     <script src="../_common/pixi.js"></script>
     <script src="../_common/constants.js"></script>
     <script src="../_common/button.js"></script>
@@ -35,7 +47,7 @@
     var stage = new PIXI.Stage(0xffffff);
     var renderer = PIXI.autoDetectRenderer(640, 480);
     document.body.appendChild(renderer.view);
-    requestAnimFrame(animate);
+
     // load everything below:
 
 
@@ -64,35 +76,53 @@
     var imgData;
     loadImage("shapes/circle.png");
 
-    var genPointsText = new MyText(stage, text_x, text_y, "Wygenerowane punkty: " + mcPointsTotal, blueTextStyle, false);
-    var hitPointsText = new MyText(stage, text_x, text_y + text_dy, "Trafione punkty: " + mcPointsHit, blueTextStyle, false);
-    var mcSurfaceText = new MyText(stage, text_x, text_y + text_dy * 2, "Wyliczona powierzchnia: " + mcSurface, blueTextStyle, false);
-    var realSText = new MyText(stage, text_x, text_y + text_dy * 3, "Pradziwa powierzchnia: " + realSurface, blueTextStyle, false);
-    var totalSText = new MyText(stage, text_x, text_y + text_dy * 4, "Powierzchnia obrazka: " + (realSurface + outsidePoints), blueTextStyle, false);
+    var genPointsText;
+    var hitPointsText;
+    var mcSurfaceText;
+    var realSText;
+    var totalSText;
+
+    var onePointB;
+    var tenPointsB;
+    var hundredPointsB;
+    var thousandPointsB;
+    var tenThousandPointB;
+    var hundredThousandPointsB;
 
 
-    var button_x = 550;
-    var button_y = 170;
-    var button_dy = 44;
-
-    var onePointB = new Button(stage, button_x, button_y, "1", Button.type.PlusText);
-    var tenPointsB = new Button(stage, button_x, button_y + button_dy, "10", Button.type.PlusText);
-    var hundredPointsB = new Button(stage, button_x, button_y + button_dy * 2, "100", Button.type.PlusText);
-    var thousandPointsB = new Button(stage, button_x, button_y + button_dy * 3, "1000", Button.type.PlusText);
-    var tenThousandPointB = new Button(stage, button_x, button_y + button_dy * 4, "10 000", Button.type.PlusText);
-    var hundretThousandPointsB = new Button(stage, button_x, button_y + button_dy * 5, "100 000", Button.type.PlusText);
-
-
-    //help
-    var helpButton = new Button(stage, button_x, 50, "Pomoc", Button.type.Help);
-    helpButton.sprite.isOver = false;
-    var resetButton = new Button(stage, button_x, 95, "Od nowa", Button.type.Reset);
-
-    new Logo(stage)
-
+    var helpButton;
+    var resetButton;
     var help = new PIXI.Sprite(textureHelp);
     stage.addChild(help);
 
+    new Logo(stage);
+
+    function init() {
+        genPointsText = new MyText(stage, text_x, text_y, "Wygenerowane punkty: " + mcPointsTotal, blueTextStyle, false);
+        hitPointsText = new MyText(stage, text_x, text_y + text_dy, "Trafione punkty: " + mcPointsHit, blueTextStyle, false);
+        mcSurfaceText = new MyText(stage, text_x, text_y + text_dy * 2, "Wyliczona powierzchnia: " + mcSurface, blueTextStyle, false);
+        realSText = new MyText(stage, text_x, text_y + text_dy * 3, "Pradziwa powierzchnia: " + realSurface, blueTextStyle, false);
+        totalSText = new MyText(stage, text_x, text_y + text_dy * 4, "Powierzchnia obrazka: " + (realSurface + outsidePoints), blueTextStyle, false);
+
+
+        var button_x = 550;
+        var button_y = 170;
+        var button_dy = 44;
+
+        onePointB = new Button(stage, button_x, button_y, "1", Button.type.PlusText);
+        tenPointsB = new Button(stage, button_x, button_y + button_dy, "10", Button.type.PlusText);
+        hundredPointsB = new Button(stage, button_x, button_y + button_dy * 2, "100", Button.type.PlusText);
+        thousandPointsB = new Button(stage, button_x, button_y + button_dy * 3, "1000", Button.type.PlusText);
+        tenThousandPointB = new Button(stage, button_x, button_y + button_dy * 4, "10 000", Button.type.PlusText);
+        hundredThousandPointsB = new Button(stage, button_x, button_y + button_dy * 5, "100 000", Button.type.PlusText);
+
+
+        //help
+        helpButton = new Button(stage, button_x, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        resetButton = new Button(stage, button_x, 95, "Od nowa", Button.type.Reset);
+        requestAnimFrame(animate);
+    }
     function animate() {
         requestAnimFrame(animate);
         if (onePointB.isClicked)
@@ -105,7 +135,7 @@
             addPoints(1000);
         else if (tenThousandPointB.isClicked)
             addPoints(10000);
-        else if (hundretThousandPointsB.isClicked)
+        else if (hundredThousandPointsB.isClicked)
             addPoints(100000);
 
         if (resetButton.isClicked)
@@ -116,7 +146,7 @@
         hundredPointsB.update();
         thousandPointsB.update();
         tenThousandPointB.update();
-        hundretThousandPointsB.update();
+        hundredThousandPointsB.update();
         resetButton.update();
 
         genPointsText.setText("Wygenerowane punkty: " + mcPointsTotal);
@@ -166,17 +196,16 @@
             shapeCtx.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);
             shapeCtx.drawImage(base_image, 0, 0);
             img_data = shapeCtx.getImageData(0, 0, base_image.width, base_image.height).data;
-            var w = 0, b = 0;
+
             for (var i = 0; i < img_data.length; i += 4) {
                 if (img_data[i] == 255 && img_data[i + 1] == 255 && img_data[i + 2] == 255)
                     outsidePoints++;
                 else
                     realSurface++;
-                // i+3 is alpha (the fourth element)
+                // i+3 is alpha
             }
             realSText.setText("Pradziwa powierzchnia: " + realSurface);
             totalSText.setText("Powierzchnia obrazka: " + (realSurface + outsidePoints));
-            console.log(path, realSurface);
         }
     }
 

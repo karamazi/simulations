@@ -9,6 +9,18 @@
 			background-color: #000000;
 		}
 	</style>
+	<script>
+		var WebFontConfig = {
+			custom: {
+				families: ["OpenSans", "Ubuntu"],
+				urls: ["../_common/styles.css"]
+			},
+			active: function () {
+				init()
+			}
+		};
+	</script>
+	<script src="../_common/webfont.js"></script>
 	<script src="../_common/pixi.js"></script>
 	<script src="../_common/constants.js"></script>
 	<script src="../_common/button.js"></script>
@@ -28,14 +40,14 @@
 	var stage = new PIXI.Stage(0xffffff);
 	var renderer = PIXI.autoDetectRenderer(640, 480);
 	document.body.appendChild(renderer.view);
-	requestAnimFrame(animate);
+
 	var info_text=["Wskaz zlota kule","Podzial zbioru na pol","Zlota kula znajduje sie na ciezszej szalce","Znaleziono!"];
 	var inital_balls=[];
 	var balls=[];
 	var episode=episodeEnum.SetGolden;
-	var nextEpButton=new Button(stage,550,ball_y+50,"Dalej", Button.type.Next);
-	var resetButton=new Button(stage,550,ball_y,"Od Nowa", Button.type.Reset);
-	var helpButton=new Button(stage,550,ball_y-50,"Pomoc", Button.type.Help);
+	var nextEpButton;
+	var resetButton;
+	var helpButton;
 	var episodeDone=false;
 	new Logo(stage);
 
@@ -47,12 +59,19 @@
 	var guideText = new MyText(stage, 320, 30, "Ugege", blueTextStyle);
 
 
-	setupBalls();
+
 
 	var helpScreen=new PIXI.Sprite(textureHelp);
 	helpScreen.visible=false;
 	stage.addChild(helpScreen);
 
+	function init(){
+		nextEpButton=new Button(stage,550,ball_y+50,"Dalej", Button.type.Next);
+		resetButton=new Button(stage,550,ball_y,"Od Nowa", Button.type.Reset);
+		helpButton=new Button(stage,550,ball_y-50,"Pomoc", Button.type.Help);
+		setupBalls();
+		requestAnimFrame(animate);
+	}
 
 	function animate() {
 	    requestAnimFrame( animate );

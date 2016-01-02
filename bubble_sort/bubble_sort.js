@@ -4,13 +4,13 @@ var textureError = PIXI.Texture.fromImage("imgs/blink.png");
 
 var swapEnum = Object.freeze({"FadeIn_toTemp":0, "FadeOut_toTemp":1, "FadeIn_toOne":2, "FadeOut_toOne":3, "FadeIn_fromTemp":4, "FadeOut_fromTemp":5})
 
-
+var ballAnchor = new PIXI.Point(0.5,0.6);
 Draggable=function(stage,x,y){
 	this.sprite = new PIXI.Sprite(textureDraggable);
 	stage.addChild(this.sprite);
 
 	this.value=0;
-	this.text=new MyText(stage, x,y, "a");
+	this.text=new MyText(stage, x,y, "a", defaultTextStyle, ballAnchor);
 	//true jesli wlasnie zostalo opuszczone
 	this.socket=null;
 	this.isDropped=false;
