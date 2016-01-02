@@ -1,0 +1,167 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Schemat Hornera</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #polynominal {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 200px;
+        }
+
+        #value {
+            position: absolute;
+            top: 55px;
+            left: 30px;
+            width: 200px;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+
+</head>
+<body>
+<input id="polynominal" value="1 2 3"/>
+<input id="value" value="3"/>
+<script>
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+
+    // load everything below:
+    var xVal = 0;
+    var polynominal = [];
+    var iterationTexts = [];
+    var text_x = 30;
+    var text_y = 160;
+    var text_dy = 30;
+
+    //help
+    var calcButton;
+    var helpButton;
+    var polyText;
+
+    var help = new PIXI.Sprite(textureHelp);
+    stage.addChild(help);
+
+    function init() {
+        calcButton = new Button(stage, 550, 94, "Oblicz", Button.type.PlusText);
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        polyText = new MyText(stage, 30, 110, "", blueTextStyle, false);
+        requestAnimFrame(animate);
+    }
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+
+        if (calcButton.isClicked) {
+            initValues();
+            horner();
+        }
+        calcButton.update();
+
+
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+    function initValues() {
+        xVal = parseInt(document.getElementById("value").value);
+
+        if (isNaN(xVal)) {
+            xVal = 0;
+            document.getElementById("value").value = xVal;
+        }
+
+        polynominal = [];
+        var tmpPoly = document.getElementById("polynominal").value;
+        tmpPoly = tmpPoly.split(" ");
+        console.log(tmpPoly);
+        for (var i = 0; i < tmpPoly.length; i++) {
+            var coef = tmpPoly[i];
+            console.log(coef);
+            var t = parseInt(coef);
+            if (!isNaN(t) && isFinite(t))
+                polynominal.push(t);
+            else
+                polynominal.push(0);
+        }
+        createPolyText(polynominal);
+
+        for (var i = 0; i < iterationTexts.length; i++) {
+            stage.removeChild(iterationTexts[i]);
+        }
+        iterationTexts = [];
+
+        console.log(polynominal);
+
+    }
+    function horner() {
+        var result = 0;
+        for (var i = 0; i < polynominal.length; i++) {
+            var itText = "Iteracja #" + (i + 1) + ":  " + result + " * " + xVal + " + " + polynominal[i];
+
+            result = result * xVal + polynominal[i];
+
+
+            itText += " = " + result;
+            var newText = new MyText(stage, text_x, text_y + text_dy * i, itText, blueTextStyle, false);
+            iterationTexts.push(newText);
+        }
+        var resultText = new MyText(stage, text_x, text_y + text_dy * (i + 1), "Wartosc wielomianu dla argumentu " + xVal + " wynosi " + result, blueTextStyle, false);
+        iterationTexts.push(resultText);
+        console.log(result);
+    }
+
+    function createPolyText(values) {
+        console.log("a", values);
+        var txt = "f(x)=";
+        for (var i = 0; i < values.length; i++) {
+            if (values[i] == 0)
+                continue;
+
+            console.log(values[i]);
+            txt += values[i];
+
+
+            if (i !== values.length - 1) {
+                txt += "x^" + (values.length - i - 1);
+                txt += " + ";
+            }
+
+        }
+        polyText.setText(txt);
+    }
+
+</script>
+
+</body>
+</html>
