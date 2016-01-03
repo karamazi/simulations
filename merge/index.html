@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Merge</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="merge.js"></script>
+
+</head>
+<body>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(800, 300);
+    document.body.appendChild(renderer.view);
+
+    var ball_x = 50;
+    var ball_y = 100;
+    var ball_dx = 45;
+    var ball_dy = 55;
+
+    // load everything below:
+
+    var A = [];
+    var B = [];
+    var C = [];
+    var ai = 0;
+    var bi = 0;
+    var ci = 0;
+    var Aballs = [];
+    var Bballs = [];
+    var Cballs = [];
+
+
+
+    var nextButton;
+    var resetButton;
+    var helpButton;
+
+    var help = new PIXI.Sprite(textureHelp);
+    stage.addChild(help);
+    new Logo(stage, 400, 280);
+    function init(){
+        helpButton = new Button(stage, 710, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        nextButton = new Button(stage, 710, 94, "Dalej", Button.type.Next);
+        resetButton = new Button(stage, 710, 138, "Od nowa", Button.type.Reset);
+
+        setUp();
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (nextButton.isClicked && ci < A.length + B.length) {
+            if (ai > 0)
+                Aballs[ai - 1].makeNormal();
+            if (bi > 0)
+                Bballs[bi - 1].makeNormal();
+            if (ci > 0)
+                Cballs[ci - 1].makeNormal();
+
+
+            if ((ai < A.length && A[ai] < B[bi]) || bi == B.length) {
+                C.push(A[ai]);
+                Cballs[ci].setValue(A[ai]);
+
+                Aballs[ai].makePivot();
+                if (bi < B.length)
+                    Bballs[bi].makeGolden();
+                ai++;
+            } else {
+                C.push(B[bi]);
+                Cballs[ci].setValue(B[bi]);
+
+                if (ai < A.length)
+                    Aballs[ai].makeGolden();
+
+                Bballs[bi].makePivot();
+                bi++;
+            }
+            Cballs[ci].makePivot();
+            ci++;
+        }
+
+        if (resetButton.isClicked) {
+            for (var i = 0; i < Aballs.length; i++) {
+                Aballs[i].remove(stage);
+
+            }
+            for (var i = 0; i < Bballs.length; i++) {
+                Bballs[i].remove(stage);
+            }
+            for (var i = 0; i < Cballs.length; i++) {
+                Cballs[i].remove(stage);
+            }
+            ai = 0;
+            bi = 0;
+            ci = 0;
+            Aballs = [];
+            Bballs = [];
+            Cballs = [];
+            setUp();
+        }
+
+
+        resetButton.update();
+        nextButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        //render the stage
+        renderer.render(stage);
+    }
+    function setUp() {
+        A = generateSorted(5);
+        B = generateSorted(8);
+        for (var i = 0; i < A.length; i++) {
+            var b = new Ball(stage, ball_x + ball_dx * i, ball_y);
+            b.setValue(A[i]);
+            Aballs.push(b);
+
+            var cball = new Ball(stage, ball_x + ball_dx * i, ball_y + 2 * ball_dy);
+            cball.setValue("");
+            Cballs.push(cball);
+        }
+        for (var i = 0; i < B.length; i++) {
+            var b = new Ball(stage, ball_x + ball_dx * i, ball_y + ball_dy);
+            b.setValue(B[i]);
+            Bballs.push(b);
+
+            var cball = new Ball(stage, ball_x + ball_dx * (Aballs.length + i), ball_y + 2 * ball_dy);
+            cball.setValue("");
+            Cballs.push(cball);
+        }
+    }
+    function generateSorted(size) {
+        var lastVal = Math.floor(Math.random() * 5);
+        var N = [lastVal];
+        for (var i = 1; i < size; i++) {
+            lastVal += Math.floor(Math.random() * 3);
+            N.push(lastVal);
+        }
+        return N;
+    }
+
+</script>
+
+</body>
+</html>

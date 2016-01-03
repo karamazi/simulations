@@ -1,0 +1,152 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Gra NIM</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="nim.js"></script>
+
+</head>
+<body>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+
+    // load everything below:
+    var mx = 30;
+    var mdx = 35;
+    var my = 110;
+    var mdy = 120;
+
+    var heaps = [];
+    init_heaps();
+
+    var currentPlayer = 1;
+    var gameOver = false;
+    var commentText;
+    var resetButton;
+    var nextButton;
+
+
+    //help
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+    stage.addChild(help);
+
+    function init(){
+        var bigBlueTextStyle=blueTextStyle;
+        bigBlueTextStyle.font=blueTextStyle.font.replace("20","25");
+        commentText = new MyText(stage, 320, 50,"",blueTextStyle);
+        helpButton = new Button(stage, 550, 110, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        nextButton = new Button(stage, 550, 154, "Dalej", Button.type.Next);
+        resetButton = new Button(stage, 550, 198, "Od nowa", Button.type.Reset);
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (resetButton.isClicked) {
+            commentText.setText("");
+            gameOver = false;
+            init_heaps();
+        }
+        if (!gameOver && nextButton.isClicked) {
+            var heapInd = 0;
+            do {
+                heapInd = Math.floor(Math.random() * 3);
+
+            } while (heaps[heapInd].length == 0);
+
+            var sticksTaken = 0;
+            do {
+                sticksTaken = 1 + Math.round(Math.random() * heaps[heapInd].length);
+            } while (sticksTaken > heaps[heapInd].length);
+
+            //pop da sticks
+            for (var i = 0; i < sticksTaken; i++) {
+                var t = heaps[heapInd].pop();
+                t.remove(stage);
+            }
+
+            var over = true;
+            for (var i = 0; i < heaps.length; i++) {
+                over &= (heaps[i].length == 0);
+            }
+            gameOver = over;
+
+            var matchT = " zapałek";
+            var lastT = " ostatnich";
+            if (sticksTaken == 1) {
+                matchT = " zapałkę";
+                lastT = " ostatnią";
+            } else if (sticksTaken < 5) {
+                matchT = " zapałki";
+                lastT = " ostatnie";
+            }
+
+            if (gameOver)
+                commentText.setText("Gracz#" + currentPlayer + " usunął " + sticksTaken + lastT + matchT + " I WYGRAŁ.");
+            else
+                commentText.setText("Gracz#" + currentPlayer + " usunął " + sticksTaken + matchT + " ze stosu #" + (heapInd + 1));
+            switchPlayers();
+
+        }
+        resetButton.update();
+        nextButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+    function init_heaps() {
+        var num = 0;
+        for (var i = 0; i < heaps.length; i++)
+            for (var j = 0; j < heaps[i].length; j++)
+                heaps[i][j].remove(stage);
+        heaps = [];
+
+        for (var i = 0; i < 3; i++) {
+            heaps[i] = [];
+            num = Math.round(3 + Math.random() * 7);
+            for (var j = 0; j < num; j++) {
+                heaps[i].push(new Match(stage, mx + j * mdx, my + i * mdy));
+            }
+        }
+
+    }
+    function switchPlayers() {
+        currentPlayer = (currentPlayer) % 2 + 1;
+    }
+</script>
+
+</body>
+</html>
