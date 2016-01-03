@@ -1,7 +1,6 @@
 # Simulations TODO:
 
 ## General
-- Fix font (Comic Sans -> Open sans)
 - Half-bold text (e.g.: Monte Carlo)
 
 ## Ant
@@ -10,7 +9,7 @@
 ## Notations
 - help
 - Long outputs e.g. on 1000/2
-- Don't display multiplication by 0?
+    - Don't display multiplication by 0?
 
 ## Golden ball
 - help
@@ -18,7 +17,6 @@
 
 ## Pattern search
 - help
-- Monospaced font (what to do with it?)
 
 ## Bubble sort
 - help (revamp)
@@ -27,8 +25,7 @@
 ## Monte carlo
 - help
 
-
-# Skipped
-- tree_build
-- tree_search
-- tree_delete
+# Trees
+- help
+- != sign.
+- red ball

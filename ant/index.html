@@ -86,7 +86,7 @@ finish_border.anchor = centeredAnchor;
 var helpButton;
 var contSwitch;
 var plusButton;
-finish_border.position = new PIXI.Point(570, 240);
+finish_border.position = new PIXI.Point(550, 240);
 var finish;
 var stepsText;
 var minusButton;
@@ -121,12 +121,12 @@ stage.addChild(help);
 new Logo(stage, 550, 450);
 
 function init(){
-    helpButton= new Button(stage, 585, 55, "Pomoc", Button.type.Help);
-    contSwitch = new Switch(stage, 570, 100);
-    plusButton = new Button(stage, 570, 200, "", Button.type.Plus);
-    finish = new Draggable(stage, 520, 240);
-    stepsText = new MyText(stage, 570, 240, stepsCount, blueTextStyle);
-    minusButton = new Button(stage, 570, 280, "", Button.type.Minus);
+    helpButton= new Button(stage, 550, 55, "Pomoc", Button.type.Help);
+    contSwitch = new Switch(stage, 550, 100);
+    plusButton = new Button(stage, 550, 200, "", Button.type.Plus);
+    finish = new Draggable(stage, 500, 240);
+    stepsText = new MyText(stage, 550, 240, stepsCount, blueTextStyle);
+    minusButton = new Button(stage, 550, 280, "", Button.type.Minus);
     requestAnimFrame(animate);
 }
 
