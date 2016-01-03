@@ -36,6 +36,12 @@ input {
     font-weight: normal;
     font-style: normal;
 }
+@font-face {
+    font-family: 'OpenSans Bold';
+    src: url('fonts/OpenSans-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
 
 @font-face {
     font-family: 'Ubuntu';
