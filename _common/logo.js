@@ -3,7 +3,7 @@ Logo = function (stage, x, y) {
 
     this.logo.anchor = centeredAnchor;
     if(x===undefined || y==undefined)
-        this.logo.position = new PIXI.Point(320,440);
+        this.logo.position = new PIXI.Point(320,455);
     else
         this.logo.position = new PIXI.Point(x,y);
 
