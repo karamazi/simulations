@@ -65,7 +65,7 @@ Button=function(stage,x,y,text,type){
     };
 };
 
-Button.type = Object.freeze({"Help":0, "Plus":1, "Minus":2, "Reset":3, "Next":4, "Previous":5, "Reroll": 6, "PlusText": 7, "Encode": 8, "Decode": 9});
+Button.type = Object.freeze({"Help":0, "Plus":1, "Minus":2, "Reset":3, "Next":4, "Previous":5, "Reroll": 6, "PlusText": 7, "Encode": 8, "Decode": 9, "Onp": 10});
 Button.prototype.setupTextures=function(text){
     switch(text){
         case Button.type.Help:
@@ -115,6 +115,11 @@ Button.prototype.setupTextures=function(text){
         case Button.type.Decode:
             this.textureButton = textureDecodeButton;
             this.textureButtonOver = textureDecodeButtonOver;
+            break;
+
+        case Button.type.Onp:
+            this.textureButton = textureOnpButton;
+            this.textureButtonOver = textureOnpButtonOver;
             break;
         
         

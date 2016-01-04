@@ -31,6 +31,8 @@ var textureEncodeButtonOver =common_texture("button_encode_hoover.png");
 var textureDecodeButton = common_texture("button_decode.png");
 var textureDecodeButtonOver =common_texture("button_decode_hoover.png");
 
+var textureOnpButton = common_texture("button_onp.png");
+var textureOnpButtonOver =common_texture("button_onp_hoover.png");
 
 var textureSwitch = common_texture("start.png");
 var textureSwitchDown = common_texture("stop.png");
