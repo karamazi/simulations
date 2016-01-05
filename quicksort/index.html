@@ -1,0 +1,279 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>QuickSort</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="quicksort.js"></script>
+
+</head>
+<body>
+<script>
+
+// create an new instance of a pixi stage
+var stage = new PIXI.Stage(0xffffff);
+var renderer = PIXI.autoDetectRenderer(640, 480);
+document.body.appendChild(renderer.view);
+
+var background = new PIXI.Sprite(textureBackground);
+stage.addChild(background);
+
+var line_hide_pos = new PIXI.Point(-100, -100);
+var lineTexture = PIXI.Texture.fromImage("imgs/line.png");
+var L_anchor = new PIXI.Point(7.75, 0.5);
+var R_anchor = new PIXI.Point(-7.25, 0.5);
+var rightLine = new PIXI.Sprite(lineTexture);
+var leftLine = new PIXI.Sprite(lineTexture);
+rightLine.anchor = R_anchor;
+leftLine.anchor = L_anchor;
+stage.addChild(rightLine);
+stage.addChild(leftLine);
+
+
+
+var ball_x = 115;
+var ball_y = 200;
+var ball_dx = 45;
+var max_val = 20;
+var i = 0;
+var j = 0;
+var pivot_ball = null;
+var pivot = 0;
+var isSorting = false;
+
+var number_of_balls = 0;
+var balls = [];
+var left = 0;
+var right = 0;
+var heap = [];
+var compare_count = 0;
+var swap_count = 0;
+
+
+var compareText;
+var swapText;
+
+var resetButton;
+var nextButton;
+var helpButton;
+
+
+
+
+
+//help
+var help = new PIXI.Sprite(textureHelp);
+stage.addChild(help);
+
+function init(){
+    blueTextStyleBold.font=blueTextStyleBold.font.replace("20px", "15px");
+    blueTextStyle.font=blueTextStyle.font.replace("20px", "15px");
+    new MyText(stage,30,25, "Porównań: ", blueTextStyleBold, false);
+    new MyText(stage,30,45, "Zamian: ", blueTextStyleBold, false);
+    compareText = new MyText(stage,120,25, "", blueTextStyle, false);
+    swapText = new MyText(stage,100,45, "", blueTextStyle, false);
+
+
+    helpButton = new Button(stage, 550, 300, "Pomoc", Button.type.Help);
+    helpButton.sprite.isOver = false;
+    nextButton = new Button(stage, 550, 344, "Dalej", Button.type.Next);
+    resetButton = new Button(stage, 550, 388, "Od nowa", Button.type.Reset);
+    setUp();
+    requestAnimFrame(animate);
+
+}
+
+function animate() {
+    requestAnimFrame(animate);
+
+    // loop everything here:
+
+    sort_animation();
+    swapText.setText(swap_count);
+    compareText.setText(compare_count);
+    if (resetButton.isClicked) {
+        setUp();
+    }
+
+    resetButton.update();
+    nextButton.update();
+    for (var k = 0; k < balls.length; k++)
+        balls[k].update();
+
+    helpButton.update();
+    help.visible = helpButton.sprite.isOver;
+    // render the stage
+    renderer.render(stage);
+}
+
+function sort_animation() {
+    if (isSorting && nextButton.isClicked) {
+        if (i <= j) {
+            if (balls[i].value < pivot) {
+                balls[i].makeNormal();
+                i++;
+                balls[i].makeGolden();
+                compare_count++;
+                return;
+            }
+
+
+            if (balls[j].value > pivot) {
+                balls[j].makeNormal();
+                j--;
+                balls[j].makeGolden();
+                compare_count++;
+                return;
+            }
+
+
+            if (i <= j) {
+                var tmp = balls[i].value;
+                balls[i].setValue(balls[j].value);
+                balls[j].setValue(tmp);
+                balls[i].makeNormal();
+                balls[j].makeNormal();
+                i++;
+                j--;
+                if(i<balls.length)
+                {
+                    balls[i].makeGolden();
+                    balls[j].makeGolden();
+                    swap_count++;
+                }
+
+            }
+            return;
+        }
+        if (left < j) {
+            balls[i].makeNormal();
+            balls[j].makeNormal();
+            //moveBalls(false, left, j);
+            if (i < right)
+                heap.push(new PIXI.Point(i, right));
+            quicksort(left, j);
+            return;
+        }
+        if (i < right) {
+            balls[i].makeNormal();
+            balls[j].makeNormal();
+            //moveBalls(true, i, right);
+            quicksort(i, right);
+            return;
+        }
+
+        if (heap.length > 0) {
+            balls[i].makeNormal();
+            balls[j].makeNormal();
+            var point = heap.pop();
+            quicksort(point.x, point.y);
+        } else {
+            if (i < balls.length)
+                balls[i].makeNormal();
+            balls[j].makeNormal();
+            isSorting = false;
+            stage.removeChild(pivot_ball.sprite);
+            pivot_ball.text.remove(stage);
+            pivot_ball = null;
+
+            //po co usuwac jak mozna schowac w zadupiu
+            rightLine.position = line_hide_pos;
+            leftLine.position = line_hide_pos;
+        }
+
+    }
+}
+function setUp() {
+    for (var i = 0; i < balls.length; i++) {
+        balls[i].remove(stage);
+    }
+    balls = [];
+
+    if (pivot_ball != null) {
+        pivot_ball.remove(stage);
+        pivot_ball = null;
+    }
+    compare_count = 0;
+    swap_count = 0;
+
+    number_of_balls = 10;
+    if (number_of_balls > 12)
+        number_of_balls = 12;
+    if (number_of_balls < 2)
+        number_of_balls = 2;
+
+    for (var i = 0; i < number_of_balls; i++) {
+        var b = new Ball(stage, ball_x + i * ball_dx, ball_y);
+        var val = 0;
+        var isUnique = false;
+        do {
+            isUnique = true;
+            val = Math.floor(Math.random() * max_val);
+            for (var i = 0; i < balls.length; i++) {
+                if (balls[i].value == val)
+                    isUnique = false;
+
+            }
+        } while (!isUnique);
+
+        b.setValue(val);
+        balls.push(b);
+    }
+    pivot_ball = new Ball(stage, 320, 140);
+    pivot_ball.makePivot();
+    left = 0;
+    right = balls.length - 1;
+
+    quicksort(left, right);
+}
+function quicksort(l, r) {
+    left = l;
+    right = r;
+    console.log("quicksorting between:", left, right);
+    i = left;
+    j = right;
+    leftLine.position = new PIXI.Point(ball_x + left * ball_dx, ball_y);
+    rightLine.position = new PIXI.Point(ball_x + right * ball_dx, ball_y);
+
+    balls[i].makeGolden();
+    balls[j].makeGolden();
+    pivot = balls[Math.ceil((i + j) / 2)].value;
+    pivot_ball.setValue(pivot);
+    isSorting = true;
+    pivot_ball.makePivot();
+}
+function moveBalls(up, l, r) {
+    var movY = 50;
+    if (up)
+        movY *= -1;
+    for (var k = l; k <= r; k++) {
+        balls[k].moveBy(0, movY);
+    }
+}
+
+</script>
+
+</body>
+</html>

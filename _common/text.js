@@ -20,3 +20,6 @@ MyText = function (stage, x, y, text, style, anchor) {
 MyText.prototype.setText = function(text){
     this.text.setText(text);
 };
+MyText.prototype.remove = function(stage){
+    stage.removeChild(this.text);
+};
