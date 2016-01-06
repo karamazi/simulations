@@ -7,19 +7,17 @@ input {
     font-family: OpenSans;
 }
 
-#button-ok {
+.button {
     position: absolute;
     padding-left: 0;
     background-color: #369bd7;
     color: #ffffff;
-    top: 55px;
-    left: 160px;
     font-family: OpenSans;
 }
-#button-ok:hover{
+.button:hover{
     background-color: #7f7f7f;
 }
-#button-ok:active {
+.button:active {
     background-color: #369bd7;
 }
 
