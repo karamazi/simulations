@@ -1,0 +1,274 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <title>RSA</title>
+    <link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #prime1 {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 80px;
+        }
+
+        #prime2 {
+            position: absolute;
+            top: 30px;
+            left: 125px;
+            width: 80px;
+        }
+
+        #button-generate {
+            top: 30px;
+            left: 220px;
+            padding-left: 5px;
+            padding-right: 10px;
+        }
+
+        #value {
+            position: absolute;
+            top: 550px;
+            left: 340px;
+            width: 80px;
+        }
+
+        #button-toone {
+            top: 550px;
+            left: 435px;
+            padding-left: 5px;
+            padding-right: 10px;
+        }
+
+        #value2 {
+            position: absolute;
+            top: 550px;
+            left: 30px;
+            width: 80px;
+        }
+
+        #button-totwo {
+            top: 550px;
+            left: 125px;
+            padding-left: 5px;
+            padding-right: 10px;
+        }
+
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+
+</head>
+
+<body>
+<input id="prime1" value="13"/>
+<input id="prime2" value="19"/>
+<input type="button" class="button" id="button-generate" value="GENERUJ" onclick="generateRsa()"/>
+<input type="button" class="button" id="button-toone" value="DO #1" onclick="sendToOne()"/>
+<input type="button" class="button" id="button-totwo" value="DO #2" onclick="sendToTwo()"/>
+<input id="value" value="10"/>
+<input id="value2" value="25"/>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 640);
+    document.body.appendChild(renderer.view);
+
+
+    // load everything below:
+
+
+    var n = 0;
+    var d = 0;
+    var e = 0;
+
+    var dev1Text;
+    var dev2Text;
+    var dev1KeysText;
+    var dev2KeysText;
+    var sendText;
+    var recvText;
+    var sendText2;
+    var recvText2;
+
+    //help
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+    stage.addChild(help);
+
+    new Logo(stage, 320, 615);
+
+    function init() {
+        var bigBlueTextStyle = { font: "23px OpenSans", fill: "#369bd7", align: "left" };
+        var boldBlueTextStyle = { font: "16px OpenSans Bold", fill: "#369bd7", align: "left" };
+
+        var smallBlueTextStyle = blueTextStyle;
+        smallBlueTextStyle.font = blueTextStyle.font.replace("20px", "16px");
+        dev1Text = new MyText(stage, 30, 90, "Dev #1", bigBlueTextStyle, false);
+        dev2Text = new MyText(stage, 340, 90, "Dev #2", bigBlueTextStyle, false);
+        
+        new MyText(stage, 30, 130, "Priv:\nPub:", boldBlueTextStyle, false);
+        new MyText(stage, 340, 130, "Pub:", boldBlueTextStyle, false);
+        dev1KeysText = new MyText(stage, 70, 130, "", smallBlueTextStyle, false);
+        dev2KeysText = new MyText(stage, 380, 130, "", smallBlueTextStyle, false);
+        sendText = new MyText(stage, 340, 180, "", smallBlueTextStyle, false);
+        recvText = new MyText(stage, 30, 260, "", smallBlueTextStyle, false);
+        sendText2 = new MyText(stage, 30, 350, "", smallBlueTextStyle, false);
+        recvText2 = new MyText(stage, 340, 430, "", smallBlueTextStyle, false);
+
+        //help
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        requestAnimFrame(animate);
+    }
+
+    function generateRsa() {
+        sendText.setText("");
+        recvText.setText("");
+        sendText2.setText("");
+        recvText2.setText("");
+
+        var p = parseInt(document.getElementById("prime1").value);
+        var q = parseInt(document.getElementById("prime2").value);
+        if (isPrime(q) && isPrime(p)) {
+            n = p * q;
+            var fi = (p - 1) * (q - 1);
+            e = 0;
+            do {
+                e = 3 + Math.floor(Math.random() * Math.sqrt(fi));
+            } while (gcd(fi, e) != 1);
+            console.log(fi, e);
+
+            d = getD(e, fi);
+            dev1KeysText.setText("" + n + ", " + d + "\n" + n + ", " + e);
+            dev2KeysText.setText("" + n + ", " + e);
+        }
+    }
+    function sendToOne() {
+        if (n === 0)
+            return;
+
+        var msg = parseInt(document.getElementById("value").value);
+        if (isNaN(msg))
+            return;
+
+        var c = modexp(msg, e, n);
+        console.log(c);
+        var text = "Wysyłam msg = " + msg + ". \n" +
+                "szyfruję kluczem publicznym\n" +
+                "enc = " + msg + "^" + e + " mod " + n + " = " + c;
+        sendText.setText(text);
+
+        var decoded = modexp(c, d, n);
+        var dText = "Odebrałem enc = " + c + "\n" +
+                "deszyfruje kluczem prywatnym \n" +
+                "msg = " + c + "^" + d + " mod " + n + " = " + decoded;
+        recvText.setText(dText);
+    }
+
+    function sendToTwo() {
+        if (n === 0)
+            return;
+
+        var msg = parseInt(document.getElementById("value2").value);
+        if (isNaN(msg))
+            return;
+
+        var c = modexp(msg, d, n);
+        console.log(c);
+        var text = "Wysyłam msg = " + msg + ". \n" +
+                "szyfruję kluczem prywatnym\n" +
+                "enc = " + msg + "^" + d + " mod " + n + " = " + c;
+        sendText2.setText(text);
+
+        var decoded = modexp(c, e, n);
+        var dText = "Odebrałem enc = " + c + "\n" +
+                "deszyfruje kluczem publicznym \n" +
+                "msg = " + c + "^" + e + " mod " + n + " = " + decoded;
+        recvText2.setText(dText);
+    }
+    function animate() {
+        requestAnimFrame(animate);
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function isPrime(n) {
+        if (isNaN(n) || !isFinite(n) || n % 1 || n < 2) return false;
+        if (n % 2 == 0) return (n == 2);
+        if (n % 3 == 0) return (n == 3);
+        var m = Math.sqrt(n);
+        for (var i = 5; i <= m; i += 6) {
+            if (n % i == 0) return false;
+            if (n % (i + 2) == 0) return false;
+        }
+        return true;
+    }
+    function gcd(a, b) {
+        while (b != 0) {
+            var t = b;
+            b = a % b;
+            a = t;
+        }
+        return a;
+    }
+    function modexp(base, exp, mod) {
+        var c = 1;
+        for (var i = 1; i <= exp; i++) {
+            c = (c * base) % mod;
+        }
+        return c;
+    }
+
+    function getD(e, fi) {
+        var q, temp1, temp2, temp3;
+
+        var u = [1, 0, fi];
+        var v = [0, 1, e];
+
+        while (v[2] != 0) {
+            console.log(u[2] / v[2]);
+            var q = Math.floor(u[2] / v[2]);
+            temp1 = u[0] - q * v[0];
+            temp2 = u[1] - q * v[1];
+            temp3 = u[2] - q * v[2];
+            u[0] = v[0];
+            u[1] = v[1];
+            u[2] = v[2];
+            v[0] = temp1;
+            v[1] = temp2;
+            v[2] = temp3;
+        }
+        if (u[1] < 0)
+            return (u[1] + fi);
+        else
+            return (u[1]);
+    }
+
+</script>
+
+</body>
+</html>
