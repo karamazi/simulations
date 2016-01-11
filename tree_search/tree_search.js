@@ -1,6 +1,7 @@
 var signLessThan = PIXI.Texture.fromImage("imgs/lt.png");
 var signGreaterThan = PIXI.Texture.fromImage("imgs/gt.png");
 var signEqual = PIXI.Texture.fromImage("imgs/eq.png");
+var signNotEqual = PIXI.Texture.fromImage("imgs/ne.png");
 
 var textureBall = PIXI.Texture.fromImage("imgs/ball.png");
 var textureBallGrey = PIXI.Texture.fromImage("imgs/ball_grey.png");
@@ -257,7 +258,7 @@ Tree.prototype.update=function(){
 
         //jesli sie nie rusza i nie ma jeszcze rozwiazania
 	    if (!this.ballMoves && !this.searchResult) {
-	        var sign;
+	        var sign = signNotEqual;
 	        var dstNode = null;
 	        if (this.currentSearched.value == this.searchLeaf.value) {
 	            sign = signEqual;
