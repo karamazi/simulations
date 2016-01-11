@@ -69,4 +69,5 @@ Switch=function(stage,x,y){
 Switch.prototype.deactivate=function() {
     this.isClicked = false;
     this.sprite.setTexture(textureSwitch);
+    this.text.setText("Start");
 };

@@ -74,7 +74,7 @@
     var headerText = "";
 
     var c = 0;
-    var p = 0;
+    var pair_val = 0;
     var x = 0;
     var y = 0;
     var r = 0;
@@ -123,7 +123,7 @@
     function setUp() {
         //reset zmiennych i czystka planszy
         c = 0;
-        p = 0;
+        pair_val = 0;
         r = 0;
         x = 0;
         y = 0;
@@ -184,14 +184,14 @@
     function nextStep(ind) {
         c = parseInt(r + pairs[ind]);
         if (ind != 0)
-            p = parseInt(sqrt);
+            pair_val = parseInt(sqrt);
         x = 0;
         var tmp_x = 1;
-        while ((((20 * p) + tmp_x) * tmp_x) < c) {
+        while ((((20 * pair_val) + tmp_x) * tmp_x) <= c) {
             tmp_x++;
             x++;
         }
-        y = (((20 * p) + x) * x);
+        y = (((20 * pair_val) + x) * x);
         r = c - y;
         sqrt += x;
         console.log(sqrtText.text.text.length, parts[0].length);
