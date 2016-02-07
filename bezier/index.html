@@ -82,6 +82,7 @@
     <script src="../_common/constants.js"></script>
     <script src="../_common/button.js"></script>
     <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
 
 </head>
 <body>
@@ -130,6 +131,7 @@
     var help = new PIXI.Sprite(textureHelp);
     stage.addChild(help);
 
+    new Logo(stage);
     function init(){
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
