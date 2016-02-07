@@ -84,7 +84,7 @@ Ball.prototype.moveTo = function (x, y) {
     var direction = new PIXI.Point(x - this.sprite.x, y - this.sprite.y);
     this.moveBy(direction.x, direction.y);
     console.log("Moving #" + this.value + " by " + direction.x + " " + direction.y + " with slowdown " + this.slowDown);
-}
+};
 
 Ball.prototype.update = function () {
     this.isClicked = false;
@@ -98,7 +98,7 @@ Ball.prototype.update = function () {
             this.isMoving = false;
         }
     }
-}
+};
 Ball.prototype.reset = function (x, y, val) {
     this.sprite.position.x = x;
     this.sprite.position.y = y;
@@ -109,16 +109,16 @@ Ball.prototype.reset = function (x, y, val) {
     this.text.alpha = 1;
     this.sprite.alpha = 1;
     this.sprite.setTexture(textureBall);
-}
+};
 Ball.prototype.setPosition = function (x, y) {
     var p = new PIXI.Point(x, y);
     this.sprite.position = p;
     this.text.position = p;
-}
+};
 Ball.prototype.remove = function (stage) {
     stage.removeChild(this.sprite);
     stage.removeChild(this.text);
-}
+};
 
 
 Leaf = function () {
@@ -126,7 +126,7 @@ Leaf = function () {
     this.parent = null;
     this.left = null;
     this.right = null;
-}
+};
 Leaf.prototype = Object.create(Ball.prototype);
 Leaf.prototype.constructor = Leaf;
 

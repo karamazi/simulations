@@ -59,7 +59,7 @@
 
 
     var resetButton;
-    var nextButton;
+    var onpButton;
     var evalButton;
     var helpButton;
 
@@ -76,8 +76,8 @@
     function init(){
         helpButton = new Button(stage, 550, 110, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
-        evalButton = new Button(stage, 550, 154, "Wylicz", Button.type.Next);
-        nextButton = new Button(stage, 550, 198, "Do ONP", Button.type.Onp);
+        onpButton = new Button(stage, 550, 154, "Do ONP", Button.type.Onp);
+        evalButton = new Button(stage, 550, 198, "Wylicz", Button.type.Next);
         resetButton = new Button(stage, 550, 242, "Od nowa", Button.type.Reset);
 
 
@@ -102,7 +102,7 @@
             setUp();
         }
 
-        if (nextButton.isClicked && index >= 0 && index < input.length && !evalInit) {
+        if (onpButton.isClicked && index >= 0 && index < input.length && !evalInit) {
             console.log("derp");
             var char = input[index];
             //walimy liczbe na wyjscie
@@ -201,7 +201,7 @@
 
         // loop everything here:
         evalButton.update();
-        nextButton.update();
+        onpButton.update();
         resetButton.update();
         helpButton.update();
         help.visible = helpButton.sprite.isOver;
