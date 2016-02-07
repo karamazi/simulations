@@ -1,0 +1,166 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Korekcja Gamma</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #img {
+            position: absolute;
+            left: 30px;
+            top: 30px;
+        }
+
+        #value {
+            position: absolute;
+            top: 192px;
+            left: 455px;
+            width: 150px;
+        }
+
+        #img_select {
+            position: absolute;
+            top: 117px;
+            left: 455px;
+            width: 155px;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+</head>
+<body>
+<input id="value" value="1.25"/>
+<select id="img_select">
+    <option value="orang">Orangutan</option>
+    <option value="las">Las</option>
+</select>
+<canvas id="img" width="420" height="640"/>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+    // load everything below:
+
+    var base_image;
+    var c = document.getElementById("img");
+    var ctx = c.getContext("2d");
+    console.log(c.width, c.height);
+    ctx.globalCompositeOperation = 'destination-over';
+
+    var modButton;
+    var loadButton;
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+    var textureBg = PIXI.Texture.fromImage("imgs/img_bg.png");
+    var bgLeft = new PIXI.Sprite(textureBg);
+    var bgRight = new PIXI.Sprite(textureBg);
+    bgLeft.position.x = 30;
+    bgRight.position.x = 240;
+    bgLeft.position.y = bgRight.position.y = 30;
+    stage.addChild(bgLeft);
+    stage.addChild(bgRight);
+
+    new Logo(stage);
+    
+    function init(){
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+
+        loadButton = new Button(stage, 550, 91, "Wczytaj", Button.type.Load);
+        modButton = new Button(stage, 550, 168, "Korekcja", Button.type.Filter);
+
+
+        stage.addChild(help);
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (modButton.isClicked) {
+            modifyImage();
+        }
+        if (loadButton.isClicked) {
+            var o = document.getElementById("img_select");
+            var path = "monochromatic/" + o.options[o.selectedIndex].value + ".jpg";
+            loadImage(path);
+        }
+
+        loadButton.update();
+        modButton.update();
+        helpButton.update();
+
+
+        help.visible = helpButton.sprite.isOver;
+        if (help.visible) {
+            c.style.display = "None";
+        } else {
+            c.style.display = "";
+        }
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function loadImage(path) {
+        base_image = new Image();
+        base_image.src = path;
+        base_image.onload = function () {
+            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.drawImage(base_image, 0, 0);
+
+
+            //img_data = shapeCtx.getImageData(0, 0, base_image.width, base_image.height).data;
+            //var w = 0, b = 0;
+            //for (var i = 0; i < img_data.length; i += 4) {
+            //    if (img_data[i] == 255 && img_data[i + 1] == 255 && img_data[i + 2] == 255)
+            //        outsidePoints++;
+            //    else
+            //        realSurface++;
+            //    // i+3 is alpha (the fourth element)
+            //}
+            //realSText.setText("Pradziwa powierzchnia: " + realSurface);
+            //totalSText.setText("Powierzchnia obrazka: " + (realSurface + outsidePoints));
+            //console.log(path, realSurface);
+        }
+    }
+    function modifyImage() {
+        var gamma = document.getElementById("value").value;
+        gamma = parseFloat(gamma);
+        if (isNaN(gamma))
+            return;
+
+        var imgData = ctx.getImageData(0, 0, base_image.width, base_image.height);
+        for (var i = 0; i < imgData.data.length; i += 4) {
+            var newVal = Math.pow(imgData.data[i], gamma);
+            imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = newVal;
+        }
+        ctx.putImageData(imgData, base_image.width + 10, 0);
+    }
+</script>
+
+</body>
+</html>

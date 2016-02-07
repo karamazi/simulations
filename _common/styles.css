@@ -6,6 +6,15 @@ input {
     padding: 3px;
     font-family: OpenSans;
 }
+select {
+    color: #828282;
+    /*font-weight: bold;*/
+    border: 1px solid #d2d2d2;
+    text-indent: 5px;
+    padding: 3px;
+    font-family: OpenSans;
+}
+
 
 .button {
     position: absolute;
