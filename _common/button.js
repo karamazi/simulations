@@ -1,5 +1,5 @@
-Button=function(stage,x,y,text,type){
-    var self=this;
+Button = function (stage, x, y, text, type) {
+    var self = this;
 
     this.textureButton = textureButton;
     this.textureButtonOver = textureButtonOver;
@@ -14,13 +14,12 @@ Button=function(stage,x,y,text,type){
     this.sprite.anchor = centeredAnchor;
     stage.addChild(this.sprite);
 
-    this.text = new MyText(stage, x-45, y, text, defaultTextStyle);
-    this.text.text.anchor=new PIXI.Point(0, 0.5);
-    this.isClicked=false;
+    this.text = new MyText(stage, x - 45, y, text, defaultTextStyle);
+    this.text.text.anchor = new PIXI.Point(0, 0.5);
+    this.isClicked = false;
 
 
-
-    this.sprite.mousedown = this.sprite.touchstart = function(data){
+    this.sprite.mousedown = this.sprite.touchstart = function (data) {
 
         this.isdown = true;
         this.setTexture(self.textureButton);
@@ -28,51 +27,63 @@ Button=function(stage,x,y,text,type){
     };
 
     // set the mouseup and touchend callback..
-    this.sprite.mouseup = this.sprite.touchend = this.sprite.mouseupoutside = this.sprite.touchendoutside = function(data){
+    this.sprite.mouseup = this.sprite.touchend = this.sprite.mouseupoutside = this.sprite.touchendoutside = function (data) {
         this.isdown = false;
 
-        if(this.isOver)
-        {
+        if (this.isOver) {
             this.setTexture(self.textureButtonOver);
         }
-        else
-        {
+        else {
             this.setTexture(self.textureButton);
         }
     };
 
     // set the mouseover callback..
-    this.sprite.mouseover = function(data){
+    this.sprite.mouseover = function (data) {
 
         this.isOver = true;
 
-        if(this.isdown)return;
+        if (this.isdown)return;
 
         this.setTexture(self.textureButtonOver)
     };
 
     // set the mouseout callback..
-    this.sprite.mouseout = function(data){
+    this.sprite.mouseout = function (data) {
 
         this.isOver = false;
 
-        if(this.isdown)return;
+        if (this.isdown)return;
         this.setTexture(self.textureButton)
     };
 
-    this.sprite.click = this.sprite.tap = function(data){
-        self.isClicked=true;
+    this.sprite.click = this.sprite.tap = function (data) {
+        self.isClicked = true;
     };
 };
 
-Button.type = Object.freeze({"Help":0, "Plus":1, "Minus":2, "Reset":3, "Next":4, "Previous":5, "Reroll": 6, "PlusText": 7, "Encode": 8, "Decode": 9, "Onp": 10});
-Button.prototype.setupTextures=function(text){
-    switch(text){
+Button.type = Object.freeze({
+    "Help": 0,
+    "Plus": 1,
+    "Minus": 2,
+    "Reset": 3,
+    "Next": 4,
+    "Previous": 5,
+    "Reroll": 6,
+    "PlusText": 7,
+    "Encode": 8,
+    "Decode": 9,
+    "Onp": 10,
+    "Load": 11,
+    "Filter": 12
+});
+Button.prototype.setupTextures = function (text) {
+    switch (text) {
         case Button.type.Help:
             this.textureButton = textureHelpButton;
             this.textureButtonOver = textureHelpButtonOver;
             break;
-        
+
         case Button.type.Plus:
             this.textureButton = texturePlusButton;
             this.textureButtonOver = texturePlusButtonOver;
@@ -122,18 +133,28 @@ Button.prototype.setupTextures=function(text){
             this.textureButtonOver = textureOnpButtonOver;
             break;
         
+        case Button.type.Load:
+            this.textureButton = textureLoadButton;
+            this.textureButtonOver = textureLoadButtonOver;
+            break;
         
+        case Button.type.Filter:
+            this.textureButton = textureFilterButton;
+            this.textureButtonOver = textureFilterButtonOver;
+            break;
+
+
         default:
             break;
     }
 };
 
 
-Button.prototype.update=function(){
-    this.isClicked=false;
+Button.prototype.update = function () {
+    this.isClicked = false;
 };
 
-Button.prototype.setActive=function(active){
+Button.prototype.setActive = function (active) {
     this.sprite.buttonMode = active;
     this.sprite.interactive = active;
 };
