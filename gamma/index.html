@@ -64,9 +64,12 @@
     // load everything below:
 
     var base_image;
-    var c = document.getElementById("img");
-    var ctx = c.getContext("2d");
-    console.log(c.width, c.height);
+    var canvas = document.getElementById("img");
+    var valueSelect = document.getElementById("value");
+    var imgSelect = document.getElementById("img_select");
+
+    var ctx = canvas.getContext("2d");
+    console.log(canvas.width, canvas.height);
     ctx.globalCompositeOperation = 'destination-over';
 
     var modButton;
@@ -84,7 +87,7 @@
     stage.addChild(bgRight);
 
     new Logo(stage);
-    
+
     function init(){
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
@@ -117,9 +120,13 @@
 
         help.visible = helpButton.sprite.isOver;
         if (help.visible) {
-            c.style.display = "None";
+            canvas.style.display = "None";
+            valueSelect.style.display = "None";
+            imgSelect.style.display = "None";
         } else {
-            c.style.display = "";
+            canvas.style.display = "";
+            valueSelect.style.display = "";
+            imgSelect.style.display = "";
         }
         // render the stage
         renderer.render(stage);
@@ -129,7 +136,7 @@
         base_image = new Image();
         base_image.src = path;
         base_image.onload = function () {
-            ctx.clearRect(0, 0, c.width, c.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(base_image, 0, 0);
 
 
