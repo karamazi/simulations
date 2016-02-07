@@ -5,8 +5,8 @@ Switch=function(stage,x,y){
     this.sprite.anchor=centeredAnchor;
     stage.addChild(this.sprite);
 
-    this.text = new MyText(stage, x, y, "Start");
-    //this.text.setAnchor(centeredAnchor);
+    this.text = new MyText(stage, x-45, y, "Start");
+    this.text.text.anchor = new PIXI.Point(0,0.5);
 
     this.isClicked=false;
     var self=this;
@@ -70,4 +70,8 @@ Switch.prototype.deactivate=function() {
     this.isClicked = false;
     this.sprite.setTexture(textureSwitch);
     this.text.setText("Start");
+};
+
+Switch.prototype.update=function() {
+    this.isClicked = false;
 };

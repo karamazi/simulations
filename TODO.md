@@ -17,6 +17,6 @@
 ## Bubble Sort
 - Colored balls?
 
-## Trees
-- != sign.
+## Filter
+- Incorrect input.
 
