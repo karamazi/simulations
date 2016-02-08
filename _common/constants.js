@@ -53,7 +53,7 @@ var textureHelp = PIXI.Texture.fromImage("imgs/help.png");
 
 var centeredAnchor = new PIXI.Point(0.5,0.5);
 
-var defaultTextStyle = { font: "21px OpenSans", fill: "#ffffff", align: "left" };
+var defaultTextStyle = { font: "16px OpenSans", fill: "#ffffff", align: "left" };
 var blueTextStyle = { font: "20px OpenSans", fill: "#369bd7", align: "left" };
 var blueTextStyleBold = { font: "20px OpenSans Bold", fill: "#369bd7", align: "left" };
 var blueMonoSpacedStyle = { font: "30px Ubuntu", fill: "#369bd7", align: "left" };

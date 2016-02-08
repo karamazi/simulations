@@ -51,7 +51,7 @@
     document.body.appendChild(renderer.view);
 
     // load everything below:
-    var inputX = 500;
+    var inputX = 490;
     var inputY = 180;
     var inputDy = 30;
     var inputWidth = 35;
@@ -136,7 +136,7 @@
 
     function init(){
         displayedIfText = new MyText(stage, 30, 30, text0, blueTextStyle, false);
-        var resultTextLabel = new MyText(stage, 30, 300, "Wyjśćie: ", blueTextStyleBold, false);
+        var resultTextLabel = new MyText(stage, 30, 300, "Wyjście: ", blueTextStyleBold, false);
         resultText = new MyText(stage, 120, 300, "", blueTextStyle, false);
 
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
@@ -154,7 +154,7 @@
             inputs.push(newInput);
             divInputs.appendChild(newInput);
 
-            var text = new MyText(stage, inputX - 20, inputY + i * inputDy + 10, text_contents[i], blueTextStyle);
+            var text = new MyText(stage, inputX - 32, inputY + (i * inputDy - 1), text_contents[i], blueTextStyle, false);
             var_texts.push(text)
         }
         change_ifs();

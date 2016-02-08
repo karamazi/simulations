@@ -9,19 +9,11 @@
             padding: 0;
             background-color: #000000;
         }
-
         #options {
             position: absolute;
             top: 30px;
-            left: 460px;
+            left: 455px;
             width: 150px;
-        }
-
-        #base {
-            position: absolute;
-            top: 35px;
-            left: 520px;
-            width: 100px;
         }
     </style>
     <script>
@@ -97,11 +89,11 @@
     new Logo(stage);
 
     function init(){
-        helpButton = new Button(stage, 550, 80, "Pomoc", Button.type.Help);
+        helpButton = new Button(stage, 550, 90, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
-        runButton = new Switch(stage, 550, 121);
-        loadButton = new Button(stage, 550, 162, "Wczytaj", Button.type.Load);
-        randomButton = new Button(stage, 550, 203, "Przetasuj", Button.type.Reroll);
+        runButton = new Switch(stage, 550, 131);
+        loadButton = new Button(stage, 550, 172, "Wczytaj", Button.type.Load);
+        randomButton = new Button(stage, 550, 213, "Przetasuj", Button.type.Reroll);
 
         //help
         stage.addChild(help);
