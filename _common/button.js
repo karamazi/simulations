@@ -14,7 +14,7 @@ Button = function (stage, x, y, text, type) {
     this.sprite.anchor = centeredAnchor;
     stage.addChild(this.sprite);
 
-    this.text = new MyText(stage, x - 45, y, text, defaultTextStyle);
+    this.text = new MyText(stage, x - 45, y+2, text, defaultTextStyle);
     this.text.text.anchor = new PIXI.Point(0, 0.5);
     this.isClicked = false;
 
