@@ -48,6 +48,7 @@
     <script src="../_common/pixi.js"></script>
     <script src="../_common/constants.js"></script>
     <script src="../_common/button.js"></script>
+    <script src="../_common/switch.js"></script>
     <script src="../_common/text.js"></script>
     <script src="../_common/logo.js"></script>
     <script src="turing.js"></script>
@@ -140,15 +141,13 @@
         head.setTape(tape);
 
         loadDataButton = new Button(stage, 560, 260, "Załaduj", Button.type.Load);
-        runButton = new Button(stage, 560, 310, "Uruchom", Button.type.Next);
+        runButton = new Switch(stage, 560, 310);
         stepButton = new Button(stage, 560, 360, "Krok", Button.type.Previous);
+        stepButton.setActive(false);
 
         zeroMini = new MiniButton(stage, 550, 30, "0");
         oneMini = new MiniButton(stage, 580, 30, "1");
         emptyMini = new MiniButton(stage, 610, 30, "E");
-
-        stepButton.sprite.visible = false;
-        stepButton.text.visible = false;
 
         //help
         helpButton = new Button(stage, 560, 450, "Pomoc", Button.type.Help);
@@ -178,15 +177,19 @@
         if (loadDataButton.isClicked) {
             validate();
         }
-        if (runButton.isClicked) {
-            isRunning = !isRunning;
-            toggleRun(isRunning);
+
+        var stateChanged = !isRunning && runButton.isClicked || isRunning && !runButton.isClicked;
+        if (stateChanged) {
+            toggleRun(!isRunning);
         }
+        isRunning = runButton.isClicked;
+
         if (isRunning && stepButton.isClicked) {
             var stop = head.step();
             if (stop) {
                 isRunning = false;
                 toggleRun(isRunning);
+                runButton.deactivate()
             }
         }
         if (zeroMini.isClicked)
@@ -199,7 +202,6 @@
         zeroMini.update();
         oneMini.update();
         emptyMini.update();
-        runButton.update();
         loadDataButton.update();
         helpButton.update();
         stepButton.update();
@@ -268,17 +270,11 @@
     }
 
     function toggleRun(isRunning) {
-        if (isRunning) {
-            runButton.text.setText("Zakończ");
-        }
-        else {
-            runButton.text.setText("Uruchom");
+        if (!isRunning) {
             head.reset();
         }
-        stepButton.sprite.visible = isRunning;
-        stepButton.text.visible = isRunning;
-        loadDataButton.sprite.visible = !isRunning;
-        loadDataButton.text.visible = !isRunning;
+        stepButton.setActive(isRunning);
+        loadDataButton.setActive(!isRunning);
 
         zeroMini.sprite.visible = !isRunning;
         zeroMini.text.visible = !isRunning;

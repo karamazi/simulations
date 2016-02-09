@@ -163,4 +163,13 @@ Button.prototype.update = function () {
 Button.prototype.setActive = function (active) {
     this.sprite.buttonMode = active;
     this.sprite.interactive = active;
+    if(active){
+        this.sprite.texture = this.textureButton;
+        this.sprite.alpha = 1
+    }else{
+        this.sprite.texture = this.textureButtonOver;
+        this.sprite.alpha = 0.5
+    }
+
 };
+
