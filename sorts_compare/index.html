@@ -68,7 +68,7 @@
     var c_c = 1;
     var c_b = 1;
     var c_q = 1;
-    var nText = new PIXI.Text("Rozmiar tablicy:", {font: "bold 15px Comic Sans MS", fill: "#369bd7", align: "left"});
+    var nText = new PIXI.Text("Rozmiar tablicy:", {font: "15px OpenSans Bold", fill: "#369bd7", align: "left"});
     nText.position.x = 615;
     nText.position.y = 30;
     stage.addChild(nText);
@@ -94,8 +94,8 @@
     var help = new PIXI.Sprite(textureHelp);
 
     function init() {
-        drawButton = new Button(stage, 710, 130, "Rysuj", Button.type.Draw);
-        helpButton = new Button(stage, 710, 171, "Pomoc", Button.type.Help);
+        drawButton = new Button(stage, 710, 171, "Rysuj", Button.type.Draw);
+        helpButton = new Button(stage, 710, 130, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
         stage.addChild(help);
 
