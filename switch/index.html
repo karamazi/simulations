@@ -1,0 +1,227 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Switche</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #options {
+            position: absolute;
+            top: 30px;
+            left: 465px;
+            width: 160px;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+
+</head>
+<body>
+<select id="options" onchange="change_ifs()">
+    <option>Przechodzący</option>
+    <option>Złamany</option>
+</select>
+
+<div id="inputs"></div>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+    var default0 = [0, 0, 1, 2, 3];
+    var text0 =
+'switch (x) {\n\
+        case a:\n\
+                print("a ");\n\
+        case b:\n\
+                print("b ");\n\
+        case c:\n\
+                print("c ");\n\
+        case d:\n\
+                print("d ");\n\
+        default:\n\
+                print("Koniec!");\n\
+}';
+
+    function evaluate0(x, a, b, c, d) {
+        output = [];
+        switch (x) {
+            case a:
+                output.push("a ");
+            case b:
+                output.push("b ");
+            case c:
+                output.push("c ");
+            case d:
+                output.push("d ");
+            default:
+                output.push("Koniec!");
+        }
+        return output
+    }
+
+
+    var default1 = [2, 0, 1, 2, 3]
+    var text1 =
+'switch (x) {\n\
+        case a:\n\
+                print("a ");\n\
+        case b:\n\
+                print("b ");\n\
+        case c:\n\
+                print("c ");\n\
+                break;\n\
+        case d:\n\
+                print("d ");\n\
+        default:\n\
+                print("Koniec!");\n\
+}';
+
+    function evaluate1(x, a, b, c, d) {
+        output = [];
+        switch (x) {
+            case a:
+                output.push("a ");
+            case b:
+                output.push("b ");
+            case c:
+                output.push("c ");
+                break;
+            case d:
+                output.push("d ");
+            default:
+                output.push("Koniec!");
+        }
+        return output
+    }
+
+    var evaluate = evaluate0;
+
+    var inputX = 520;
+    var inputY = 180;
+    var inputDy = 30;
+    var inputWidth = 35;
+    var inColumnMax = 5;
+
+    var inputCount = 5;
+    var divInputs = document.getElementById("inputs");
+    var inputs = [];
+    var var_texts = [];
+
+    var displayedIfText;
+    var resultText;
+
+    var helpButton;
+    var evalButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+
+    function init(){
+        var text_contents = ["x = ", "a = ", "b = ", "c =", "d ="];
+        for (var i = 0; i < inputCount; i++) {
+            var newInput = document.createElement("input");
+            newInput.className = "command";
+            newInput.style.position = "absolute";
+            newInput.style.left = inputX + "px";
+            newInput.style.top = inputY + i * inputDy + "px";
+            newInput.style.width = inputWidth + "px";
+            newInput.value = 0;
+            inputs.push(newInput);
+            divInputs.appendChild(newInput);
+
+            var text = new MyText(stage, inputX - 50, inputY + i * inputDy-3, text_contents[i], blueTextStyle, false);
+            var_texts.push(text)
+        }
+        helpButton = new Button(stage, 560, 90, "Pomoc", Button.type.Help);
+        evalButton = new Button(stage, 560, 131, "Sprawdź", Button.type.Next);
+        helpButton.sprite.isOver = false;
+
+        var blueTextStyleSmall = { font: "17px OpenSans", fill: "#369bd7", align: "left" };
+        displayedIfText = new MyText(stage, 30, 30, text0, blueTextStyleSmall, false);
+        new MyText(stage, 30, 380, "Wyjście: ", blueTextStyleBold, false);
+        resultText = new MyText(stage, 120, 380, " ", blueTextStyle, false);
+
+        stage.addChild(help);
+
+        change_ifs();
+        requestAnimFrame(animate);
+    }
+
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        if (evalButton.isClicked) {
+            var x = get_value(inputs[0]);
+            var a = get_value(inputs[1]);
+            var b = get_value(inputs[2]);
+            var c = get_value(inputs[3]);
+            var d = get_value(inputs[4]);
+            console.log(x, a, b, c, d);
+            var output = evaluate(x, a, b, c, d);
+            console.log(output);
+            resultText.text.setText(""+ output.join(""));
+        }
+        evalButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        if (help.visible) {
+            divInputs.style.display = "None";
+            document.getElementById("options").style.display = "None";
+        } else {
+            divInputs.style.display = "";
+            document.getElementById("options").style.display = "";
+        }
+
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function change_ifs() {
+        var selected = document.getElementById("options").selectedIndex;
+        evaluate = eval("evaluate" + selected);
+        var text = eval("text" + selected);
+        var defaults = eval("default" + selected);
+        for (var i = 0; i < inputCount; i++) {
+            inputs[i].value = defaults[i]
+        }
+        displayedIfText.text.setText(text);
+    }
+
+    function get_value(input) {
+        try {
+            return parseFloat(input.value);
+        }
+        catch (err) {
+            input.value = 0;
+            return 0;
+        }
+
+    }
+
+</script>
+
+</body>
+</html>
