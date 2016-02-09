@@ -40,6 +40,9 @@ var textureLoadButtonOver =common_texture("button_load_hoover.png");
 var textureFilterButton = common_texture("button_filter.png");
 var textureFilterButtonOver =common_texture("button_filter_hoover.png");
 
+var textureDrawButton = common_texture("button_draw.png");
+var textureDrawButtonOver =common_texture("button_draw_hoover.png");
+
 var textureSwitch = common_texture("start.png");
 var textureSwitchDown = common_texture("stop.png");
 var textureSwitchOver = common_texture("start_hoover.png");

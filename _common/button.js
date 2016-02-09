@@ -14,7 +14,7 @@ Button = function (stage, x, y, text, type) {
     this.sprite.anchor = centeredAnchor;
     stage.addChild(this.sprite);
 
-    this.text = new MyText(stage, x - 45, y+2, text, defaultTextStyle);
+    this.text = new MyText(stage, x - 45, y + 2, text, defaultTextStyle);
     this.text.text.anchor = new PIXI.Point(0, 0.5);
     this.isClicked = false;
 
@@ -75,7 +75,8 @@ Button.type = Object.freeze({
     "Decode": 9,
     "Onp": 10,
     "Load": 11,
-    "Filter": 12
+    "Filter": 12,
+    "Draw": 13
 });
 Button.prototype.setupTextures = function (text) {
     switch (text) {
@@ -132,15 +133,20 @@ Button.prototype.setupTextures = function (text) {
             this.textureButton = textureOnpButton;
             this.textureButtonOver = textureOnpButtonOver;
             break;
-        
+
         case Button.type.Load:
             this.textureButton = textureLoadButton;
             this.textureButtonOver = textureLoadButtonOver;
             break;
-        
+
         case Button.type.Filter:
             this.textureButton = textureFilterButton;
             this.textureButtonOver = textureFilterButtonOver;
+            break;
+
+        case Button.type.Draw:
+            this.textureButton = textureDrawButton;
+            this.textureButtonOver = textureDrawButtonOver;
             break;
 
 

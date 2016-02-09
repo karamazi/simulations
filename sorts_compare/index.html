@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Porównanie sortowań</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #value {
+            position: absolute;
+            top: 60px;
+            left: 615px;
+            width: 100px;
+        }
+
+        #chart {
+            position: absolute;
+            top: 180px;;
+        }
+
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="Chart.js"></script>
+    <script src="Chart_ext.js"></script>
+
+</head>
+<body>
+<input id="value" value="1000"/>
+<canvas id="chart" width="600" height="300"></canvas>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(800, 480);
+    document.body.appendChild(renderer.view);
+
+
+
+    var n_in = document.getElementById("value");
+    //canvas
+    var chartCtx = document.getElementById("chart").getContext("2d");
+    var chart = new Chart(chartCtx).Line(data, options);
+
+    //var chart = new Chart(chartCtx).Line(data, options);
+    // load everything below:
+    var nMax = 100;
+    var m = 256;
+    var c_c = 1;
+    var c_b = 1;
+    var c_q = 1;
+    var nText = new PIXI.Text("Rozmiar tablicy:", {font: "bold 15px Comic Sans MS", fill: "#369bd7", align: "left"});
+    nText.position.x = 615;
+    nText.position.y = 30;
+    stage.addChild(nText);
+    var cText = new PIXI.Text("Count Sort", {font: "bold 25px Comic Sans MS", fill: "#369bd7", align: "left"});
+    var bText = new PIXI.Text("Bubble Sort", {font: "bold 25px Comic Sans MS", fill: "#a4db00", align: "left"});
+    var qText = new PIXI.Text("Quick Sort", {font: "bold 25px Comic Sans MS", fill: "#9ebaca", align: "left"});
+    cText.position.y = bText.position.y = qText.position.y = 45;
+    cText.position.x = 40;
+    bText.position.x = 240;
+    qText.position.x = 440;
+    stage.addChild(cText);
+    stage.addChild(bText);
+    stage.addChild(qText);
+
+
+    var cButtons = new ButtonGroup(stage, 60, 100, "count");
+    var bButtons = new ButtonGroup(stage, 260, 100, "bubble");
+    var qButtons = new ButtonGroup(stage, 460, 100, "quick");
+
+
+    var drawButton;
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+    function init() {
+        drawButton = new Button(stage, 710, 130, "Rysuj", Button.type.Draw);
+        helpButton = new Button(stage, 710, 171, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        stage.addChild(help);
+
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+        if (drawButton.isClicked) {
+            var n_input = document.getElementById("value").value;
+            if (!isNaN(parseInt(n_input)))
+                nMax = parseInt(n_input);
+            else
+                nMax = 10;
+
+            updateChart();
+        }
+        // loop everything here:
+        c_c = cButtons.value;
+        c_b = bButtons.value;
+        c_q = bButtons.value;
+
+        drawButton.update();
+        cButtons.update();
+        bButtons.update();
+        qButtons.update();
+
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        if (help.visible) {
+            n_in.style.display = "None";
+        } else {
+            n_in.style.display = "";
+        }
+        // render the stage
+        renderer.render(stage);
+    }
+    function countSortSteps(_n, _m) {
+        return c_c / 10 * _n + _m;
+    }
+    function bubbleSortSteps(_n) {
+        return c_b * _n * _n;
+    }
+
+    function quickSortSteps(_n) {
+        if (_n == 0)
+            return 0;
+        return c_q * _n * Math.log(_n);
+    }
+    function updateChart() {
+        var labels = [];
+        var cData = [];
+        var bData = [];
+        var qData = [];
+
+        var step = Math.ceil(nMax / 40);
+
+
+        for (var i = 0; i <= nMax; i += step) {
+            labels.push(i);
+            cData.push(countSortSteps(i, m));
+            bData.push(bubbleSortSteps(i));
+            qData.push(quickSortSteps(i));
+        }
+        //labels.push(nMax);
+        //cData.push(CountSortSteps(nMax, m));
+        //bData.push(BubbleSortSteps(nMax));
+        //qData.push(QuickSortSteps(nMax));
+        data.labels = labels;
+        data.datasets[0].data = cData;
+        data.datasets[1].data = bData;
+        data.datasets[2].data = qData;
+        chart.destroy();
+        chart = new Chart(chartCtx).Line(data, options);
+    }
+
+</script>
+
+</body>
+</html>
