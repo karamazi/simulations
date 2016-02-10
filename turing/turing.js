@@ -3,9 +3,8 @@ var textureCellDisabled = PIXI.Texture.fromImage("imgs/cell_disabled.png");
 var textureHead = PIXI.Texture.fromImage("imgs/head.png");
 var textureHeadDisabled = PIXI.Texture.fromImage("imgs/head_disabled.png");
 
-var textureMiniButton = PIXI.Texture.fromImage("imgs/miniButton.png");
-var textureMiniButtonOver = PIXI.Texture.fromImage("imgs/miniButtonOver.png");
-var textureMiniButtonDown = PIXI.Texture.fromImage("imgs/miniButtonDown.png");
+var textureMiniButton = PIXI.Texture.fromImage("imgs/mini_button.png");
+
 var defaultAnchor = new PIXI.Point(0.5, 0.5);
 var possibleStates = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "#"];
 var possibleValues = ["0", "1","E","#"];
@@ -33,10 +32,10 @@ Cell = function (stage, x, y, value) {
 
     this.value = value;
     this.text = new MyText(stage, x, y, value, turingTextStyle);
-}
+};
 Cell.prototype.update = function () {
     this.isClicked = false;
-}
+};
 
 Cell.prototype.swapValue = function (value) {
     if (value == undefined) {
@@ -48,11 +47,11 @@ Cell.prototype.swapValue = function (value) {
 
     this.value = value;
     this.text.text.setText(value);
-}
+};
 Cell.prototype.foreverHalt = function () {
     this.swapValue("#");
     this.enable(false);
-}
+};
 Cell.prototype.enable = function (enable) {
     this.sprite.interactive = enable;
     this.sprite.buttonMode = enable;
@@ -60,7 +59,7 @@ Cell.prototype.enable = function (enable) {
         this.sprite.setTexture(textureCell);
     else
         this.sprite.setTexture(textureCellDisabled);
-}
+};
 var STATE = 0;
 var READ = 1;
 var WRITE = 2;
@@ -88,15 +87,15 @@ Head = function (stage, x, y, state) {
 Head.prototype.setState=function(state){
     this.state = state;
     this.text.text.setText(state);
-}
+};
 //ustawia zasady dla maszyny turinga w postaci tablicy tablic
 //kazda zasada jest w postaci [stan, znak, akcja, ruch, nowy_stan]
 Head.prototype.setRules = function (rules) {
     this.rules = rules;
-}
+};
 Head.prototype.setTape = function (tape) {
     this.tape = tape;
-}
+};
 Head.prototype.reset = function () {
     this.tapePosition = this.tapeInitalPos;
     this.sprite.position.x = this.initialPosition.x;
@@ -104,13 +103,13 @@ Head.prototype.reset = function () {
     this.text.text.position.x = this.initialPosition.x;
     this.text.text.position.y = this.initialPosition.y;
     this.setState("A");
-}
+};
 //przesuwa głowice o dx;
 //xdir [-1,1]
 Head.prototype.move = function (x_dir) {
     this.sprite.position.x += this.dx * x_dir;
     this.text.text.position.x += this.dx * x_dir;
-}
+};
 
 Head.prototype.setInitalPos = function (x, y, ind) {
     this.initialPosition = new PIXI.Point(x, y);
@@ -119,7 +118,7 @@ Head.prototype.setInitalPos = function (x, y, ind) {
     this.text.text.position.x = x;
     this.text.text.position.y = y;
     this.tapePosition = this.tapeInitalPos = ind;
-}
+};
 //wykonuje jedną instrukcję na obecnym elemencie tasmy
 //zwraca true jesli element to H(alt)
 Head.prototype.step = function () {
@@ -145,7 +144,7 @@ Head.prototype.step = function () {
         }
     }
     return true;
-}
+};
 
 //parsuje instrukcje. 
 //jesli wszystkie są ok, ustawia je
@@ -205,7 +204,7 @@ Head.prototype.parseRules = function (rawRules) {
         this.setRules(outRules);
 
     return validationResults;
-}
+};
 HeadButton = function (stage, x, y) {
     var self = this;
     this.isClicked = false;
@@ -218,13 +217,13 @@ HeadButton = function (stage, x, y) {
 
     this.sprite.click = function (data) {
         self.isClicked = true;
-    }
+    };
 
     stage.addChild(this.sprite);
-}
+};
 HeadButton.prototype.update = function () {
     this.isClicked = false;
-}
+};
 
 function inArray(needle, haystack) {
     var length = haystack.length;
@@ -236,9 +235,9 @@ function inArray(needle, haystack) {
 
 MiniButton = function (stage, x, y, text) {
     this.sprite = new PIXI.Sprite(textureMiniButton);
-    this.text = new PIXI.Text(text, { font: "bold 20px Comic Sans MS", fill: "#ffffcc", align: "left" });
+    this.text = new PIXI.Text(text, { font: "16px OpenSans", fill: "#ffffff", align: "left" });
     this.isClicked = false;
-    var self = this;
+
     this.sprite.buttonMode = true;
 
     this.sprite.position.x = x;
@@ -253,51 +252,14 @@ MiniButton = function (stage, x, y, text) {
     this.sprite.interactive = true;
 
     // set the mousedown and touchstart callback..
-    this.sprite.mousedown = this.sprite.touchstart = function (data) {
-
-        this.isdown = true;
-        this.setTexture(textureMiniButtonDown);
-        this.alpha = 1;
-    }
-
-    // set the mouseup and touchend callback..
-    this.sprite.mouseup = this.sprite.touchend = this.sprite.mouseupoutside = this.sprite.touchendoutside = function (data) {
-        this.isdown = false;
-
-        if (this.isOver) {
-            this.setTexture(textureMiniButtonOver);
-        }
-        else {
-            this.setTexture(textureMiniButton);
-        }
-    }
-
-    // set the mouseover callback..
-    this.sprite.mouseover = function (data) {
-
-        this.isOver = true;
-
-        if (this.isdown) return
-
-        this.setTexture(textureMiniButtonOver)
-    }
-
-    // set the mouseout callback..
-    this.sprite.mouseout = function (data) {
-
-        this.isOver = false;
-
-        if (this.isdown) return
-        this.setTexture(textureMiniButton)
-    }
 
     this.sprite.click = this.sprite.tap = function (data) {
         self.isClicked = true;
-    }
+    };
 
     stage.addChild(this.sprite);
     stage.addChild(this.text);
-}
+};
 MiniButton.prototype.update = function () {
     this.isClicked = false;
-}
+};

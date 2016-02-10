@@ -1,7 +1,4 @@
-var textureComputerGood = PIXI.Texture.fromImage("imgs/pc_inactive.png");
-var textureComputerNormal = PIXI.Texture.fromImage("imgs/pc_inactive.png");
-var textureComputerBad = PIXI.Texture.fromImage("imgs/pc_inactive.png");
-var defaultAnchor = new PIXI.Point(0.5, 0.5);
+var centeredAnchor = new PIXI.Point(0.5, 0.5);
 
 function load_pc_texture(type){
     return PIXI.Texture.fromImage("imgs/pc_"+type+".png");
@@ -34,6 +31,12 @@ ButtonGroup = function (stage, x, y, sort_type) {
     this.buttons.push(new ComputerButton(stage, x, y, 0.001, sort_type, 1));
     this.buttons.push(new ComputerButton(stage, x + 50, y, 0.000001, sort_type, 2));
     this.buttons.push(new ComputerButton(stage, x + 100, y, 0.000000001, sort_type,3 ));
+
+    var labelTexture = PIXI.Texture.fromImage("imgs/label_"+sort_type+".png");
+    this.label = new PIXI.Sprite(labelTexture);
+    this.label.position = new PIXI.Point(x+50,y-50);
+    this.label.anchor = centeredAnchor;
+    stage.addChild(this.label);
     this.updateColors();
 };
 ButtonGroup.prototype.update = function () {
@@ -71,12 +74,12 @@ ComputerButton = function (stage, x, y, value, type, power) {
     this.barSprite = new PIXI.Sprite(this.activeBar);
     this.barSprite.position.x = x;
     this.barSprite.position.y = y+40;
-    this.barSprite.anchor = defaultAnchor;
+    this.barSprite.anchor = centeredAnchor;
 
     this.pcSprite = new PIXI.Sprite(this.activeTexture);
     this.pcSprite.position.x = x;
     this.pcSprite.position.y = y;
-    this.pcSprite.anchor = defaultAnchor;
+    this.pcSprite.anchor = centeredAnchor;
     this.pcSprite.interactive = true;
     this.pcSprite.buttonMode = true;
 

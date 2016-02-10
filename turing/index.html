@@ -40,7 +40,7 @@
                 urls: ["../_common/styles.css"]
             },
             active: function () {
-                init()
+                init();
             }
         };
     </script>
@@ -66,7 +66,7 @@
     var inputX = 30;
     var inputY = 300;
     var inputDx = 82;
-    var inputDy = 33;
+    var inputDy = 32;
     var inputWidth = 70;
     var inColumnMax = 5;
 
@@ -100,10 +100,10 @@
 
     // load everything below:
     var tapeSize = 11;
-    var tapeX = 100;
-    var tapeY = 120;
+    var tapeX = 150;
+    var tapeY = 130;
     var tapeDx = 45;
-    var headY = 70;
+    var headY = 85;
     var tape = [];
     var heads = [];
     var head;
@@ -120,6 +120,8 @@
     var zeroMini;
     var oneMini;
     var emptyMini;
+
+    new Logo(stage, 400,460);
 
     function init(){
         for (var i = 0; i < tapeSize; i++) {
@@ -140,22 +142,22 @@
         head.dx = tapeDx;
         head.setTape(tape);
 
-        loadDataButton = new Button(stage, 560, 260, "Załaduj", Button.type.Load);
-        runButton = new Switch(stage, 560, 310);
-        stepButton = new Button(stage, 560, 360, "Krok", Button.type.Previous);
+        helpButton = new Button(stage, 710, 280, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        loadDataButton = new Button(stage, 710, 321, "Załaduj", Button.type.Load);
+        runButton = new Switch(stage, 710, 362);
+        stepButton = new Button(stage, 710, 403, "Krok", Button.type.Next);
         stepButton.setActive(false);
 
-        zeroMini = new MiniButton(stage, 550, 30, "0");
-        oneMini = new MiniButton(stage, 580, 30, "1");
-        emptyMini = new MiniButton(stage, 610, 30, "E");
+        zeroMini = new MiniButton(stage, 40, 40, "0");
+        oneMini = new MiniButton(stage, 66, 40, "1");
+        emptyMini = new MiniButton(stage, 92, 40, "E");
 
         //help
-        helpButton = new Button(stage, 560, 450, "Pomoc", Button.type.Help);
-        helpButton.sprite.isOver = false;
+
         stage.addChild(help);
         requestAnimFrame(animate);
     }
-
 
     function animate() {
         requestAnimFrame(animate);

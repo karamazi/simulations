@@ -124,6 +124,17 @@
     var pointGraphics = new PIXI.Graphics();
     stage.addChild(pointGraphics);
 
+    var colors = [
+            0x369BD7,
+            0xA4DB00,
+            0xFFDB00,
+            0xFA9B46,
+            0x304957,
+            0xFFDC00,
+            0x7F7F7F
+    ];
+    var nextColor = 0;
+
     var addButton;
     var clearButton;
     var helpButton;
@@ -156,18 +167,16 @@
             var c2y = coordMid_y - parseFloat(document.getElementById("c2_y").value) * pixelToUnit;
             var ex = coordMid_x + parseFloat(document.getElementById("end_x").value) * pixelToUnit;
             var ey = coordMid_y - parseFloat(document.getElementById("end_y").value) * pixelToUnit;
-            var rgb = [];
-            rgb.push(Math.random() * 200);
-            rgb.push(Math.random() * 200);
-            rgb.push(Math.random() * 200);
-            var hex = PIXI.rgb2hex(rgb);
 
-            pointGraphics.beginFill(hex);
+            var hexColor = colors[nextColor];
+            nextColor=(nextColor+1)%colors.length;
+
+            pointGraphics.beginFill(hexColor);
             pointGraphics.drawCircle(c1x, c1y, 4);
             pointGraphics.drawCircle(c2x, c2y, 4);
             pointGraphics.endFill();
 
-            graphics.lineStyle(2, hex);
+            graphics.lineStyle(2, hexColor);
             graphics.moveTo(sx, sy);
             graphics.bezierCurveTo(c1x, c1y, c2x, c2y, ex, ey);
         }
