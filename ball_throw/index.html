@@ -1,0 +1,238 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Rzut piłką</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #a {
+            position: absolute;
+            top: 40px;
+            left: 30px;
+        }
+
+        #b {
+            position: absolute;
+            top: 70px;
+            left: 30px;
+        }
+
+        #c {
+            position: absolute;
+            top: 100px;
+            left: 30px;
+        }
+        input[type=range] {
+            -webkit-appearance: none;
+            background-color: silver;
+            width: 120px;
+            height: 0px;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            background-color: #369bd7 ;
+            opacity: 0.9;
+            width: 10px;
+            height: 20px;
+        }
+
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi_v2.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="basketball.js"></script>
+
+</head>
+<body>
+<input type="range" id="a" name="a" min="-1" max="-0.05" value=-0.05 step="0.0125" oninput="updateA(this.value);">
+<input type="range" id="b" name="b" min="-2" max="2" value=0 step="0.05" oninput="updateB(this.value);">
+<input type="range" id="c" name="c" min="1" max="10" value=2 step="0.25" oninput="updateC(this.value);">
+
+
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    var axisGraphics = new PIXI.Graphics();
+    var graphics = new PIXI.Graphics();
+    stage.addChild(axisGraphics);
+    stage.addChild(graphics);
+    document.body.appendChild(renderer.view);
+
+
+    // load everything below:
+    var spacing = 20;
+    var aElement=document.getElementById("a");
+    var bElement=document.getElementById("b");
+    var cElement=document.getElementById("c");
+    var a = parseFloat(aElement.value);
+    var b = parseFloat(bElement.value);
+    var c = parseFloat(cElement.value);
+    var delta = 0;
+    var x1 = 0, x2 = 0, y1 = 0, y2 = 0, x0_1 = 0, x0_2;
+    var q = 0, p = 0;
+    var a_text;
+    var b_text;
+    var c_text;
+
+    var basket_min_x = 370;
+    var basket_max_x = 590;
+    var basket_width = 100;
+    var ball = new Basketball(stage,100,240);
+    var basket = new Basket(stage,basket_min_x + Math.floor(Math.random() * (basket_max_x - basket_min_x)),240);
+
+    drawAxis();
+    calculateSolution();
+
+
+    var basketButton;
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+    function init(){
+        helpButton = new Button(stage, 560, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        basketButton = new Button(stage, 560, 91, "Losuj", Button.type.Reroll);
+
+
+        var style = { font: "15px OpenSans", fill: "#369bd7  ", align: "left" };
+        a_text = new MyText(stage, 180, 40, "a="+a.toFixed(2), style, false);
+        b_text = new MyText(stage, 180, 70, "b="+b.toFixed(2),style, false);
+        c_text = new MyText(stage, 180, 100, "c="+c.toFixed(2), style, false);
+
+        stage.addChild(help);
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        if(help.visible){
+            aElement.style.display="none";
+            bElement.style.display="none";
+            cElement.style.display="none";
+        }else{
+            aElement.style.display="";
+            bElement.style.display="";
+            cElement.style.display="";
+        }
+
+
+        if (basketButton.isClicked) {
+            basket.sprite.position.x = basket_min_x + Math.floor(Math.random() * (basket_max_x - basket_min_x));
+        }
+        basketButton.update();
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function calculateSolution() {
+        delta = b * b - 4 * a * c;
+        x1 = -17;
+        x2 = 17;
+        y1 = a * x1 * x1 + b * x1 + c;
+        y2 = a * x2 * x2 + b * x2 + c;
+        x0_1 = (-b - Math.sqrt(delta))/(2*a);
+        x0_2 = (-b + Math.sqrt(delta))/(2*a);
+
+        //x2 = -b + Math.sqrt(delta)/(2*a);
+        p = -b / (2 * a);
+        q = -delta / (4 * a);
+
+        ball.sprite.position.x=toScreenX(x0_1);
+        //basket.sprite.position.x=toScreenX(x0_2)
+
+        var line_color = 0x7f7f7f;
+        var target = basket.sprite.position.x;
+        console.log(target, toScreenX(x0_2));
+        if(toScreenX(x0_2)-5 < target && target < toScreenX(x0_2)+5)
+            line_color = 0xfa7346;
+        graphics.clear();
+        graphics.lineStyle(3,line_color);
+        //console.log(a, b, c, delta, x1, x2, p, q);
+        if (isNaN(p) || isNaN(q))
+            return;
+
+        //console.log(a, b, c, delta, x1, x2, p, q);
+        var x = 0, y = 0, steps = 100;
+        var step_distance = (x2 - x1) / steps;
+
+        for (var i = 0; i <= steps; i++) {
+            x = x1 + step_distance * i;
+            y = a * x * x + b * x + c;
+
+            if (i == 0)
+                graphics.moveTo(toScreenX(x), toScreenY(y));
+            else
+                graphics.lineTo(toScreenX(x), toScreenY(y));
+        }
+    }
+
+    function toScreenX(p) {
+        return Math.round((320 - p * spacing)*1000)/1000;
+    }
+    function toScreenY(p) {
+        return Math.round((240 - p * spacing)*1000)/1000;
+    }
+
+    function updateA(val) {
+        a = parseFloat(val);
+        a_text.text.setText("a="+a.toFixed(2));
+        calculateSolution();
+    }
+    function updateB(val) {
+        b = parseFloat(val);
+        b_text.text.setText("b="+b.toFixed(2));
+        calculateSolution();
+    }
+    function updateC(val) {
+        c = parseFloat(val);
+        c_text.text.setText("c="+c.toFixed(2));
+        calculateSolution();
+    }
+
+    function drawAxis() {
+        var half_x = 320;
+        var half_y = 240;
+        var marker_offset = 5;
+        axisGraphics.lineStyle(2, 0xd2d2d2);
+        axisGraphics.moveTo(half_x, 0);
+        axisGraphics.lineTo(half_x, half_y * 2);
+        axisGraphics.moveTo(0, half_y);
+        axisGraphics.lineTo(half_x * 2, half_y);
+        for (var i = -20; i < 20; i++) {
+            axisGraphics.moveTo(half_x + i * spacing, half_y - marker_offset);
+            axisGraphics.lineTo(half_x + i * spacing, half_y + marker_offset);
+            axisGraphics.moveTo(half_x - marker_offset, half_y + i * spacing);
+            axisGraphics.lineTo(half_x + marker_offset, half_y + i * spacing);
+        }
+    }
+
+</script>
+
+</body>
+</html>
