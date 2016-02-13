@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Dzielenie binarne</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #dividend {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 130px;
+        }
+
+        #divisor {
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 130px;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+
+</head>
+<body>
+<input id="dividend" value="11100110"/>
+<input id="divisor" value="110"/>
+<script>
+    defaultStyle = {font: "bold 20px Monospace", fill: "#ffffcc", align: "left"};
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+    // load everything below:
+    var divisor = "";
+    var divisorInt = 0;
+    var dividend = "";
+    var quotient = "";
+    var rest = "";
+    var index = divisor.length - 1;
+
+    var monoSpaceTextStyle = { font: "20px Ubuntu", fill: "#369bd7", align: "left" };
+    var text_index = 0;
+    var textX = 40;
+    var textY = 130;
+    var textDy = 20;
+    var textDx = 10;
+    var textShift = 0;
+    var texts = [];
+    var quotientText;
+
+    var nextButton;
+    var resetButton;
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+    var divisorE=document.getElementById("divisor");
+    var dividendE=document.getElementById("dividend");
+    new Logo(stage);
+
+    function init(){
+        quotientText = new MyText(stage, textX + (divisor.length - 1) * textDx, textY - textDy, "", monoSpaceTextStyle, false);
+        helpButton = new Button(stage, 560, 50, "Pomoc", Button.type.Help);
+        nextButton = new Button(stage, 560, 91, "Dalej", Button.type.Next);
+        resetButton = new Button(stage, 560, 131, "Od nowa", Button.type.Reset);
+        helpButton.sprite.isOver = false;
+
+        stage.addChild(help);
+        setUp();
+        requestAnimFrame(animate);
+    }
+
+
+
+    function setUp(){
+        divisor = divisorE.value;
+        dividend = dividendE.value;
+        divisorInt = parseInt(divisor, 2);
+        quotient = "";
+        rest = "";
+        index = divisor.length - 1;
+
+        for(var i=0;i<texts.length;i++){
+            stage.removeChild(texts[i].text);
+        }
+        texts=[];
+        text_index = 0;
+        textShift = 0;
+        addText(dividend + " : " + divisor);
+        stage.removeChild(quotientText.text);
+        quotientText = new MyText(stage, textX + (divisor.length - 1) * textDx, textY - textDy, "", monoSpaceTextStyle, false);
+    }
+
+    function addText(msg) {
+        var x = textX + textDx * textShift;
+        if (msg[0] === "-")
+            x -= textDx;
+
+        for (var i = msg.length; i < divisor.length; i++) {
+            msg = " " + msg;
+        }
+
+        var txt = new MyText(stage, x, textY + textDy * text_index, msg, monoSpaceTextStyle, false);
+        texts.push(txt);
+        text_index++;
+        stage.removeChild(help);
+        stage.addChild(help);
+    }
+
+    function setQuotientText() {
+        quotientText.text.setText(quotient);
+    }
+
+    function setRestText() {
+        var i =0;
+        while(i < rest.length && rest[i] === '0')
+            i++;
+        rest=rest.substr(i);
+        var plus_rest = rest.length > 0 ? "  + "+rest : "";
+        quotientText.text.setText(quotient + plus_rest);
+    }
+    function performAnotherStep() {
+        index++;
+        var part = rest + dividend[index];
+        textShift++;
+        addText(part);
+        if (part.length > divisor.length)
+            textShift++;
+        addText("-" + divisor);
+        attemptDivision(part);
+    }
+
+    function performFirstStep() {
+        var part = dividend.substring(0, index + 1);
+        attemptDivision(part);
+        addText("-" + divisor);
+
+    }
+
+    function attemptDivision(part) {
+        var partInt = parseInt(part, 2);
+
+        if (divisorInt <= partInt) {
+            quotient += "1";
+            var restInt = partInt - divisorInt;
+            rest = dec2Bin(restInt);
+        } else {
+            quotient += "0";
+            rest = part;
+        }
+    }
+
+    function dec2Bin(dec) {
+        return (dec >>> 0).toString(2);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (nextButton.isClicked) {
+            if (quotient === "") {
+                performFirstStep();
+                setQuotientText();
+            } else if (index < dividend.length - 1) {
+                performAnotherStep();
+                setQuotientText();
+            }
+            else
+                setRestText();
+
+
+        }
+        if (resetButton.isClicked){
+            setUp();
+        }
+        nextButton.update();
+        helpButton.update();
+        resetButton.update();
+        help.visible = helpButton.sprite.isOver;
+        if(help.visible){
+            dividendE.style.display="none";
+            divisorE.style.display="none";
+
+            quotientText.text.visible=false;
+            console.log(quotientText.text)
+        }else{
+            dividendE.style.display="";
+            divisorE.style.display="";
+        }
+        // render the stage
+        renderer.render(stage);
+    }
+
+
+</script>
+
+</body>
+</html>
