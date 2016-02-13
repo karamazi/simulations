@@ -110,6 +110,8 @@
     var helpButton;
     var help = new PIXI.Sprite(textureHelp);
 
+    new Logo(stage)
+
     function init(){
         helpButton = new Button(stage, 560, 50, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
