@@ -1,0 +1,97 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Robotyka 1</title>
+	<style>
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #000000;
+		}
+	</style>
+	<script src="../pixi.js"></script>
+	<script src="../pixi_ext.js"></script>
+	<script src="robot.js"></script>
+</head>
+<body>
+	<script>
+
+	    // create an new instance of a pixi stage
+	    var stage = new PIXI.Stage(0x223344);
+	    var renderer = PIXI.autoDetectRenderer(640, 480);
+	    document.body.appendChild(renderer.view);
+	    requestAnimFrame(animate);
+
+	    var background = new PIXI.Sprite(textureBackground);
+	    stage.addChild(background);
+	    // load everything below:
+		var path = [];
+		var path_x = 60;
+		var path_y = 100;
+		var path_dx = 50;
+		var path_length=11;
+		for(var i=0;i<path_length;i++){
+			var field = new Field(stage,path_x+path_dx*i, path_y);
+			path.push(field);
+		}
+		var robot_pos = 0;
+		var robot = new Robot(stage,
+				path[0].sprite.position.x,
+				path[0].sprite.position.y);
+
+		var finish = new Finish(stage,
+				path[path.length-1].sprite.position.x,
+				path[path.length-1].sprite.position.y
+		);
+		var finish_pos = path.length-1;
+
+		var backButton = new Button(stage,200,200, "Tył");
+		var forwardButton = new Button(stage,400,200, "Przód");
+        //help
+	    var helpButton = new Button(stage, 560, 30, "Pomoc");
+	    helpButton.sprite.isOver = false;
+	    var help = new PIXI.Sprite(textureHelp);
+	    stage.addChild(help);
+
+	    function animate() {
+	        requestAnimFrame( animate );
+
+	        // loop everything here:
+			if(backButton.isClicked){
+				moveRobotBy(-2);
+			}
+			if(forwardButton.isClicked){
+				moveRobotBy(4);
+			}
+			for(i=0;i<path.length;i++) {
+				if(path[i].isClicked){
+					finish.sprite.position = path[i].sprite.position;
+					finish_pos = i;
+				}
+				path[i].update();
+			}
+
+
+			robot.update();
+	    	backButton.update();
+			forwardButton.update();
+	        helpButton.update();
+	        help.visible = helpButton.sprite.isOver;
+	        // render the stage
+	        renderer.render(stage);
+	    }
+
+		function moveRobotBy(steps){
+			if(robot_pos+steps < 0 || robot_pos+steps>=path.length)
+				return;
+
+			robot_pos+=steps;
+			var p=path[robot_pos].sprite.position;
+			robot.moveTo(p.x, p.y);
+		}
+
+	</script>
+
+	</body>
+</html>
