@@ -74,6 +74,8 @@
     var helpButton;
     var help = new PIXI.Sprite(textureHelp);
 
+    new Logo(stage);
+    
     function init() {
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
         moveButton = new Button(stage, 550, 91, "Dalej", Button.type.Next);

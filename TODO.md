@@ -24,3 +24,6 @@ filtrowanie obrazu  - jest literówka w pomocy - powinno być wstaw napis" a nie
 
 ## Checksum
 - Uwagi (dodać "Od nowa". Czy jest sens?)
+
+## SWAP
+- zrobic :)
