@@ -1,0 +1,207 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Problem Hetmanów</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="chess_helpers.js"></script>
+
+</head>
+<body>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+    // load everything below:
+    var BOARD_SIZE = 8;
+    var BOARD_X = 55;
+    var BOARD_Y = 55;
+    var FIELD_SIZE = 50;
+
+    var board = createBoard(stage);
+    var collisionGraphics = new PIXI.Graphics();
+    stage.addChild(collisionGraphics);
+    var queens = createQueens(stage);
+
+    var border = new PIXI.Graphics();
+    stage.addChild(border);
+    drawBorder();
+
+
+    var solutionButton;
+    var resetButton;
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+    new Logo(stage)
+
+    function init() {
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        solutionButton = new Button(stage, 550, 91, "Rozwiązanie", Button.type.Encode);
+        resetButton = new Button(stage, 550, 132, "Od nowa", Button.type.Reset);
+        //help
+
+        helpButton.sprite.isOver = false;
+        stage.addChild(help);
+
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        updateQueens();
+
+        if (solutionButton.isClicked) {
+            symetricSolution();
+        }
+        if (resetButton.isClicked) {
+            resetQueens();
+        }
+        solutionButton.update();
+        resetButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function createBoard() {
+        var board = [];
+        for (var i = 0; i < BOARD_SIZE; i++) {
+            var row = [];
+            for (var j = 0; j < BOARD_SIZE; j++) {
+                row.push(new Field(stage, BOARD_X + FIELD_SIZE * j, BOARD_Y + FIELD_SIZE * i,
+                        j, i, (i + j) % 2));
+            }
+            board.push(row);
+        }
+        return board;
+    }
+    function createQueens() {
+        var queens = [];
+        var queensCount = 8;
+        var x = 500;
+        var y = 260;
+        var dxy = 50;
+        var rows = 0;
+        for (var i = 0; i < queensCount; i++) {
+            var queen = new Draggable(stage, x + (i % 2) * dxy, y + rows * dxy);
+            rows += i % 2;
+            queens.push(queen);
+        }
+        return queens;
+    }
+    function drawBorder() {
+        var boardLength = BOARD_SIZE * FIELD_SIZE;
+        border.lineStyle(1, 0xc0c0c0);
+        border.moveTo(BOARD_X - FIELD_SIZE / 2, BOARD_Y - FIELD_SIZE / 2);
+        border.lineTo(BOARD_X + boardLength - FIELD_SIZE / 2, BOARD_Y - FIELD_SIZE / 2);
+        border.lineTo(BOARD_X + boardLength - FIELD_SIZE / 2, BOARD_Y + boardLength - FIELD_SIZE / 2);
+        border.lineTo(BOARD_X - FIELD_SIZE / 2, BOARD_Y + boardLength - FIELD_SIZE / 2);
+        border.lineTo(BOARD_X - FIELD_SIZE / 2, BOARD_Y - FIELD_SIZE / 2);
+    }
+
+
+    function updateQueens() {
+        for (var i = 0; i < queens.length; i++) {
+            var queen = queens[i];
+            if (queen.isDropped) {
+                dropQueen(queen);
+                updateCollisionGraphics();
+            }
+
+            if (queen.isDoubleClicked) {
+                console.log(queen);
+                queen.dropOn(null);
+                updateCollisionGraphics();
+            }
+            queen.update();
+        }
+    }
+    function dropQueen(queen) {
+        var x_index = Math.round((queen.sprite.position.x - BOARD_X) / FIELD_SIZE);
+        var y_index = Math.round((queen.sprite.position.y - BOARD_Y) / FIELD_SIZE);
+        console.log(x_index + " " + y_index);
+        if (x_index >= 0 && x_index < BOARD_SIZE && y_index >= 0 && y_index < BOARD_SIZE) {
+            queen.dropOn(board[y_index][x_index]);
+        } else {
+            queen.dropOn(null);
+        }
+    }
+
+    function updateCollisionGraphics() {
+        collisionGraphics.clear();
+        for (var i = 0; i < queens.length; i++) {
+            if (queens[i].field === null)
+                continue;
+
+            for (var j = i; j < queens.length; j++) {
+                if (i == j || queens[j].field === null)
+                    continue;
+
+                drawCollisionBetween(queens[i], queens[j]);
+            }
+        }
+    }
+
+    function drawCollisionBetween(queen1, queen2) {
+        var field1 = queen1.field;
+        var field2 = queen2.field;
+
+        var collision = field1.boardIndexX == field2.boardIndexX ||
+                field1.boardIndexY == field2.boardIndexY ||
+                Math.abs(field2.boardIndexX - field1.boardIndexX) == Math.abs(field2.boardIndexY - field1.boardIndexY);
+
+        if (collision) {
+            collisionGraphics.lineStyle(5, 0xff0000);
+            collisionGraphics.moveTo(field1.sprite.position.x, field1.sprite.position.y);
+            collisionGraphics.lineTo(field2.sprite.position.x, field2.sprite.position.y);
+        }
+    }
+    function resetQueens() {
+        for (var i = 0; i < queens.length; i++) {
+            queens[i].dropOn(null);
+        }
+        collisionGraphics.clear();
+    }
+
+    function symetricSolution() {
+        var solution = [3, 5, 7, 1, 6, 0, 2, 4];
+        for (var i = 0; i < queens.length; i++) {
+            queens[i].dropOn(board[i][solution[i]]);
+        }
+    }
+
+
+</script>
+
+</body>
+</html>
