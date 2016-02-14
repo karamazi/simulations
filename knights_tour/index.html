@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Konik Szachowy</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="chess_helpers.js"></script>
+
+</head>
+<body>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+
+    // load everything below:
+    var MOVES = [
+        [1, -2],
+        [2, -1],
+        [2, 1],
+        [1, 2],
+        [-1, 2],
+        [-2, 1],
+        [-2, -1],
+        [-1, -2]
+    ];
+    var BOARD_SIZE = 8;
+    var BOARD_X = 50;
+    var BOARD_Y = 50;
+    var FIELD_SIZE = 50;
+
+    var movesUsed = 0;
+    var board = createBoard(stage);
+    var border = new PIXI.Graphics();
+    stage.addChild(border);
+    drawBorder();
+
+    var startX = Math.floor(Math.random() * BOARD_SIZE);
+    var startY = Math.floor(Math.random() * BOARD_SIZE);
+    var horse = new Figure(stage, board, startX, startY);
+    var possibleMovesFields = [];
+    updateNumberOfPossibleMoves();
+
+    //var finishText = new Text(stage, 350, 250, "");
+
+    var moveButton;
+    var resetButton;
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+    function init() {
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        moveButton = new Button(stage, 550, 91, "Dalej", Button.type.Next);
+        resetButton = new Button(stage, 550, 132, "Od nowa", Button.type.Reset);
+
+        helpButton.sprite.isOver = false;
+        stage.addChild(help);
+        requestAnimFrame(animate);
+    }
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (moveButton.isClicked) {
+            moveFigure();
+            updateNumberOfPossibleMoves();
+            checkEndGameConditions();
+        }
+
+        if (resetButton.isClicked) {
+            resetBoard();
+        }
+        moveButton.update();
+        resetButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+    function updateNumberOfPossibleMoves() {
+        for (var i = 0; i < possibleMovesFields.length; i++)
+            possibleMovesFields[i].clearPossibleMoves();
+        possibleMovesFields = [];
+
+        for (var i = 0; i < MOVES.length; i++) {
+            var dx = MOVES[i][0];
+            var dy = MOVES[i][1];
+            if (horse.canMoveBy(dx, dy)) {
+                var possibleMoves = 0;
+                for (var j = 0; j < MOVES.length; j++) {
+                    var ddx = dx + MOVES[j][0];
+                    var ddy = dy + MOVES[j][1];
+                    possibleMoves += horse.canMoveBy(ddx, ddy) ? 1 : 0;
+                }
+                board[horse.y + dy][horse.x + dx].setPossibleMoves(possibleMoves);
+                possibleMovesFields.push(board[horse.y + dy][horse.x + dx]);
+            }
+        }
+    }
+
+    function moveFigure() {
+        var minPossibleMoves = 9;
+        var minMoveIndex = -1;
+        for (var i = 0; i < MOVES.length; i++) {
+            var dx = MOVES[i][0];
+            var dy = MOVES[i][1];
+            if (horse.canMoveBy(dx, dy)) {
+                var possibleMoves = board[horse.y + dy][horse.x + dx].possibleMoves;
+                if (possibleMoves < minPossibleMoves) {
+                    minPossibleMoves = possibleMoves;
+                    minMoveIndex = i;
+                }
+            }
+        }
+        if (minMoveIndex >= 0) {
+            horse.moveBy(MOVES[minMoveIndex][0], MOVES[minMoveIndex][1]);
+            movesUsed++;
+        }
+
+    }
+
+    function checkEndGameConditions() {
+        if (possibleMovesFields.length == 0) {
+            if (movesUsed == BOARD_SIZE * BOARD_SIZE - 1)
+                alert("Udało się!");
+            else
+                alert("Niestety, nie udało się. :(!");
+
+        }
+
+
+    }
+
+
+    function resetBoard() {
+        possibleMovesFields = [];
+        var newX = Math.floor(Math.random() * BOARD_SIZE) - horse.x;
+        var newY = Math.floor(Math.random() * BOARD_SIZE) - horse.y;
+
+        horse.moveBy(newX, newY);
+        for (var i = 0; i < BOARD_SIZE; i++)
+            for (var j = 0; j < BOARD_SIZE; j++)
+                board[i][j].reset();
+        updateNumberOfPossibleMoves();
+        //finishText.text.setText("");
+        movesUsed = 0;
+    }
+
+    function createBoard() {
+        var board = [];
+        for (var i = 0; i < BOARD_SIZE; i++) {
+            var row = [];
+            for (var j = 0; j < BOARD_SIZE; j++) {
+                row.push(new Field(stage, BOARD_X + FIELD_SIZE * j, BOARD_Y + FIELD_SIZE * i, (i + j) % 2));
+            }
+            board.push(row);
+        }
+        return board;
+    }
+
+    function drawBorder() {
+        var boardLength = BOARD_SIZE * FIELD_SIZE;
+        border.lineStyle(1, 0xc0c0c0);
+        border.moveTo(BOARD_X - FIELD_SIZE / 2, BOARD_Y - FIELD_SIZE / 2);
+        border.lineTo(BOARD_X + boardLength - FIELD_SIZE / 2, BOARD_Y - FIELD_SIZE / 2);
+        border.lineTo(BOARD_X + boardLength - FIELD_SIZE / 2, BOARD_Y + boardLength - FIELD_SIZE / 2);
+        border.lineTo(BOARD_X - FIELD_SIZE / 2, BOARD_Y + boardLength - FIELD_SIZE / 2);
+        border.lineTo(BOARD_X - FIELD_SIZE / 2, BOARD_Y - FIELD_SIZE / 2);
+    }
+
+</script>
+
+</body>
+</html>
