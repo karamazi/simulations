@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Uczenie neuronu</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="neuron.js"></script>
+
+</head>
+<body>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+
+    // load everything below:
+    var neuron;
+    var tryButton;
+    var resetButton;
+    var helpButton;
+
+    var help = new PIXI.Sprite(textureHelp);
+    var i = 0;
+
+    new Logo(stage);
+
+    function init() {
+        neuron = new Neuron(stage, 30, 70);
+        neuron.setLearningFactor(0.1);
+        neuron.setWeights(-1 + 2 * Math.random(), -1 + 2 * Math.random());
+
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        tryButton = new Button(stage, 550, 91, "Próbkuj", Button.type.Next);
+        resetButton = new Button(stage, 550, 131, "Od nowa", Button.type.Reset);
+
+
+        helpButton.sprite.isOver = false;
+        stage.addChild(help);
+
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (tryButton.isClicked) {
+            var input1 = 1 - 2 * Math.random();
+            var input2 = 1 - 2 * Math.random();
+
+            neuron.processInputDataPair(input1, input2);
+        }
+        if (resetButton.isClicked) {
+            neuron.setWeights(-1 + 2 * Math.random(), -1 + 2 * Math.random());
+            neuron.clear();
+        }
+        tryButton.update();
+        resetButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+
+</script>
+
+</body>
+</html>

@@ -27,3 +27,6 @@ filtrowanie obrazu  - jest literówka w pomocy - powinno być wstaw napis" a nie
 
 ## SWAP
 - zrobic :)
+
+## Neuron
+- help
