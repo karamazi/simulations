@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <title>Generator liczb pseudolosowych</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+
+</head>
+<body>
+<div id="inputs">
+</div>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+    // load everything below:
+    var divInputs = document.getElementById("inputs");
+
+    var textStyle = { font: "18px OpenSans", fill: "#369bd7", align: "left" };
+    var inputX = 80;
+    var inputY = 35;
+    var inputDy = 30;
+    var inputWidth = 30;
+    var input_texts = ["m =", "a =", "c =", "s ="];
+    var input_descriptions = ["wsp. modułowy", "wsp. iloczynowy", "wsp. stały", "ziarno (wartość początkowa)"];
+    var input_values = [9,2,0,1];
+    var inputs = [];
+    var texts = [];
+    var generatedValueDescText;
+    var generatedValueText;
+    var lastGeneratedValueDescText;
+    var lastGeneratedValueText;
+    var generatedValue = null;
+    var lastGeneratedValues = [];
+
+    var helpButton;
+    var generateButton;
+    var resetButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+    var m, a, c = null;
+    var MAX_INPUT = 99;
+
+    new Logo(stage);
+    function init(){
+        for (var i = 0; i < 4; i++) {
+            var newInput = document.createElement("input");
+            newInput.style.position = "absolute";
+            newInput.style.left = inputX + "px";
+            newInput.style.top = inputY + i * inputDy +"px";
+            newInput.style.width = inputWidth + "px";
+            newInput.value = input_values[i];
+            inputs.push(newInput);
+            divInputs.appendChild(newInput);
+
+            texts.push(new MyText(stage,inputX-inputWidth, inputY + i * inputDy, input_texts[i],  textStyle, false));
+            texts.push(new MyText(stage,inputX+inputWidth+20, inputY + i * inputDy, input_descriptions[i], textStyle, false));
+        }
+        generatedValueDescText= new MyText(stage, 20, 230, "Wygenerowana wartość:", blueTextStyleBold, false);
+        generatedValueText= new MyText(stage, 20, 260, "", textStyle, false);
+        lastGeneratedValueDescText = new MyText(stage, 20, 310, "Poprzednie wartości:", blueTextStyleBold, false);
+        lastGeneratedValueText = new MyText(stage, 20, 340, "", textStyle, false);
+        //help
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        generateButton = new Button(stage, 550, 91, "Wygeneruj", Button.type.Next);
+        resetButton = new Button(stage, 550, 132, "Reset", Button.type.Reset);
+        helpButton.sprite.isOver = false;
+        stage.addChild(help);
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (generateButton.isClicked){
+            if(m === null)
+                assignMACComponents();
+            if(generatedValue === null){
+                assignMACComponents();
+                assignSeed();
+            }
+
+            lastGeneratedValues.push(generatedValue);
+            generatedValue = genRand(a, generatedValue, m, c);
+            generatedValueText.text.setText(generatedValue);
+            var previous_values_text = "";
+            for(var i = lastGeneratedValues.length-1;i>=0;i--){
+                if(previous_values_text.length + lastGeneratedValues[i].toString().length > 48)
+                    break;
+                previous_values_text+=lastGeneratedValues[i]+" ";
+            }
+            lastGeneratedValueText.text.setText(previous_values_text)
+        }
+        if(resetButton.isClicked){
+            lastGeneratedValues=[];
+            assignMACComponents();
+            assignSeed();
+            lastGeneratedValueText.text.setText("");
+            generatedValueText.text.setText("");
+        }
+        helpButton.update();
+        generateButton.update();
+        resetButton.update();
+
+        help.visible = helpButton.sprite.isOver;
+        if (help.visible) {
+            divInputs.style.display = "None";
+        } else {
+            divInputs.style.display = "";
+        }
+        // render the stage
+        renderer.render(stage);
+    }
+    function assignMACComponents(){
+        m = Math.min(Math.max(0, parseInt(inputs[0].value)), MAX_INPUT);
+        a = Math.min(Math.max(0 ,parseInt(inputs[1].value)), MAX_INPUT);
+        c = Math.min(Math.max(0, parseInt(inputs[2].value)), MAX_INPUT);
+        if(isNaN(m)) m = 0;
+        if(isNaN(a)) a = 0;
+        if(isNaN(c)) c = 0;
+        inputs[0].value = m;
+        inputs[1].value = a;
+        inputs[2].value = c;
+    }
+    function assignSeed(){
+        generatedValue = Math.min(Math.max(0, parseInt(inputs[3].value)), MAX_INPUT);
+        if(isNaN(generatedValue)) generatedValue = 0;
+        inputs[3].value = generatedValue;
+    }
+
+    function genRand(a, x, m, c)
+    {
+        var next_x = (a*x + c) % m;
+        return next_x;
+    }
+
+</script>
+
+</body>
+</html>
