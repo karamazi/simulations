@@ -1,4 +1,4 @@
-var textureField = PIXI.Texture.fromImage("imgs/socket.jpg");
+var textureField = PIXI.Texture.fromImage("imgs/socket.png");
 var textureRobot = PIXI.Texture.fromImage("imgs/robot.png");
 var textureFinish = PIXI.Texture.fromImage("imgs/finish.png");
 Field = function (stage, xPos, yPos) {

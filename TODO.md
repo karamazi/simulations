@@ -1,8 +1,5 @@
 # Simulations TODO:
 
-## General
-- Half-bold text (e.g.: Monte Carlo)
-
 ## Notations
 - help
 - Long outputs e.g. on 1000/2
@@ -30,3 +27,5 @@ filtrowanie obrazu  - jest literówka w pomocy - powinno być wstaw napis" a nie
 
 ## Neuron
 - help
+
+## Wczytywanie textur gdy są potrzebne zamisat wszystkich.

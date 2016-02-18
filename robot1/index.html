@@ -1,97 +1,124 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Robotyka 1</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-		}
-	</style>
-	<script src="../pixi.js"></script>
-	<script src="../pixi_ext.js"></script>
-	<script src="robot.js"></script>
+    <meta charset="UTF-8">
+    <title>Robotyka 1</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="robot.js"></script>
 </head>
 <body>
-	<script>
+<script>
 
-	    // create an new instance of a pixi stage
-	    var stage = new PIXI.Stage(0x223344);
-	    var renderer = PIXI.autoDetectRenderer(640, 480);
-	    document.body.appendChild(renderer.view);
-	    requestAnimFrame(animate);
-
-	    var background = new PIXI.Sprite(textureBackground);
-	    stage.addChild(background);
-	    // load everything below:
-		var path = [];
-		var path_x = 60;
-		var path_y = 100;
-		var path_dx = 50;
-		var path_length=11;
-		for(var i=0;i<path_length;i++){
-			var field = new Field(stage,path_x+path_dx*i, path_y);
-			path.push(field);
-		}
-		var robot_pos = 0;
-		var robot = new Robot(stage,
-				path[0].sprite.position.x,
-				path[0].sprite.position.y);
-
-		var finish = new Finish(stage,
-				path[path.length-1].sprite.position.x,
-				path[path.length-1].sprite.position.y
-		);
-		var finish_pos = path.length-1;
-
-		var backButton = new Button(stage,200,200, "Tył");
-		var forwardButton = new Button(stage,400,200, "Przód");
-        //help
-	    var helpButton = new Button(stage, 560, 30, "Pomoc");
-	    helpButton.sprite.isOver = false;
-	    var help = new PIXI.Sprite(textureHelp);
-	    stage.addChild(help);
-
-	    function animate() {
-	        requestAnimFrame( animate );
-
-	        // loop everything here:
-			if(backButton.isClicked){
-				moveRobotBy(-2);
-			}
-			if(forwardButton.isClicked){
-				moveRobotBy(4);
-			}
-			for(i=0;i<path.length;i++) {
-				if(path[i].isClicked){
-					finish.sprite.position = path[i].sprite.position;
-					finish_pos = i;
-				}
-				path[i].update();
-			}
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
 
 
-			robot.update();
-	    	backButton.update();
-			forwardButton.update();
-	        helpButton.update();
-	        help.visible = helpButton.sprite.isOver;
-	        // render the stage
-	        renderer.render(stage);
-	    }
 
-		function moveRobotBy(steps){
-			if(robot_pos+steps < 0 || robot_pos+steps>=path.length)
-				return;
+    // load everything below:
+    var path = [];
+    var path_x = 60;
+    var path_y = 250;
+    var path_dx = 53;
+    var path_length = 11;
+    for (var i = 0; i < path_length; i++) {
+        var field = new Field(stage, path_x + path_dx * i, path_y);
+        path.push(field);
+    }
 
-			robot_pos+=steps;
-			var p=path[robot_pos].sprite.position;
-			robot.moveTo(p.x, p.y);
-		}
+    var finish_pos = path.length - 1;
+    var finish = new Finish(stage,
+            path[finish_pos].sprite.position.x,
+            path[finish_pos].sprite.position.y
+    );
 
-	</script>
+    var robot_pos = 0;
+    var robot = new Robot(stage,
+            path[robot_pos].sprite.position.x,
+            path[robot_pos].sprite.position.y);
 
-	</body>
+
+
+
+    var backButton = new Button(stage, 290, 350, "", Button.type.Left);
+    var forwardButton = new Button(stage, 350, 350, "", Button.type.Right);
+
+
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+    new Logo(stage);
+
+    function init(){
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        stage.addChild(help);
+
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (backButton.isClicked) {
+            moveRobotBy(-2);
+        }
+        if (forwardButton.isClicked) {
+            moveRobotBy(4);
+        }
+        for (i = 0; i < path.length; i++) {
+            if (path[i].isClicked) {
+                finish.sprite.position = path[i].sprite.position;
+                finish_pos = i;
+            }
+            path[i].update();
+        }
+
+
+        robot.update();
+        backButton.update();
+        forwardButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function moveRobotBy(steps) {
+        if (robot_pos + steps < 0 || robot_pos + steps >= path.length)
+            return;
+
+        robot_pos += steps;
+        var p = path[robot_pos].sprite.position;
+        robot.moveTo(p.x, p.y);
+    }
+
+</script>
+
+</body>
 </html>

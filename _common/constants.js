@@ -43,6 +43,19 @@ var textureFilterButtonOver =common_texture("button_filter_hoover.png");
 var textureDrawButton = common_texture("button_draw.png");
 var textureDrawButtonOver =common_texture("button_draw_hoover.png");
 
+var textureUpButton = common_texture("button_up.png");
+var textureUpButtonOver =common_texture("button_up_hoover.png");
+
+var textureDownButton = common_texture("button_down.png");
+var textureDownButtonOver =common_texture("button_down_hoover.png");
+
+var textureRightButton = common_texture("button_right.png");
+var textureRightButtonOver =common_texture("button_right_hoover.png");
+
+var textureLeftButton = common_texture("button_left.png");
+var textureLeftButtonOver =common_texture("button_left_hoover.png");
+
+
 var textureSwitch = common_texture("start.png");
 var textureSwitchDown = common_texture("stop.png");
 var textureSwitchOver = common_texture("start_hoover.png");

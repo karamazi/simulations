@@ -76,7 +76,11 @@ Button.type = Object.freeze({
     "Onp": 10,
     "Load": 11,
     "Filter": 12,
-    "Draw": 13
+    "Draw": 13,
+    "Up": 14,
+    "Down": 15,
+    "Left": 16,
+    "Right": 17
 });
 Button.prototype.setupTextures = function (text) {
     switch (text) {
@@ -149,6 +153,22 @@ Button.prototype.setupTextures = function (text) {
             this.textureButtonOver = textureDrawButtonOver;
             break;
 
+        case Button.type.Up:
+            this.textureButton = textureUpButton;
+            this.textureButtonOver = textureUpButtonOver;
+            break;
+        case Button.type.Down:
+            this.textureButton = textureDownButton;
+            this.textureButtonOver = textureDownButtonOver;
+            break;
+        case Button.type.Left:
+            this.textureButton = textureLeftButton;
+            this.textureButtonOver = textureLeftButtonOver;
+            break;
+        case Button.type.Right:
+            this.textureButton = textureRightButton;
+            this.textureButtonOver = textureRightButtonOver;
+            break;
 
         default:
             break;

@@ -1,119 +1,140 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Robotyka 1</title>
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-		}
-	</style>
-	<script src="../pixi.js"></script>
-	<script src="../pixi_ext.js"></script>
-	<script src="robot.js"></script>
+    <meta charset="UTF-8">
+    <title>Robotyka 2</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="robot.js"></script>
 </head>
 <body>
-	<script>
+<script>
 
-	    // create an new instance of a pixi stage
-	    var stage = new PIXI.Stage(0x223344);
-	    var renderer = PIXI.autoDetectRenderer(640, 480);
-	    document.body.appendChild(renderer.view);
-	    requestAnimFrame(animate);
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
 
-	    var background = new PIXI.Sprite(textureBackground);
-	    stage.addChild(background);
-	    // load everything below:
-		var path = [];
-		var path_x = 60;
-		var path_y = 100;
-		var path_dx = 50;
-		var path_length=11;
-		var path_rows = 6;
-		for(var j=0;j<path_rows;j++){
-			var row = [];
-			for(var i=0;i<path_length;i++){
-				var field = new Field(stage,path_x+path_dx*i, path_y+path_dx*j);
-				row.push(field);
-			}
-			path.push(row)
-		}
+    // load everything below:
+    var path = [];
+    var path_x = 60;
+    var path_y = 80;
+    var path_dx = 52;
+    var path_length = 11;
+    var path_rows = 6;
+    for (var j = 0; j < path_rows; j++) {
+        var row = [];
+        for (var i = 0; i < path_length; i++) {
+            var field = new Field(stage, path_x + path_dx * i, path_y + path_dx * j);
+            row.push(field);
+        }
+        path.push(row)
+    }
 
-		var robot_pos_x = 5;
-		var robot_pos_y = path.length-1;
-		var robot = new Robot(stage,
-				path[robot_pos_y][robot_pos_x].sprite.position.x,
-				path[robot_pos_y][robot_pos_x].sprite.position.y);
+    var robot_pos_x = 5;
+    var robot_pos_y = path.length - 1;
+    var finish = new Finish(stage,
+            path[0][path[0].length - 1].sprite.position.x,
+            path[0][path[0].length - 1].sprite.position.y
+    );
+    var robot = new Robot(stage,
+            path[robot_pos_y][robot_pos_x].sprite.position.x,
+            path[robot_pos_y][robot_pos_x].sprite.position.y);
 
-		var finish = new Finish(stage,
-				path[0][path[0].length-1].sprite.position.x,
-				path[0][path[0].length-1].sprite.position.y
-		);
 
-		var leftButton = new Button(stage,150,420, "Lewo");
-		var topButton = new Button(stage,300,400, "Góra");
-		var downButton = new Button(stage,300,450, "Dół");
-		var rightButton = new Button(stage,450,420, "Prawo");
+
+    var leftButton = new Button(stage, 268, 430, "", Button.type.Left);
+    var topButton = new Button(stage, 315, 410, "", Button.type.Up);
+    var downButton = new Button(stage, 315, 450, "", Button.type.Down);
+    var rightButton = new Button(stage, 362, 430, "", Button.type.Right);
+    //help
+    var helpButton;
+    var help = new PIXI.Sprite(textureHelp);
+
+    new Logo(stage);
+
+    function init(){
         //help
-	    var helpButton = new Button(stage, 560, 30, "Pomoc");
-	    helpButton.sprite.isOver = false;
-	    var help = new PIXI.Sprite(textureHelp);
-	    stage.addChild(help);
+        helpButton = new Button(stage, 550, 430, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        stage.addChild(help);
 
-	    function animate() {
-	        requestAnimFrame( animate );
+        requestAnimFrame(animate);
+    }
 
-	        // loop everything here:
-			if(leftButton.isClicked){
-				moveRobotBy(-5,0);
-			}
-			if(rightButton.isClicked){
-				moveRobotBy(2,0);
-			}
-			if(topButton.isClicked){
-				moveRobotBy(0,-3);
-			}
-			if(downButton.isClicked){
-				moveRobotBy(0,2);
-			}
-			for(j=0;j<path.length;j++){
-				for(i=0;i<path[j].length;i++) {
-					if(path[j][i].isClicked){
-						finish.sprite.position = path[j][i].sprite.position;
-					}
-					path[j][i].update();
-				}
-			}
+    function animate() {
+        requestAnimFrame(animate);
+
+        // loop everything here:
+        if (leftButton.isClicked) {
+            moveRobotBy(-5, 0);
+        }
+        if (rightButton.isClicked) {
+            moveRobotBy(2, 0);
+        }
+        if (topButton.isClicked) {
+            moveRobotBy(0, -3);
+        }
+        if (downButton.isClicked) {
+            moveRobotBy(0, 2);
+        }
+        for (j = 0; j < path.length; j++) {
+            for (i = 0; i < path[j].length; i++) {
+                if (path[j][i].isClicked) {
+                    finish.sprite.position = path[j][i].sprite.position;
+                }
+                path[j][i].update();
+            }
+        }
 
 
+        robot.update();
+        leftButton.update();
+        topButton.update();
+        downButton.update();
+        rightButton.update();
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
 
-			robot.update();
-	    	leftButton.update();
-			topButton.update();
-			downButton.update();
-			rightButton.update();
-	        helpButton.update();
-	        help.visible = helpButton.sprite.isOver;
-	        // render the stage
-	        renderer.render(stage);
-	    }
+    function moveRobotBy(x, y) {
+        if (robot_pos_y + y < 0 || robot_pos_y >= path.length)
+            return;
 
-		function moveRobotBy(x,y){
-			if(robot_pos_y + y < 0 || robot_pos_y >= path.length)
-				return;
+        if (robot_pos_x + x < 0 || robot_pos_x + x >= path[0].length)
+            return;
 
-			if(robot_pos_x+x < 0 || robot_pos_x+x >= path[0].length)
-				return;
+        robot_pos_x += x;
+        robot_pos_y += y;
+        var p = path[robot_pos_y][robot_pos_x].sprite.position;
+        robot.moveTo(p.x, p.y);
+    }
 
-			robot_pos_x+=x;
-			robot_pos_y+=y;
-			var p=path[robot_pos_y][robot_pos_x].sprite.position;
-			robot.moveTo(p.x, p.y);
-		}
+</script>
 
-	</script>
-
-	</body>
+</body>
 </html>

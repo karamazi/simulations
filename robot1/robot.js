@@ -1,6 +1,7 @@
-var textureField = PIXI.Texture.fromImage("imgs/socket.jpg");
+var textureField = PIXI.Texture.fromImage("imgs/socket.png");
 var textureRobot = PIXI.Texture.fromImage("imgs/robot.png");
 var textureFinish = PIXI.Texture.fromImage("imgs/finish.png");
+
 Field = function (stage, xPos, yPos) {
     var self = this;
 
@@ -66,7 +67,7 @@ Robot.prototype.update=function(){
 Robot.prototype.moveBy=function(x,y){
     this.isMoving=true;
     this.movVect=new PIXI.Point(x,y);
-    this.stepVect=new PIXI.Point(x/25,y/25);
+    this.stepVect=new PIXI.Point(x/50,y/50);
     this.movProgressVect=new PIXI.Point(0,0);
 };
 Robot.prototype.moveTo=function(x,y){
