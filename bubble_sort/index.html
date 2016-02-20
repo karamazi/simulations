@@ -78,18 +78,22 @@ var wipeBlend = false;
 
 
 var help = new PIXI.Sprite(textureHelp);
-stage.addChild(help);
+
 
 var error_screen = new PIXI.Sprite(textureError);
 error_screen.alpha = 0;
-stage.addChild(error_screen);
+
 
 function init(){
     infoB = new Button(stage, 550, 300, "Pomoc", Button.type.Help);
     runB = new Button(stage, 550, 344, "Dalej", Button.type.Next);
     retryB = new Button(stage, 550, 388, "Od nowa", Button.type.Reset);
     setupBalls();
+
+    stage.addChild(help);
+    stage.addChild(error_screen);
     requestAnimFrame(animate);
+
 }
 
 function animate() {

@@ -140,7 +140,7 @@
     var helpButton;
 
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
     new Logo(stage);
 
@@ -151,6 +151,7 @@
         addButton = new Button(stage, 550, 91, "Dodaj", Button.type.PlusText);
         clearButton = new Button(stage, 550, 132, "Od nowa", Button.type.Reset);
 
+        stage.addChild(help);
         requestAnimFrame(animate);
     }
 

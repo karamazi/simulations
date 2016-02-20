@@ -2,6 +2,7 @@
 <html>
 <head>
 	<title>Kule</title>
+	<meta charset="UTF-8">
 	<style>
 		body {
 			margin: 0;
@@ -41,7 +42,7 @@
 	var renderer = PIXI.autoDetectRenderer(640, 480);
 	document.body.appendChild(renderer.view);
 
-	var info_text=["Wskaz zlota kule","Podzial zbioru na pol","Zlota kula znajduje sie na ciezszej szalce","Znaleziono!"];
+	var info_text=["Wskaż zlotą kulę","Podział zbioru na pól","Złota kula znajduje się na cięższej szalce","Znaleziono!"];
 	var inital_balls=[];
 	var balls=[];
 	var episode=episodeEnum.SetGolden;
@@ -66,9 +67,9 @@
 	stage.addChild(helpScreen);
 
 	function init(){
-		nextEpButton=new Button(stage,550,ball_y+50,"Dalej", Button.type.Next);
+		nextEpButton=new Button(stage,550,ball_y+41,"Dalej", Button.type.Next);
 		resetButton=new Button(stage,550,ball_y,"Od Nowa", Button.type.Reset);
-		helpButton=new Button(stage,550,ball_y-50,"Pomoc", Button.type.Help);
+		helpButton=new Button(stage,550,ball_y-41,"Pomoc", Button.type.Help);
 		setupBalls();
 		requestAnimFrame(animate);
 	}

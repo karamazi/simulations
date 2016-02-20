@@ -107,7 +107,7 @@
 
         var button_x = 550;
         var button_y = 170;
-        var button_dy = 44;
+        var button_dy = 41;
 
         onePointB = new Button(stage, button_x, button_y, "1", Button.type.PlusText);
         tenPointsB = new Button(stage, button_x, button_y + button_dy, "10", Button.type.PlusText);
@@ -120,7 +120,7 @@
         //help
         helpButton = new Button(stage, button_x, 50, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
-        resetButton = new Button(stage, button_x, 95, "Od nowa", Button.type.Reset);
+        resetButton = new Button(stage, button_x, 91, "Od nowa", Button.type.Reset);
         requestAnimFrame(animate);
     }
     function animate() {

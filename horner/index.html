@@ -70,9 +70,10 @@
     stage.addChild(help);
 
     function init() {
-        calcButton = new Button(stage, 550, 94, "Oblicz", Button.type.PlusText);
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
+        calcButton = new Button(stage, 550, 91, "Oblicz", Button.type.PlusText);
+
         polyText = new MyText(stage, 30, 110, "", blueTextStyle, false);
         requestAnimFrame(animate);
     }

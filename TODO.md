@@ -28,4 +28,6 @@ filtrowanie obrazu  - jest literówka w pomocy - powinno być wstaw napis" a nie
 ## Neuron
 - help
 
+## Turing help
+
 ## Wczytywanie textur gdy są potrzebne zamisat wszystkich.

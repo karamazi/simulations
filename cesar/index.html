@@ -18,7 +18,7 @@
 
         #out {
             position: absolute;
-            top: 55px;
+            top: 58px;
             left: 30px;
             width: 300px;
         }
@@ -55,6 +55,9 @@
 <input id="move" value="3"/>
 <input id="out" value=""/>
 <script>
+    var inputElement = document.getElementById("in");
+    var outputElement = document.getElementById("out");
+    var moveElement = document.getElementById("move");
 
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0xffffff);
@@ -82,15 +85,19 @@
     new Logo(stage);
     //help
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
+
+
 
     function init(){
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
-        encodeButton = new Button(stage, 550, 94, "Zaszyfruj", Button.type.Encode);
-        decodeButton = new Button(stage, 550, 138, "Odszyfruj", Button.type.Decode);
+        encodeButton = new Button(stage, 550, 91, "Zaszyfruj", Button.type.Encode);
+        decodeButton = new Button(stage, 550, 132, "Odszyfruj", Button.type.Decode);
         alphabetText = MyText(stage, 30, 200, alphabet.join(" "), blueTextStyleBig, false);
         codedAlphabetText = new MyText(stage, 30, 230, codedAlphabet.join(" "), blueTextStyleBig, false);
+
+        stage.addChild(help);
         requestAnimFrame(animate);
     }
 
@@ -100,7 +107,6 @@
         // loop everything here:
         if (encodeButton.isClicked || decodeButton.isClicked) {
             var lastMove = move;
-            var moveElement = document.getElementById("move");
             move = parseInt(moveElement.value);
             if (isNaN(move)) {
                 move = 3;
@@ -150,7 +156,7 @@
                         decoded += input.charAt(i);
                     }
                 }
-                document.getElementById("out").value = decoded;
+                outputElement.value = decoded;
             }
 
         }
@@ -159,12 +165,17 @@
         decodeButton.update();
         helpButton.update();
         help.visible = helpButton.sprite.isOver;
+        if(help.visible){
+            outputElement.style.display="none";
+            inputElement.style.display="none";
+            moveElement.style.display="none";
+        }else{
+            outputElement.style.display="";
+            inputElement.style.display="";
+            moveElement.style.display="";
+        }
         // render the stage
         renderer.render(stage);
-    }
-
-    function cesar(input, move) {
-
     }
 
     function inArray(needle, haystack) {
