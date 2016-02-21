@@ -1,0 +1,174 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>chmod</title>
+    <link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        #input {
+            position: absolute;
+            top: 120px;
+            left: 140px;
+            width: 35px;
+        }
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+
+</head>
+<body>
+<input id="input" value="777"/>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+
+    // load everything below:
+    var inputElement = document.getElementById("input");
+
+    var fileText;
+    var chmodText;
+    var errorText;
+    var lsText;
+    var resultText;
+
+    var help = new PIXI.Sprite(textureHelp);
+    var helpButton;
+    var runButton;
+    var permissions = "-rwxrwxrwx";
+
+    var blueMonoSpacedStyle = { font: "25px Ubuntu", fill: "#369bd7", align: "left" };
+    var redMonoSpacedStyle = { font: "25px Ubuntu", fill: "#d73b36", align: "left" };
+    var today = new Date();
+    new Logo(stage);
+
+
+    function init(){
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+
+        runButton = new Button(stage, 550, 91, "Uruchom", Button.type.Next);
+
+        chmodText = new MyText(stage, 30, 120, "$> chmod\t\t\t\t myfile", blueMonoSpacedStyle, false);
+        errorText = new MyText(stage, 30, 150, "", redMonoSpacedStyle, false);
+        lsText = new MyText(stage, 30, 190, "$> ls -lA", blueMonoSpacedStyle, false);
+        resultText = new MyText(stage, 30, 220, "", blueMonoSpacedStyle, false);
+
+        updatePermissions();
+        stage.addChild(help);
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+
+        if(runButton.isClicked){
+            updatePermissions()
+        }
+
+
+        helpButton.update();
+        runButton.update();
+
+        help.visible = helpButton.sprite.isOver;
+        if (help.visible) {
+            inputElement.style.display = "None";
+        } else {
+            inputElement.style.display = "";
+        }
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function updatePermissions(){
+        var input = parseInput(inputElement.value);
+        if(input.length===0){
+            errorText.setText("chmod: niepoprawne uprawnienia!");
+            return;
+        }
+
+        permissions = "-";
+        for(var i=0;i<input.length;i++){
+            switch(input[i]){
+                case 0:
+                    permissions+="---";
+                    break;
+                case 1:
+                    permissions+="--x";
+                    break;
+                case 2:
+                    permissions+="-w-";
+                    break;
+                case 3:
+                    permissions+="-wx";
+                    break;
+                case 4:
+                    permissions+="r--";
+                    break;
+                case 5:
+                    permissions+="r-x";
+                    break;
+                case 6:
+                    permissions+="rw-";
+                    break;
+                case 7:
+                    permissions+="rwx";
+                    break;
+            }
+        }
+        updateText();
+    }
+
+    function parseInput(input){
+        if(input.length!=3)
+            return [];
+
+        var parsed=[];
+        for(var i=0;i<input.length;i++){
+            var singleDigit = parseInt(input[i]);
+            if(isNaN(singleDigit)){
+                return []
+            }
+            parsed.push(singleDigit);
+        }
+        return parsed;
+    }
+
+    function updateText(){
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var minutes = today.getMinutes();
+        if(minutes < 10)
+            minutes="0"+minutes;
+
+        var formattedDate = months[today.getMonth()]+" "+today.getDate()+" "+today.getHours()+":"+minutes;
+        resultText.setText(permissions+" 1 user group 0 "+formattedDate+" myfile");
+    }
+
+</script>
+
+</body>
+</html>

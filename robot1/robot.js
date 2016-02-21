@@ -59,6 +59,8 @@ Robot.prototype.update=function(){
         this.movProgressVect.y+=this.stepVect.y;
         if(Math.abs(this.movProgressVect.x) >= Math.abs(this.movVect.x) &&
             Math.abs(this.movProgressVect.y) >= Math.abs(this.movVect.y)){
+            this.sprite.position.x-=this.movProgressVect.x-this.movVect.x;
+            this.sprite.position.y-=this.movProgressVect.y-this.movVect.y;
             this.isMoving=false;
         }
     }
@@ -67,7 +69,7 @@ Robot.prototype.update=function(){
 Robot.prototype.moveBy=function(x,y){
     this.isMoving=true;
     this.movVect=new PIXI.Point(x,y);
-    this.stepVect=new PIXI.Point(x/50,y/50);
+    this.stepVect=new PIXI.Point(x/25,y/25);
     this.movProgressVect=new PIXI.Point(0,0);
 };
 Robot.prototype.moveTo=function(x,y){

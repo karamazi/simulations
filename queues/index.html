@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Suma kontrolna</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+    </style>
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="../_common/logo.js"></script>
+    <script src="queue.js"></script>
+
+</head>
+<body>
+<script>
+
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(640, 480);
+    document.body.appendChild(renderer.view);
+
+    var fifo = new FIFO(stage, 50,230);
+    var lifo = new LIFO(stage, 50,320);
+    var index = 0;
+
+    var helpButton;
+    var pushButton;
+    var popButton;
+
+    var help = new PIXI.Sprite(textureHelp);
+
+    new Logo(stage);
+
+    function init(){
+        //help
+        new MyText(stage,30, 180, "FIFO:", blueTextStyle, false);
+        new MyText(stage,30, 270, "LIFO:", blueTextStyle, false);
+        helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
+        pushButton = new Button(stage, 550, 91, "Push", Button.type.Next);
+        popButton = new Button(stage, 550, 132, "Pop", Button.type.Previous);
+        helpButton.sprite.isOver = false;
+        stage.addChild(help);
+        requestAnimFrame(animate);
+    }
+
+    function animate() {
+        requestAnimFrame(animate);
+        if(pushButton.isClicked){
+            pushToBoth();
+        }
+        if(popButton.isClicked){
+            lifo.pop();
+            fifo.pop();
+        }
+
+        lifo.update();
+        fifo.update();
+
+        pushButton.update();
+        popButton.update();
+
+        helpButton.update();
+        help.visible = helpButton.sprite.isOver;
+        // render the stage
+        renderer.render(stage);
+    }
+
+    function pushToBoth(){
+        if(lifo.objects.length >= 13)
+            return;
+
+        var b1=new Ball();
+        b1.init(stage,0,0,index);
+        fifo.push(b1);
+
+        var b2=new Ball();
+        b2.init(stage,0,0,index);
+        lifo.push(b2);
+
+        index=(index+1)%100;
+    }
+
+</script>
+
+</body>
+</html>

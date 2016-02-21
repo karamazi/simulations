@@ -58,6 +58,10 @@ Robot.prototype.update=function(){
         this.movProgressVect.y+=this.stepVect.y;
         if(Math.abs(this.movProgressVect.x) >= Math.abs(this.movVect.x) &&
             Math.abs(this.movProgressVect.y) >= Math.abs(this.movVect.y)){
+            console.log(this.movProgressVect.x, this.movVect.x);
+            this.sprite.position.x-=this.movProgressVect.x-this.movVect.x;
+            this.sprite.position.y-=this.movProgressVect.y-this.movVect.y;
+
             this.isMoving=false;
         }
     }
