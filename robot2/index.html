@@ -40,7 +40,7 @@
     // load everything below:
     var path = [];
     var path_x = 60;
-    var path_y = 80;
+    var path_y = 50;
     var path_dx = 52;
     var path_length = 11;
     var path_rows = 6;
@@ -65,10 +65,10 @@
 
 
 
-    var leftButton = new Button(stage, 268, 430, "", Button.type.Left);
-    var topButton = new Button(stage, 315, 410, "", Button.type.Up);
-    var downButton = new Button(stage, 315, 450, "", Button.type.Down);
-    var rightButton = new Button(stage, 362, 430, "", Button.type.Right);
+    var leftButton = new Button(stage, 268, 390, "", Button.type.Left);
+    var topButton = new Button(stage, 315, 370, "", Button.type.Up);
+    var downButton = new Button(stage, 315, 410, "", Button.type.Down);
+    var rightButton = new Button(stage, 362, 390, "", Button.type.Right);
     //help
     var helpButton;
     var help = new PIXI.Sprite(textureHelp);
@@ -77,7 +77,7 @@
 
     function init(){
         //help
-        helpButton = new Button(stage, 550, 430, "Pomoc", Button.type.Help);
+        helpButton = new Button(stage, 550, 390, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
         stage.addChild(help);
 
