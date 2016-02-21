@@ -312,13 +312,11 @@ Tree.prototype.reshapeChildren = function (leaf) {
     if (leaf.right != null) {
         leaf.right.slowDown = 20;
         leaf.right.moveTo(p.x + 50 * mult, p.y + 50);
-        console.log("Leaf #" + leaf.value + " ordered #" + leaf.right.value);
-        
+
     }
     if (leaf.left != null) {
         leaf.left.slowDown = 20;
         leaf.left.moveTo(p.x - 50 * mult, p.y + 50);
-        console.log("Leaf #" + leaf.value + " ordered #" + leaf.left.value);
     }
     
 }
@@ -364,7 +362,6 @@ Tree.prototype.update=function(){
 	    if (!this.ballMoves) {
 	        this.depth++;
 	        var newList = [];
-           // console.log("Num of finished elements: ",this.reshapingList.length)
 	        for (var i = 0; i < this.reshapingList.length; i++) {
 	            var leaf = this.reshapingList[i];
 	            this.reshapeChildren(leaf);

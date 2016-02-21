@@ -69,7 +69,6 @@
     var imgSelect = document.getElementById("img_select");
 
     var ctx = canvas.getContext("2d");
-    console.log(canvas.width, canvas.height);
     ctx.globalCompositeOperation = 'destination-over';
 
     var modButton;
@@ -138,20 +137,6 @@
         base_image.onload = function () {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.drawImage(base_image, 0, 0);
-
-
-            //img_data = shapeCtx.getImageData(0, 0, base_image.width, base_image.height).data;
-            //var w = 0, b = 0;
-            //for (var i = 0; i < img_data.length; i += 4) {
-            //    if (img_data[i] == 255 && img_data[i + 1] == 255 && img_data[i + 2] == 255)
-            //        outsidePoints++;
-            //    else
-            //        realSurface++;
-            //    // i+3 is alpha (the fourth element)
-            //}
-            //realSText.setText("Pradziwa powierzchnia: " + realSurface);
-            //totalSText.setText("Powierzchnia obrazka: " + (realSurface + outsidePoints));
-            //console.log(path, realSurface);
         }
     }
     function modifyImage() {

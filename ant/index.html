@@ -184,7 +184,6 @@ function updateAnt() {
         ant.moveXY(edge_size);
         antIsMoving = true;
 
-        console.log(stepsDone);
         //if ant attempts to walk off the board, THINK WITH PORTALS
         var inPos = new PIXI.Point(0, 0);
         var outPos = new PIXI.Point(0, 0);
@@ -263,7 +262,6 @@ function updateFinish() {
     if (finish.isDropped) {
         f_x = Math.round((finish.sprite.position.x - start_x) / edge_size);
         f_y = Math.round((finish.sprite.position.y - start_y) / edge_size);
-        console.log(f_x + " " + f_y);
         if (f_x >= 0 && f_x < stage_size && f_y >= 0 && f_y < stage_size) {
             finish.dropOn(board[f_y][f_x]);
             isFinishPlaced = true;

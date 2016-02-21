@@ -83,7 +83,6 @@ Ball.prototype.moveBy = function (x, y) {
 Ball.prototype.moveTo = function (x, y) {
     var direction = new PIXI.Point(x - this.sprite.x, y - this.sprite.y);
     this.moveBy(direction.x, direction.y);
-    console.log("Moving #" + this.value + " by " + direction.x + " " + direction.y + " with slowdown " + this.slowDown);
 };
 
 Ball.prototype.update = function () {

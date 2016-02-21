@@ -190,13 +190,11 @@
 
             var piece = new Piece(stage);
             drawPiece(piece.graphics, lastAngle, lastAngle + newAngle);
-            console.log(lastAngle, lastAngle + newAngle);
 
             lastAngle += newAngle;
             totalAngles.push(lastAngle);
             pieces.push(piece);
         }
-        console.log(pieces.length);
     }
 
     function drawPiece(graphics, angle1, angle2, fillColor, lineColor) {

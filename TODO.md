@@ -19,11 +19,6 @@
 
 filtrowanie obrazu  - jest literówka w pomocy - powinno być wstaw napis" a nie "wstaw napisz"
 
-## Checksum
-- Uwagi (dodać "Od nowa". Czy jest sens?)
-
-## SWAP
-- zrobic :)
 
 ## Neuron
 - help

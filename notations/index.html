@@ -128,18 +128,15 @@
             if (tmpBase >= 2 && tmpBase <= 16) {
                 base = tmpBase;
             }
-            console.log("a");
             for (var i = 0; i < divs.length; i++) {
                 divs[i].clearStage(stage);
             }
-            console.log("a");
             if (finalText != null) {
                 finalText.visible = 0;
                 stage.removeChild(finalText.text);
                 stage.removeChild(multBackText.text);
                 finalText = null;
             }
-            console.log("a");
             divs = [];
             var div = new Division(stage, x_pos, y_pos, initial_value, base);
             divs.push(div);

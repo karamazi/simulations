@@ -58,7 +58,6 @@ Ball.prototype.moveBy=function(x,y){
 Ball.prototype.moveTo=function(x,y){
 	var direction=new PIXI.Point(x-this.sprite.x,y-this.sprite.y);
 	this.moveBy(direction.x,direction.y);
-	console.log(direction.x+" "+direction.y);
 };
 
 Ball.prototype.update=function(){

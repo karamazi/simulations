@@ -59,7 +59,7 @@
     var helpButton;
     var help = new PIXI.Sprite(textureHelp);
 
-    new Logo(stage)
+    new Logo(stage);
 
     function init() {
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
@@ -139,7 +139,6 @@
             }
 
             if (queen.isDoubleClicked) {
-                console.log(queen);
                 queen.dropOn(null);
                 updateCollisionGraphics();
             }
@@ -149,7 +148,7 @@
     function dropQueen(queen) {
         var x_index = Math.round((queen.sprite.position.x - BOARD_X) / FIELD_SIZE);
         var y_index = Math.round((queen.sprite.position.y - BOARD_Y) / FIELD_SIZE);
-        console.log(x_index + " " + y_index);
+
         if (x_index >= 0 && x_index < BOARD_SIZE && y_index >= 0 && y_index < BOARD_SIZE) {
             queen.dropOn(board[y_index][x_index]);
         } else {
@@ -181,7 +180,7 @@
                 Math.abs(field2.boardIndexX - field1.boardIndexX) == Math.abs(field2.boardIndexY - field1.boardIndexY);
 
         if (collision) {
-            collisionGraphics.lineStyle(5, 0xff0000);
+            collisionGraphics.lineStyle(2, 0x369bd7);
             collisionGraphics.moveTo(field1.sprite.position.x, field1.sprite.position.y);
             collisionGraphics.lineTo(field2.sprite.position.x, field2.sprite.position.y);
         }

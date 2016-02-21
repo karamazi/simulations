@@ -170,16 +170,13 @@
 
         var line_color = 0x7f7f7f;
         var target = basket.sprite.position.x;
-        console.log(target, toScreenX(x0_2));
         if(toScreenX(x0_2)-5 < target && target < toScreenX(x0_2)+5)
             line_color = 0xfa7346;
         graphics.clear();
         graphics.lineStyle(3,line_color);
-        //console.log(a, b, c, delta, x1, x2, p, q);
         if (isNaN(p) || isNaN(q))
             return;
 
-        //console.log(a, b, c, delta, x1, x2, p, q);
         var x = 0, y = 0, steps = 100;
         var step_distance = (x2 - x1) / steps;
 

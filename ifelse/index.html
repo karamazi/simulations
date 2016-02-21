@@ -174,9 +174,7 @@
             var b = get_value(inputs[2]);
             var c = get_value(inputs[3]);
             var d = get_value(inputs[4]);
-            console.log(x, a, b, c, d);
             var output = evaluate(x, a, b, c, d);
-            console.log(output);
             resultText.text.setText(output.join(""));
         }
         evalButton.update();
@@ -202,7 +200,6 @@
             input.value = 0;
             return 0;
         }
-
     }
 
 </script>

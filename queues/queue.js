@@ -40,7 +40,6 @@ Ball.prototype.moveBy = function (x, y) {
 Ball.prototype.moveTo = function (x, y) {
     var direction = new PIXI.Point(x - this.sprite.x, y - this.sprite.y);
     this.moveBy(direction.x, direction.y);
-    console.log(direction.x + " " + direction.y);
 };
 
 Ball.prototype.update = function () {
@@ -52,7 +51,6 @@ Ball.prototype.update = function () {
         this.movProgressVect.y += this.stepVect.y;
         if (Math.abs(this.movProgressVect.x) >= Math.abs(this.movVect.x)
             && Math.abs(this.movProgressVect.y) >= Math.abs(this.movVect.y)) {
-            console.log(this.movProgressVect.x, this.movVect.x);
             this.sprite.position.x-=this.movProgressVect.x-this.movVect.x;
             this.isMoving = false;
         }

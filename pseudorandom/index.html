@@ -45,7 +45,7 @@
 
     var textStyle = { font: "18px OpenSans", fill: "#369bd7", align: "left" };
     var inputX = 80;
-    var inputY = 35;
+    var inputY = 40;
     var inputDy = 30;
     var inputWidth = 30;
     var input_texts = ["m =", "a =", "c =", "s ="];
@@ -80,7 +80,7 @@
             inputs.push(newInput);
             divInputs.appendChild(newInput);
 
-            texts.push(new MyText(stage,inputX-inputWidth, inputY + i * inputDy, input_texts[i],  textStyle, false));
+            texts.push(new MyText(stage,inputX-inputWidth-5, inputY + i * inputDy, input_texts[i],  textStyle, false));
             texts.push(new MyText(stage,inputX+inputWidth+20, inputY + i * inputDy, input_descriptions[i], textStyle, false));
         }
         generatedValueDescText= new MyText(stage, 20, 230, "Wygenerowana wartość:", blueTextStyleBold, false);

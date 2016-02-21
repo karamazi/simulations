@@ -158,7 +158,6 @@
             do {
                 e = 3 + Math.floor(Math.random() * Math.sqrt(fi));
             } while (gcd(fi, e) != 1);
-            console.log(fi, e);
 
             d = getD(e, fi);
             dev1KeysText.setText("" + n + ", " + d + "\n" + n + ", " + e);
@@ -174,7 +173,6 @@
             return;
 
         var c = modexp(msg, e, n);
-        console.log(c);
         var text = "Wysyłam msg = " + msg + ". \n" +
                 "szyfruję kluczem publicznym\n" +
                 "enc = " + msg + "^" + e + " mod " + n + " = " + c;
@@ -196,7 +194,6 @@
             return;
 
         var c = modexp(msg, d, n);
-        console.log(c);
         var text = "Wysyłam msg = " + msg + ". \n" +
                 "szyfruję kluczem prywatnym\n" +
                 "enc = " + msg + "^" + d + " mod " + n + " = " + c;
@@ -250,7 +247,6 @@
         var v = [0, 1, e];
 
         while (v[2] != 0) {
-            console.log(u[2] / v[2]);
             var q = Math.floor(u[2] / v[2]);
             temp1 = u[0] - q * v[0];
             temp2 = u[1] - q * v[1];

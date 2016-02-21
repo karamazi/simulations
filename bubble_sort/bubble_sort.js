@@ -4,7 +4,7 @@ var textureError = PIXI.Texture.fromImage("imgs/blink.png");
 
 var swapEnum = Object.freeze({"FadeIn_toTemp":0, "FadeOut_toTemp":1, "FadeIn_toOne":2, "FadeOut_toOne":3, "FadeIn_fromTemp":4, "FadeOut_fromTemp":5})
 
-var ballAnchor = new PIXI.Point(0.5,0.6);
+var ballAnchor = new PIXI.Point(0.5,0.5);
 Draggable=function(stage,x,y){
 	this.sprite = new PIXI.Sprite(textureDraggable);
 	stage.addChild(this.sprite);
@@ -192,7 +192,6 @@ function bubbleSort(values){
 
 				var packed=array.toString();
 				iterations.push(packed);
-				console.log(packed);
 			}
 		}
 	}

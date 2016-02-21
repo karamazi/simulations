@@ -116,7 +116,6 @@
             if (move > 25)
                 move = 25;
             moveElement.value = move;
-            console.log(move);
 
             input = document.getElementById("in").value;
             input = input.substring(0, 100);
@@ -128,7 +127,6 @@
                 for (var i = 0; i < alphabet.length; i++) {
                     codedAlphabet.push(alphabet[(i + move) % alphabet.length]);
                 }
-                console.log(codedAlphabet);
                 codedAlphabetText.setText(codedAlphabet.join(" "));
             }
 

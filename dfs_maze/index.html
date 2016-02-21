@@ -102,7 +102,6 @@
             if (moved)
                 break;
         }
-        console.log(moved);
         while (!moved && visited.length > 0) {
             var prev = visited.pop();
             headX = prev.x;
@@ -120,7 +119,6 @@
     }
 
     function attemptMove(moveDirection) {
-        console.log(moveDirection);
         var canMove = true;
         switch (moveDirection) {
             case 1: //up
@@ -184,7 +182,6 @@
         visited.length = 0;
         headX = 2 * Math.floor(Math.random() * ((BOARD_SIZE - 1) / 2)) + 1;
         headY = 2 * Math.floor(Math.random() * ((BOARD_SIZE - 1) / 2)) + 1;
-        console.log(headX, headY);
         head.sprite.position = board[headY][headX].sprite.position;
         board[headY][headX].makeWhite();
         visited.push(board[headY][headX]);

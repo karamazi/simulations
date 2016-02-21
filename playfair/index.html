@@ -107,7 +107,6 @@
             if (index < 0) {
                 text = document.getElementById("text").value.toUpperCase();
                 text = text.replace(/\s+/g, '');
-                console.log(text);
                 if (text.length < 1)
                     return;
 
@@ -119,14 +118,12 @@
                     newText += text.charAt(i);
                 }
                 text = newText;
-                console.log(text);
                 if (text.length % 2 != 0)
                     text += "X";
                 for (var i = 0; i < text.length; i += 2) {
                     var digram = text.charAt(i) + text.charAt(i + 1);
                     digrams.push(digram);
                 }
-                console.log(digrams);
                 digramsText.setText(digrams.join(" "));
                 index++;
             } else if (index < digrams.length) {
@@ -141,12 +138,7 @@
                 var y1 = Math.floor(i1 / 5);
                 var x2 = i2 % 5;
                 var y2 = Math.floor(i2 / 5);
-                var n1 = "";
-                var n2 = "";
-                console.log(c1, x1, y1);
-                console.log(c2, x2, y2);
-
-                //jesli sa w jednej kolumnie
+                var n1, n2;
                 if (x1 == x2) {
                     if (y1 < 4) {
                         y1++;
@@ -159,10 +151,6 @@
                     } else {
                         y2 = 0;
                     }
-                    //graphics.drawRect(
-                    //10 + x1 * 25, 10 + y1 * 30,
-                    //25, (y1-y2)*20);
-                    //jesli sa w jednym wierszu
                 } else if (y1 == y2) {
                     if (x1 < 4) {
                         x1++;
@@ -175,7 +163,6 @@
                     } else {
                         x2 = 0;
                     }
-                    //jesli sa w prostokacie
                 } else {
                     var tmp = x1;
                     x1 = x2;
@@ -218,13 +205,11 @@
 
         }
         codeword = cwArray.join("");
-        console.log(codeword);
         for (var i = 0; i < alphabet.length; i++) {
             var a = alphabet[i];
             if (!inArray(a, codeMatrix))
                 codeMatrix.push(a);
         }
-        console.log(codeMatrix);
         var codeText = "";
         for (var i = 0; i < codeMatrix.length; i++) {
             codeText += codeMatrix[i];

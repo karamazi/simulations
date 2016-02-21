@@ -1,4 +1,7 @@
-﻿Neuron = function (stage, x, y) {
+﻿var blueTextStyle = { font: "17px OpenSans", fill: "#369bd7", align: "left" };
+var blueTextStyleBold = { font: "17px OpenSans Bold", fill: "#369bd7", align: "left" };
+
+Neuron = function (stage, x, y) {
 
     this.weight1 = 0;
     this.weight2 = 0;
@@ -10,7 +13,7 @@
     this.learningFactor = 0;
 
     var textSpacing = 30;
-    var valuesDistance = 250;
+    var valuesDistance = 220;
     this.inputTextDesc = new MyText(stage, x, y, "Sygnał wejściowy:", blueTextStyle, false);
     this.inputText = new MyText(stage, x + valuesDistance, y, "", blueTextStyleBold, false);
     this.weightTextDesc = new MyText(stage, x, y + textSpacing, "Wagi wejściowe:", blueTextStyle, false);

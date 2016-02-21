@@ -142,7 +142,6 @@ function animate() {
                 var value = v1 * 45 + v2;
                 var bin = toBinary(value, 11);
                 values.push(value);
-                console.log(v1, v2, value);
                 valuesText.setText("'" + digram[0] + "'=" + v1 + "\n'" +
                 digram[1] + "'=" + v2 + "\n" +
                 v1 + "*45" + "+" + v2 + "=" + value + "\n"
@@ -270,8 +269,6 @@ function toBinary(n, length) {
         }
         bin = prefix + bin;
     }
-
-    console.log(bin);
     return bin;
 }
 

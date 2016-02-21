@@ -133,7 +133,6 @@ Movable=function(stage,x,y){
 
 	this.sprite.click=this.sprite.tap=function(data){
 		self.isClicked=true;
-		console.log("derp");
 	}
 
 	stage.addChild(this.sprite);

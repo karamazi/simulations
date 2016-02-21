@@ -81,7 +81,6 @@
 		if (!tree.isSearching) {
 			var searchValue = document.getElementById("search").value;
 			document.getElementById("search").value = "";
-			console.log(searchValue);
 			if(searchValue && tree.leaves.length>0)
 				tree.remove(searchValue);
 		}

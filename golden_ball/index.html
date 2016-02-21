@@ -81,16 +81,12 @@
 	    		episode++;
 				guideText.setText(info_text[episode]);
 	    		episodeDone=false;
-	    		console.log("New episode: "+episode);
 	    	}
 	    	else if(episode==episodeEnum.Divide){
 	    		episode++;
 	    		guideText.setText(info_text[episode]);
-	    		//episodeDone=false;
-	    		console.log("New episode: "+episode);
 
-	    		var tmpArray=[]
-	    		//deaktywacja pozostalego zbioru
+	    		var tmpArray=[];
 	    		for(var i=0;i<balls.length;i++){
 	    			if(!(i>=startIndex && i<endIndex)){
 	    				balls[i].makeInactive();
@@ -107,7 +103,6 @@
 	    			episode++;
 	    		}
 				guideText.setText(info_text[episode]);
-	    		console.log("New episode: "+episode);
 	    	}
 	    }
 
@@ -115,7 +110,6 @@
 	    if(episode==episodeEnum.SetGolden && !episodeDone){
 	    	for(var i=0;i<balls.length;i++){
 	    		if(balls[i].isClicked){
-	    			console.log("herp");
 	    			balls[i].makeGolden();
 	    			episodeDone=true;
 	    			break;
@@ -127,7 +121,6 @@
 		    	startIndex=balls.length/2;;
 		    	endIndex = balls.length;
 		    	for(var i=0;i<balls.length/2;i++){
-		    		//zlota kula jest w pierwszej polowie => zmien zakres
 		    		if(balls[i].isGolden){
 		    			startIndex=0;
 		    			endIndex=balls.length/2;
@@ -173,7 +166,6 @@
 		episodeDone=false;
 		guideText.setText(info_text[episode], msgEnum.Info);
 		balls.length=0;
-		console.log(inital_balls.length);
 		for(var i=0;i<inital_balls.length;i++){
 			inital_balls[i].reset(ball_x+i*ball_dx,ball_y);
 			balls.push(inital_balls[i]);

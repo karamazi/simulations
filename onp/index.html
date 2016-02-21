@@ -103,9 +103,8 @@
         }
 
         if (onpButton.isClicked && index >= 0 && index < input.length && !evalInit) {
-            console.log("derp");
             var char = input[index];
-            //walimy liczbe na wyjscie
+
             if (!isNaN(parseInt(char))) {
                 output.push(char);
             } else if (char == "(") {
@@ -122,7 +121,6 @@
                 output.push(char);
             } else {
                 var curPrio = prio[char];
-                console.log("Prio:" + curPrio);
 
                 if (stack.length > 0) {
                     var sign = stack[stack.length - 1];
@@ -242,7 +240,6 @@
             }
             input.push(newChar);
         }
-        console.log(input);
         onpText.setText(input.join(""));
         index = 0;
     }

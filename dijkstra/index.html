@@ -145,11 +145,6 @@
             shortestPathGraphics.lineTo(prevNode.x+3*dx/7, prevNode.y+3*dy/7);
             shortestPathGraphics.moveTo(prevNode.x+4*dx/7, prevNode.y+4*dy/7);
             shortestPathGraphics.lineTo(curNode.x, curNode.y);
-            /*graphics.moveTo(n1.x, n1.y);
-            graphics.lineTo(n2.x-4*dx/7, n2.y-4*dy/7);
-
-            graphics.moveTo(n2.x-3*dx/7, n2.y-3*dy/7);
-            graphics.lineTo(n2.x, n2.y);*/
         }
         stepButton.setActive(false);
     }
@@ -194,6 +189,7 @@
         }
         if (randomizeButton.isClicked) {
             setupRandomDistances(connectionTexts, nodes);
+            reset();
         }
         if (stepButton.isClicked) {
             step();
@@ -220,6 +216,8 @@
         shortestPathGraphics.clear();
         randomizeButton.setActive(true);
         stepButton.setActive(true);
+        stage.removeChild(help);
+        stage.addChild(help);
     }
 
     function createNodes() {
@@ -278,8 +276,6 @@
             graphics.moveTo(n2.x-3*dx/7, n2.y-3*dy/7);
             graphics.lineTo(n2.x, n2.y);
         }
-
-
     }
 
 </script>
