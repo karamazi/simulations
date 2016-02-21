@@ -85,89 +85,89 @@ Button.type = Object.freeze({
 Button.prototype.setupTextures = function (text) {
     switch (text) {
         case Button.type.Help:
-            this.textureButton = textureHelpButton;
-            this.textureButtonOver = textureHelpButtonOver;
+            this.textureButton = common_texture("button_help.png");
+            this.textureButtonOver = common_texture("button_help_hover.png");
             break;
 
         case Button.type.Plus:
-            this.textureButton = texturePlusButton;
-            this.textureButtonOver = texturePlusButtonOver;
+            this.textureButton = common_texture("button_plus.png");
+            this.textureButtonOver = common_texture("button_plus_hover.png");
             break;
         case Button.type.Minus:
-            this.textureButton = textureMinusButton;
-            this.textureButtonOver = textureMinusButtonOver;
+            this.textureButton = common_texture("button_minus.png");
+            this.textureButtonOver = common_texture("button_minus_hover.png");
             break;
 
         case Button.type.Reset:
-            this.textureButton = textureResetButton;
-            this.textureButtonOver = textureResetButtonOver;
+            this.textureButton = common_texture("button_reset.png");
+            this.textureButtonOver = common_texture("button_reset_hover.png");
             break;
 
         case Button.type.Next:
-            this.textureButton = textureNextButton;
-            this.textureButtonOver = textureNextButtonOver;
+            this.textureButton = common_texture("button_next.png");
+            this.textureButtonOver = common_texture("button_next_hover.png");
             break;
 
         case Button.type.Previous:
-            this.textureButton = texturePreviousButton;
-            this.textureButtonOver = texturePreviousButtonOver;
+            this.textureButton = common_texture("button_previous.png");
+            this.textureButtonOver = common_texture("button_previous_hover.png");
             break;
 
         case Button.type.Reroll:
-            this.textureButton = textureRerollButton;
-            this.textureButtonOver = textureRerollButtonOver;
+            this.textureButton = common_texture("button_reroll.png");
+            this.textureButtonOver = common_texture("button_reroll_hover.png");
             break;
 
         case Button.type.PlusText:
-            this.textureButton = texturePlusTextButton;
-            this.textureButtonOver = texturePlusTextButtonOver;
+            this.textureButton = common_texture("button_plus_text.png");
+            this.textureButtonOver = common_texture("button_plus_text_hover.png");
             break;
 
         case Button.type.Encode:
-            this.textureButton = textureEncodeButton;
-            this.textureButtonOver = textureEncodeButtonOver;
+            this.textureButton = common_texture("button_encode.png");
+            this.textureButtonOver = common_texture("button_encode_hover.png");
             break;
 
         case Button.type.Decode:
-            this.textureButton = textureDecodeButton;
-            this.textureButtonOver = textureDecodeButtonOver;
+            this.textureButton = common_texture("button_decode.png");
+            this.textureButtonOver = common_texture("button_decode_hover.png");
             break;
 
         case Button.type.Onp:
-            this.textureButton = textureOnpButton;
-            this.textureButtonOver = textureOnpButtonOver;
+            this.textureButton = common_texture("button_onp.png");
+            this.textureButtonOver = common_texture("button_onp_hover.png");
             break;
 
         case Button.type.Load:
-            this.textureButton = textureLoadButton;
-            this.textureButtonOver = textureLoadButtonOver;
+            this.textureButton = common_texture("button_load.png");
+            this.textureButtonOver = common_texture("button_load_hover.png");
             break;
 
         case Button.type.Filter:
-            this.textureButton = textureFilterButton;
-            this.textureButtonOver = textureFilterButtonOver;
+            this.textureButton = common_texture("button_filter.png");
+            this.textureButtonOver = common_texture("button_filter_hover.png");
             break;
 
         case Button.type.Draw:
-            this.textureButton = textureDrawButton;
-            this.textureButtonOver = textureDrawButtonOver;
+            this.textureButton = common_texture("button_draw.png");
+            this.textureButtonOver = common_texture("button_draw_hover.png");
             break;
 
         case Button.type.Up:
-            this.textureButton = textureUpButton;
-            this.textureButtonOver = textureUpButtonOver;
+            this.textureButton = common_texture("button_up.png");
+            this.textureButtonOver = common_texture("button_up_hover.png");
             break;
         case Button.type.Down:
-            this.textureButton = textureDownButton;
-            this.textureButtonOver = textureDownButtonOver;
+            this.textureButton = common_texture("button_down.png");
+            this.textureButtonOver = common_texture("button_down_hover.png");
             break;
         case Button.type.Left:
-            this.textureButton = textureLeftButton;
-            this.textureButtonOver = textureLeftButtonOver;
+            this.textureButton = common_texture("button_left.png");
+            this.textureButtonOver = common_texture("button_left_hover.png");
             break;
         case Button.type.Right:
-            this.textureButton = textureRightButton;
-            this.textureButtonOver = textureRightButtonOver;
+            this.textureButton = common_texture("button_right.png");
+            this.textureButtonOver = common_texture("button_right_hover.png");
             break;
 
         default:
