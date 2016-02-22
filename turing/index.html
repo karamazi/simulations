@@ -91,6 +91,7 @@
         row++;
     }
     var optionsInput = document.getElementById("options");
+    var loadButtonE = document.getElementById("load_button");
 
     // create an new instance of a pixi stage
     var stage = new PIXI.Stage(0xffffff);
@@ -211,9 +212,11 @@
         if (help.visible) {
             optionsInput.style.display = "None";
             divInputs.style.display = "None";
+            loadButtonE.style.display = "None";
         } else {
             optionsInput.style.display = "";
             divInputs.style.display = "";
+            loadButtonE.style.display = "";
         }
 
         // render the stage

@@ -37,7 +37,7 @@
 
 </head>
 <body>
-<select id="img_select">
+<select id="img_select" onchange="reset()">
     <option value="circle">Koło</option>
     <option value="rabbit">Królik</option>
 </select>
@@ -93,7 +93,7 @@
     var helpButton;
     var resetButton;
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
     new Logo(stage);
 
@@ -103,7 +103,6 @@
         mcSurfaceText = new MyText(stage, text_x, text_y + text_dy * 2, "Wyliczona powierzchnia: " + mcSurface, blueTextStyle, false);
         realSText = new MyText(stage, text_x, text_y + text_dy * 3, "Pradziwa powierzchnia: " + realSurface, blueTextStyle, false);
         totalSText = new MyText(stage, text_x, text_y + text_dy * 4, "Powierzchnia obrazka: " + (realSurface + outsidePoints), blueTextStyle, false);
-
 
         var button_x = 550;
         var button_y = 170;
@@ -116,11 +115,11 @@
         tenThousandPointB = new Button(stage, button_x, button_y + button_dy * 4, "10 000", Button.type.PlusText);
         hundredThousandPointsB = new Button(stage, button_x, button_y + button_dy * 5, "100 000", Button.type.PlusText);
 
-
-        //help
         helpButton = new Button(stage, button_x, 50, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
         resetButton = new Button(stage, button_x, 91, "Od nowa", Button.type.Reset);
+
+        stage.addChild(help);
         requestAnimFrame(animate);
     }
     function animate() {
@@ -189,7 +188,7 @@
     }
 
     function loadImage(path) {
-        base_image = new Image();
+        var base_image = new Image();
         base_image.src = path;
         base_image.onload = function () {
             shapeCtx.clearRect(0, 0, shapeCanvas.width, shapeCanvas.height);

@@ -52,7 +52,8 @@
     var stage = new PIXI.Stage(0xffffff);
     var renderer = PIXI.autoDetectRenderer(640, 480);
     document.body.appendChild(renderer.view);
-
+    var codewordElement = document.getElementById("codeword");
+    var textElement = document.getElementById("text");
 
     // load everything below:
     var monoStyle = {font: "bold 25px Monospace", fill: "#ffffcc", align: "left"};
@@ -76,7 +77,7 @@
     stage.addChild(graphics);
 
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
     new Logo(stage);
 
@@ -91,6 +92,7 @@
         nextButton = new Button(stage, 550, 132, "Krok", Button.type.Next);
 
         setUp();
+        stage.addChild(help);
         requestAnimFrame(animate);
     }
 
@@ -105,7 +107,7 @@
         }
         if (nextButton.isClicked) {
             if (index < 0) {
-                text = document.getElementById("text").value.toUpperCase();
+                text = textElement.value.toUpperCase();
                 text = text.replace(/\s+/g, '');
                 if (text.length < 1)
                     return;
@@ -182,6 +184,13 @@
         nextButton.update();
         helpButton.update();
         help.visible = helpButton.sprite.isOver;
+        if(help.visible){
+            codewordElement.style.display="none";
+            textElement.style.display="none";
+        }else{
+            codewordElement.style.display="";
+            textElement.style.display="";
+        }
         // render the stage
         renderer.render(stage);
     }
@@ -192,7 +201,7 @@
         digramsText.setText("");
         codedDigramsText.setText("");
         index = -1;
-        var tmpcw = document.getElementById("codeword").value;
+        var tmpcw = codewordElement.value;
         tmpcw = tmpcw.split(" ")[0];
         tmpcw = tmpcw.toUpperCase();
         var cwArray = [];

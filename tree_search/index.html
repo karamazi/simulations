@@ -22,7 +22,7 @@
 			width: 150px;
 		}
 		#button-ok{
-			left: 160px;
+			left: 155px;
 			top: 60px;
 		}
 	</style>
@@ -70,7 +70,7 @@
 
 
 	var help=new PIXI.Sprite(textureHelp);
-	stage.addChild(help);
+
 
 	function init(){
 		helpButton=new Button(stage, 710,50,"Pomoc", Button.type.Help);
@@ -79,6 +79,7 @@
 		resetButton=new Button(stage,710,132,"Od nowa", Button.type.Reset);
 
 		initTree();
+		stage.addChild(help);
 		requestAnimFrame(animate);
 	}
 
@@ -93,12 +94,13 @@
 	function animate() {
 	    requestAnimFrame( animate );
 	    if(rerollButton.isClicked){
-	        var newValues = document.getElementById("numbers").value.split(" ");
-	        for (var i = 0; i < newValues.length; i++) {
-                if(newValues.length>2)
-	                newValues[i] = newValues[i].substring(0, 2);
-	        }
-	    	initTree(newValues);
+			var newValues = document.getElementById("numbers").value.split(" ");
+			var values = [];
+			for (var i = 0; i < newValues.length; i++) {
+				if (!isNaN(parseInt(newValues[i])))
+					values.push(newValues[i].substring(0, 2));
+			}
+			initTree(values);
 	    }
 
 	    if(resetButton.isClicked){

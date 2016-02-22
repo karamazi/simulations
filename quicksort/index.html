@@ -246,6 +246,8 @@ function setUp() {
     left = 0;
     right = balls.length - 1;
 
+    stage.removeChild(help);
+    stage.addChild(help);
     quicksort(left, right);
 }
 function quicksort(l, r) {

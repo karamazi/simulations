@@ -69,7 +69,7 @@
     var outText;
 
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
     new Logo(stage);
 
@@ -92,6 +92,7 @@
 
 
         setUp();
+        stage.addChild(help);
         requestAnimFrame(animate);
     }
 

@@ -68,7 +68,7 @@ stage.addChild(graphics);
 //help
 
 var help = new PIXI.Sprite(textureHelp);
-stage.addChild(help);
+
 
 function init() {
     helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
@@ -80,7 +80,7 @@ function init() {
     valuesText = new MyText(stage, 130, 75, "", blueTextStyle, false);
 
     setUp();
-
+    stage.addChild(help);
     requestAnimFrame(animate);
 }
 function animate() {
@@ -186,6 +186,9 @@ function animate() {
 
             updatePairsText();
             parentLeaves[parentKey] = p;
+
+            stage.removeChild(help);
+            stage.addChild(help);
         }
 
     }

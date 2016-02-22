@@ -90,13 +90,15 @@
 
     //help
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
     function init() {
         sqrtText = new MyText(stage, t_x, t_y - t_dy, "", blueMonoSpacedStyle, false);
         helpButton = new Button(stage, 550, 150, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
         nextButton = new Button(stage, 550, 191, "Dalej", Button.type.Next);
         restartButton = new Button(stage, 550, 232, "Od nowa", Button.type.Reset);
+
+        stage.addChild(help);
         setUp();
         requestAnimFrame(animate);
     }
@@ -139,6 +141,7 @@
 
         //pobranie nowego
         var rootedValueStr = valueElement.value;
+
         var decimalPoints = parseInt(document.getElementById("decimals").value);
         parts = rootedValueStr.split(".");
 
@@ -179,6 +182,8 @@
         var dt_y = t_y + divisionText.length * t_dy;
         var div_text = new MyText(stage, dt_x, dt_y, text, blueMonoSpacedStyle, false);
         divisionText.push(div_text);
+        stage.removeChild(help);
+        stage.addChild(help);
     }
 
     function nextStep(ind) {

@@ -115,7 +115,7 @@
     //help
     var helpButton;
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
     new Logo(stage, 320, 615);
 
@@ -140,6 +140,8 @@
         //help
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
+        stage.addChild(help);
+
         requestAnimFrame(animate);
     }
 

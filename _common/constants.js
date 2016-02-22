@@ -18,7 +18,6 @@ var isFirefox = typeof InstallTrigger !== 'undefined';
 if(isFirefox){
     centeredTextAnchor.y=0.3;
 }
-console.log(navigator);
 
 var defaultTextStyle = { font: "16px OpenSans", fill: "#ffffff", align: "left" };
 var blueTextStyle = { font: "20px OpenSans", fill: "#369bd7", align: "left" };

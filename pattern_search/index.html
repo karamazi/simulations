@@ -51,7 +51,8 @@
     var renderer = PIXI.autoDetectRenderer(640, 480);
     document.body.appendChild(renderer.view);
 
-
+    var patternElement = document.getElementById("pattern");
+    var textElement = document.getElementById("text");
     var text_x = 30;
     var text_dx = 15;
     var text_y = 120;
@@ -83,7 +84,7 @@
     new Logo(stage);
     //help
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
 
 
@@ -94,9 +95,10 @@
         helpButton = new Button(stage, 560, 150, "Pomoc", Button.type.Help);
         helpButton.sprite.isOver = false;
 
-        nextButton = new Button(stage, 560, 194, "Dalej", Button.type.Next);
-        resetButton = new Button(stage, 560, 235, "Od nowa", Button.type.Reset);
+        nextButton = new Button(stage, 560, 191, "Dalej", Button.type.Next);
+        resetButton = new Button(stage, 560, 232, "Od nowa", Button.type.Reset);
         setUp();
+        stage.addChild(help);
         requestAnimFrame(animate);
     }
 
@@ -131,6 +133,13 @@
         nextButton.update();
         helpButton.update();
         help.visible = helpButton.sprite.isOver;
+        if(help.visible){
+            patternElement.style.display="none";
+            textElement.style.display="none";
+        }else{
+            patternElement.style.display="";
+            textElement.style.display="";
+        }
         // render the stage
         renderer.render(stage);
     }

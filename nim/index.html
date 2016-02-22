@@ -57,7 +57,7 @@
     //help
     var helpButton;
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
     function init(){
         var bigBlueTextStyle=blueTextStyle;
@@ -67,6 +67,8 @@
         helpButton.sprite.isOver = false;
         nextButton = new Button(stage, 550, 151, "Dalej", Button.type.Next);
         resetButton = new Button(stage, 550, 192, "Od nowa", Button.type.Reset);
+
+        stage.addChild(help);
         requestAnimFrame(animate);
     }
 

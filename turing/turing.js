@@ -31,7 +31,7 @@ Cell = function (stage, x, y, value) {
     this.stage.addChild(this.sprite);
 
     this.value = value;
-    this.text = new MyText(stage, x, y, value, turingTextStyle);
+    this.text = new MyText(stage, x, y, value, turingTextStyle, centeredAnchor);
 };
 Cell.prototype.update = function () {
     this.isClicked = false;
@@ -81,7 +81,7 @@ Head = function (stage, x, y, state) {
     this.stage.addChild(this.sprite);
 
     
-    this.text = new MyText(stage, x, y, state, turingTextStyle);
+    this.text = new MyText(stage, x, y, state, turingTextStyle, centeredAnchor);
 };
 
 Head.prototype.setState=function(state){
@@ -242,11 +242,10 @@ MiniButton = function (stage, x, y, text) {
 
     this.sprite.position.x = x;
     this.sprite.position.y = y;
-    this.sprite.anchor.x = 0.5;
-    this.sprite.anchor.y = 0.5;
+    this.sprite.anchor = centeredAnchor;
 
     this.text.position = this.sprite.position;
-    this.text.anchor = this.sprite.anchor;
+    this.text.anchor = centeredTextAnchor;
 
     // make the button interactive..
     this.sprite.interactive = true;

@@ -6,7 +6,7 @@ Switch=function(stage,x,y){
     stage.addChild(this.sprite);
 
     this.text = new MyText(stage, x-45, y, "Start");
-    this.text.text.anchor = new PIXI.Point(0,0.5);
+    this.text.text.anchor = new PIXI.Point(0, centeredTextAnchor.y);
 
     this.isClicked=false;
     var self=this;

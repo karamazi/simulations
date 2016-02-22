@@ -76,7 +76,7 @@ var nextButton;
 var helpButton;
 
 var help = new PIXI.Sprite(textureHelp);
-stage.addChild(help);
+
 
 new Logo(stage);
 
@@ -100,6 +100,8 @@ function init(){
     restartButton = new Button(stage, 95, 132, "Od nowa", Button.type.Reset);
 
     loadAndPreprocess();
+
+    stage.addChild(help);
     requestAnimFrame(animate);
 
 //help

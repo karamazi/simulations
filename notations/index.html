@@ -74,7 +74,7 @@
     var multBackText = null;
 
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
     function init(){
         helpButton = new Button(stage, 560, 160, "Pomoc", Button.type.Help);
@@ -84,6 +84,7 @@
         var div = new Division(stage, x_pos, y_pos, initial_value, base);
         divs.push(div);
         lastDiv = div;
+        stage.addChild(help);
 
         requestAnimFrame(animate);
     }

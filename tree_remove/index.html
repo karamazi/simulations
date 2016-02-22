@@ -1,148 +1,156 @@
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
-	<title>Usuwanie z drzewa binarnego</title>
-	<link rel="stylesheet" type="text/css" href="../_common/styles.css">
-	<style>
-		body {
-			margin: 0;
-			padding: 0;
-			background-color: #000000;
-		}
-		#numbers{
-			position: absolute;
-			top: 30px;
-			left: 30px;
-			width: 150px;
-		}
-		#search{
-			position: absolute;
-			top: 60px;
-			left: 30px;
-			width: 150px;
-		}
-		#button-ok{
-			top: 60px;
-			left: 160px
-		}
-	</style>
+    <title>Usuwanie z drzewa binarnego</title>
+    <link rel="stylesheet" type="text/css" href="../_common/styles.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
 
-	<script>
-		var WebFontConfig = {
-			custom: {
-				families: ["OpenSans", "Ubuntu"],
-				urls: ["../_common/styles.css"]
-			},
-			active: function () {
-				init()
-			}
-		};
-	</script>
-	<script src="../_common/webfont.js"></script>
-	<script src="../_common/pixi.js"></script>
-	<script src="../_common/constants.js"></script>
-	<script src="../_common/button.js"></script>
-	<script src="../_common/text.js"></script>
-	<script src="tree_remove.js"></script>
+        #numbers {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            width: 150px;
+        }
+
+        #search {
+            position: absolute;
+            top: 60px;
+            left: 30px;
+            width: 150px;
+        }
+
+        #button-ok {
+            top: 60px;
+            left: 155px
+        }
+    </style>
+
+    <script>
+        var WebFontConfig = {
+            custom: {
+                families: ["OpenSans", "Ubuntu"],
+                urls: ["../_common/styles.css"]
+            },
+            active: function () {
+                init()
+            }
+        };
+    </script>
+    <script src="../_common/webfont.js"></script>
+    <script src="../_common/pixi.js"></script>
+    <script src="../_common/constants.js"></script>
+    <script src="../_common/button.js"></script>
+    <script src="../_common/text.js"></script>
+    <script src="tree_remove.js"></script>
 </head>
 <body>
-	<input type="input" id="numbers"/>
-    <input type="input" id="search" />
-	<input type="button" class="button" id="button-ok", value="OK" onclick="remove_element()"/>
-	<script>
+<input type="input" id="numbers"/>
+<input type="input" id="search"/>
+<input type="button" class="button" id="button-ok" , value="OK" onclick="remove_element()"/>
+<script>
 
-	// create an new instance of a pixi stage
-	var stage = new PIXI.Stage(0xffffff);
-	var renderer = PIXI.autoDetectRenderer(800, 480);
-	var graphics = new PIXI.Graphics();
-	stage.addChild(graphics);
-	document.body.appendChild(renderer.view);
+    // create an new instance of a pixi stage
+    var stage = new PIXI.Stage(0xffffff);
+    var renderer = PIXI.autoDetectRenderer(800, 480);
+    var graphics = new PIXI.Graphics();
+    stage.addChild(graphics);
+    document.body.appendChild(renderer.view);
 
-	var	resetButton;
-	var rerollButton;
-	var helpButton;
+    var resetButton;
+    var rerollButton;
+    var helpButton;
 
-	var prevValues=null;
-	var tree=null;
-        
-	var help=new PIXI.Sprite(textureHelp);
-	stage.addChild(help);
+    var prevValues = null;
+    var tree = null;
 
-	function init(){
-		helpButton=new Button(stage, 710,50,"Pomoc", Button.type.Help);
-		helpButton.sprite.isOver=false;
-		rerollButton=new Button(stage,710,91,"Przetasuj", Button.type.Reroll);
-		resetButton=new Button(stage,710,132,"Od nowa", Button.type.Reset);
+    var help = new PIXI.Sprite(textureHelp);
+    stage.addChild(help);
 
-		initTree();
-		requestAnimFrame(animate);
-	}
-	function remove_element(){
-		if (!tree.isSearching) {
-			var searchValue = document.getElementById("search").value;
-			document.getElementById("search").value = "";
-			if(searchValue && tree.leaves.length>0)
-				tree.remove(searchValue);
-		}
-	}
+    function init() {
+        helpButton = new Button(stage, 710, 50, "Pomoc", Button.type.Help);
+        helpButton.sprite.isOver = false;
+        rerollButton = new Button(stage, 710, 91, "Przetasuj", Button.type.Reroll);
+        resetButton = new Button(stage, 710, 132, "Od nowa", Button.type.Reset);
 
-	function animate() {
-	    requestAnimFrame( animate );
+        initTree();
+        requestAnimFrame(animate);
+    }
+    function remove_element() {
+        if (!tree.isSearching) {
+            var searchValue = document.getElementById("search").value;
+            document.getElementById("search").value = "";
+            if (searchValue && tree.leaves.length > 0)
+                tree.remove(searchValue);
+        }
+    }
 
+    function animate() {
+        requestAnimFrame(animate);
 
-	    if(rerollButton.isClicked){
-	    	initTree();
-	    }
+        if (rerollButton.isClicked) {
+            var newValues = document.getElementById("numbers").value.split(" ");
+            var values = [];
+            for (var i = 0; i < newValues.length; i++) {
+                if (!isNaN(parseInt(newValues[i])))
+                    values.push(newValues[i].substring(0, 2));
+            }
+            initTree(values);
+        }
 
-	    if(resetButton.isClicked){
-	        initTree(prevValues);
-	    }
-	    help.visible=helpButton.sprite.isOver;
-		
-	    // loop everything here:
-	    resetButton.update();
-	    rerollButton.update();
-	    helpButton.update();
-	    tree.update();
-	    // render the stage
-	    renderer.render(stage);
-	}
+        if (resetButton.isClicked) {
+            initTree(prevValues);
+        }
+        help.visible = helpButton.sprite.isOver;
 
-	function initTree(values){
-		if(values==undefined || values.length!=7){
-			var numOfNodes=7;
-			var max_value=10;
-			values=[];
-            
-            var valString=""
-			for(var i=0;i<numOfNodes;i++){
-				var value=0;
-				do{
-				    value = Math.floor((Math.random() * max_value));
-				}while(values.indexOf(value)!=-1);
-				values.push(value);
-				valString += value;
-				if(i!=numOfNodes-1)
-				    valString+=" ";
-			}
-			document.getElementById("numbers").value = valString;
-		}
-		
-		graphics.clear();
-		if(tree!=null){
-		    tree.clean();
-		    tree = new Tree(stage, graphics, 400, 100, values);
-		}	
-		else
-			tree=new Tree(stage,graphics,400,100,values);
-		prevValues = [];
-		for (var i = 0; i < values.length; i++)
-		    prevValues.push(values[i]);
+        // loop everything here:
+        resetButton.update();
+        rerollButton.update();
+        helpButton.update();
+        tree.update();
+        // render the stage
+        renderer.render(stage);
+    }
 
-		tree.instantBuild();
-	}
+    function initTree(values) {
+        if (values == undefined || values.length != 7) {
+            var numOfNodes = 7;
+            var max_value = 10;
+            values = [];
 
-	</script>
+            var valString = ""
+            for (var i = 0; i < numOfNodes; i++) {
+                var value = 0;
+                do {
+                    value = Math.floor((Math.random() * max_value));
+                } while (values.indexOf(value) != -1);
+                values.push(value);
+                valString += value;
+                if (i != numOfNodes - 1)
+                    valString += " ";
+            }
+            document.getElementById("numbers").value = valString;
+        }
 
-	</body>
+        graphics.clear();
+        if (tree != null) {
+            tree.clean();
+            tree = new Tree(stage, graphics, 400, 100, values);
+        }
+        else
+            tree = new Tree(stage, graphics, 400, 100, values);
+        prevValues = [];
+        for (var i = 0; i < values.length; i++)
+            prevValues.push(values[i]);
+
+        tree.instantBuild();
+    }
+
+</script>
+
+</body>
 </html>

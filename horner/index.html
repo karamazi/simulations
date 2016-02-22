@@ -51,7 +51,8 @@
     var stage = new PIXI.Stage(0xffffff);
     var renderer = PIXI.autoDetectRenderer(640, 480);
     document.body.appendChild(renderer.view);
-
+    var valueElement = document.getElementById("value");
+    var polynominalElement = document.getElementById("polynominal");
 
     // load everything below:
     var xVal = 0;
@@ -67,7 +68,7 @@
     var polyText;
 
     var help = new PIXI.Sprite(textureHelp);
-    stage.addChild(help);
+
 
     function init() {
         helpButton = new Button(stage, 550, 50, "Pomoc", Button.type.Help);
@@ -75,6 +76,7 @@
         calcButton = new Button(stage, 550, 91, "Oblicz", Button.type.PlusText);
 
         polyText = new MyText(stage, 30, 110, "", blueTextStyle, false);
+        stage.addChild(help);
         requestAnimFrame(animate);
     }
     function animate() {
@@ -91,19 +93,27 @@
 
         helpButton.update();
         help.visible = helpButton.sprite.isOver;
+        if(help.visible){
+            valueElement.style.display="none";
+            polynominalElement.style.display="none";
+        }else{
+            valueElement.style.display="";
+            polynominalElement.style.display="";
+        }
+
         // render the stage
         renderer.render(stage);
     }
     function initValues() {
-        xVal = parseInt(document.getElementById("value").value);
+        xVal = parseInt(valueElement.value);
 
         if (isNaN(xVal)) {
             xVal = 0;
-            document.getElementById("value").value = xVal;
+            valueElement.value = xVal;
         }
 
         polynominal = [];
-        var tmpPoly = document.getElementById("polynominal").value;
+        var tmpPoly = polynominalElement.value;
         tmpPoly = tmpPoly.split(" ");
         for (var i = 0; i < tmpPoly.length; i++) {
             var coef = tmpPoly[i];
@@ -135,6 +145,8 @@
         }
         var resultText = new MyText(stage, text_x, text_y + text_dy * (i + 1), "Wartosc wielomianu dla argumentu " + xVal + " wynosi " + result, blueTextStyle, false);
         iterationTexts.push(resultText);
+        stage.removeChild(help);
+        stage.addChild(help);
     }
 
     function createPolyText(values) {

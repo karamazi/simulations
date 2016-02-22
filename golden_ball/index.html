@@ -64,13 +64,15 @@
 
 	var helpScreen=new PIXI.Sprite(textureHelp);
 	helpScreen.visible=false;
-	stage.addChild(helpScreen);
+
 
 	function init(){
 		nextEpButton=new Button(stage,550,ball_y+41,"Dalej", Button.type.Next);
 		resetButton=new Button(stage,550,ball_y,"Od Nowa", Button.type.Reset);
 		helpButton=new Button(stage,550,ball_y-41,"Pomoc", Button.type.Help);
 		setupBalls();
+
+		stage.addChild(helpScreen);
 		requestAnimFrame(animate);
 	}
 
