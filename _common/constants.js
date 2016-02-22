@@ -1,61 +1,6 @@
 var textureButton = common_texture("button.png");
 var textureButtonOver =common_texture("buttonOver.png");
 
-var textureHelpButton = common_texture("button_help.png");
-var textureHelpButtonOver =common_texture("button_help_hover.png");
-
-var texturePlusButton = common_texture("button_plus.png");
-var texturePlusButtonOver =common_texture("button_plus_hover.png");
-
-var texturePlusTextButton = common_texture("button_plus_text.png");
-var texturePlusTextButtonOver =common_texture("button_plus_text_hover.png");
-
-var textureMinusButton = common_texture("button_minus.png");
-var textureMinusButtonOver =common_texture("button_minus_hover.png");
-
-var textureResetButton = common_texture("button_reset.png");
-var textureResetButtonOver =common_texture("button_reset_hover.png");
-
-var textureNextButton = common_texture("button_next.png");
-var textureNextButtonOver =common_texture("button_next_hover.png");
-
-var texturePreviousButton = common_texture("button_previous.png");
-var texturePreviousButtonOver =common_texture("button_previous_hover.png");
-
-var textureRerollButton = common_texture("button_reroll.png");
-var textureRerollButtonOver =common_texture("button_reroll_hover.png");
-
-var textureEncodeButton = common_texture("button_encode.png");
-var textureEncodeButtonOver =common_texture("button_encode_hover.png");
-
-var textureDecodeButton = common_texture("button_decode.png");
-var textureDecodeButtonOver =common_texture("button_decode_hover.png");
-
-var textureOnpButton = common_texture("button_onp.png");
-var textureOnpButtonOver =common_texture("button_onp_hover.png");
-
-var textureLoadButton = common_texture("button_load.png");
-var textureLoadButtonOver =common_texture("button_load_hover.png");
-
-var textureFilterButton = common_texture("button_filter.png");
-var textureFilterButtonOver =common_texture("button_filter_hover.png");
-
-var textureDrawButton = common_texture("button_draw.png");
-var textureDrawButtonOver =common_texture("button_draw_hover.png");
-
-var textureUpButton = common_texture("button_up.png");
-var textureUpButtonOver =common_texture("button_up_hover.png");
-
-var textureDownButton = common_texture("button_down.png");
-var textureDownButtonOver =common_texture("button_down_hover.png");
-
-var textureRightButton = common_texture("button_right.png");
-var textureRightButtonOver =common_texture("button_right_hover.png");
-
-var textureLeftButton = common_texture("button_left.png");
-var textureLeftButtonOver =common_texture("button_left_hover.png");
-
-
 var textureSwitch = common_texture("start.png");
 var textureSwitchDown = common_texture("stop.png");
 var textureSwitchOver = common_texture("start_hover.png");
@@ -68,6 +13,12 @@ var textureHelp = PIXI.Texture.fromImage("imgs/help.png");
 
 
 var centeredAnchor = new PIXI.Point(0.5,0.5);
+var centeredTextAnchor = new PIXI.Point(0.5,0.5);
+var isFirefox = typeof InstallTrigger !== 'undefined';
+if(isFirefox){
+    centeredTextAnchor.y=0.3;
+}
+console.log(navigator);
 
 var defaultTextStyle = { font: "16px OpenSans", fill: "#ffffff", align: "left" };
 var blueTextStyle = { font: "20px OpenSans", fill: "#369bd7", align: "left" };

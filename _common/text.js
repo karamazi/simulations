@@ -9,7 +9,7 @@ MyText = function (stage, x, y, text, style, anchor) {
     this.text.position.y = y;
 
     if(anchor===undefined){
-        this.text.anchor = centeredAnchor;
+        this.text.anchor = centeredTextAnchor;
     }
     else if(anchor!==undefined && anchor!==false){
         this.text.anchor=anchor;

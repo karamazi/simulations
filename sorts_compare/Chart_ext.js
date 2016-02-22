@@ -1,5 +1,3 @@
-var centeredAnchor = new PIXI.Point(0.5, 0.5);
-
 function load_pc_texture(type){
     return PIXI.Texture.fromImage("imgs/pc_"+type+".png");
 }
