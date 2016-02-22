@@ -13,8 +13,8 @@
 
         #input {
             position: absolute;
-            top: 120px;
-            left: 140px;
+            top: 148px;
+            left: 125px;
             width: 35px;
         }
     </style>
@@ -61,8 +61,8 @@
     var runButton;
     var permissions = "-rwxrwxrwx";
 
-    var blueMonoSpacedStyle = { font: "25px Ubuntu", fill: "#369bd7", align: "left" };
-    var redMonoSpacedStyle = { font: "25px Ubuntu", fill: "#d73b36", align: "left" };
+    var blueMonoSpacedStyle = { font: "22px Ubuntu", fill: "#369bd7", align: "left" };
+    var redMonoSpacedStyle = { font: "22px Ubuntu", fill: "#fa7346", align: "left" };
     var today = new Date();
     new Logo(stage);
 
@@ -73,10 +73,10 @@
 
         runButton = new Button(stage, 550, 91, "Uruchom", Button.type.Next);
 
-        chmodText = new MyText(stage, 30, 120, "$> chmod\t\t\t\t myfile", blueMonoSpacedStyle, false);
-        errorText = new MyText(stage, 30, 150, "", redMonoSpacedStyle, false);
-        lsText = new MyText(stage, 30, 190, "$> ls -lA", blueMonoSpacedStyle, false);
-        resultText = new MyText(stage, 30, 220, "", blueMonoSpacedStyle, false);
+        chmodText = new MyText(stage, 30, 150, "$> chmod\t\t\t\t myfile", blueMonoSpacedStyle, false);
+        errorText = new MyText(stage, 30, 180, "", redMonoSpacedStyle, false);
+        lsText = new MyText(stage, 30, 220, "$> ls -lA", blueMonoSpacedStyle, false);
+        resultText = new MyText(stage, 30, 250, "", blueMonoSpacedStyle, false);
 
         updatePermissions();
         stage.addChild(help);
