@@ -5,21 +5,5 @@
 - Long outputs e.g. on 1000/2
     - Don't display multiplication by 0?
 
-## Golden ball
-- bigger font (?)
-
-## Bubble Sort
-- Colored balls?
-
 ## Filter
 - Incorrect input.
-
-filtrowanie obrazu  - jest literówka w pomocy - powinno być wstaw napis" a nie "wstaw napisz"
-
-
-## Neuron
-- help
-
-## Turing help
-
-## Wczytywanie textur gdy są potrzebne zamisat wszystkich.
