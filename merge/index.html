@@ -9,18 +9,7 @@
             background-color: #000000;
         }
     </style>
-    <script>
-        var WebFontConfig = {
-            custom: {
-                families: ["OpenSans", "Ubuntu"],
-                urls: ["../_common/styles.css"]
-            },
-            active: function () {
-                init()
-            }
-        };
-    </script>
-    <script src="../_common/webfont.js"></script>
+
     <script src="../_common/pixi.js"></script>
     <script src="../_common/constants.js"></script>
     <script src="../_common/button.js"></script>
@@ -170,6 +159,17 @@
     }
 
 </script>
-
+<script>
+    var WebFontConfig = {
+        custom: {
+            families: ["OpenSans", "Ubuntu"],
+            urls: ["../_common/styles.css"]
+        },
+        active: function () {
+            init()
+        }
+    };
+</script>
+<script src="../_common/webfont.js"></script>
 </body>
 </html>

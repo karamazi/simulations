@@ -11,18 +11,7 @@
         }
 
     </style>
-    <script>
-        var WebFontConfig = {
-            custom: {
-                families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
-                urls: ["../_common/styles.css"]
-            },
-            active: function () {
-                init()
-            }
-        };
-    </script>
-    <script src="../_common/webfont.js"></script>
+
     <script src="../_common/pixi.js"></script>
     <script src="../_common/constants.js"></script>
     <script src="../_common/button.js"></script>
@@ -158,11 +147,21 @@
 
     function genRand(a, x, m, c)
     {
-        var next_x = (a*x + c) % m;
-        return next_x;
+        return (a*x + c) % m;
     }
 
 </script>
-
+<script>
+    var WebFontConfig = {
+        custom: {
+            families: ["OpenSans", "OpenSans Bold", "Ubuntu"],
+            urls: ["../_common/styles.css"]
+        },
+        active: function () {
+            init()
+        }
+    };
+</script>
+<script src="../_common/webfont.js"></script>
 </body>
 </html>
