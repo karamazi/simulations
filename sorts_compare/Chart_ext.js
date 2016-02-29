@@ -26,9 +26,9 @@ ButtonGroup = function (stage, x, y, sort_type) {
     this.buttons = [];
     this.activeInd = 0;
     this.value = 0.001	;
-    this.buttons.push(new ComputerButton(stage, x, y, 0.001, sort_type, 1));
+    this.buttons.push(new ComputerButton(stage, x - 1, y, 0.001, sort_type, 1));
     this.buttons.push(new ComputerButton(stage, x + 50, y, 0.000001, sort_type, 2));
-    this.buttons.push(new ComputerButton(stage, x + 100, y, 0.000000001, sort_type,3 ));
+    this.buttons.push(new ComputerButton(stage, x + 101, y, 0.000000001, sort_type,3 ));
 
     var labelTexture = PIXI.Texture.fromImage("imgs/label_"+sort_type+".png");
     this.label = new PIXI.Sprite(labelTexture);

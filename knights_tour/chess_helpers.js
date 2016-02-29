@@ -34,7 +34,7 @@ Field = function (stage, xPos, yPos, isWhite) {
     this.textBg.visible = false;
     stage.addChild(this.textBg);
 
-    this.text = new MyText(stage, xPos, yPos, "", possibleMovesTextStyle, new PIXI.Point(0.5,0.6));
+    this.text = new MyText(stage, xPos, yPos, "", possibleMovesTextStyle);
 };
 Field.prototype.setPossibleMoves = function (moves) {
     this.possibleMoves = moves;

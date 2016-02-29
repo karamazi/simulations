@@ -15,8 +15,10 @@ var textureHelp = PIXI.Texture.fromImage("imgs/help.png");
 var centeredAnchor = new PIXI.Point(0.5,0.5);
 var centeredTextAnchor = new PIXI.Point(0.5,0.5);
 var isFirefox = typeof InstallTrigger !== 'undefined';
+var noAnchor = new PIXI.Point(0,0);
 if(isFirefox){
     centeredTextAnchor.y=0.3;
+    noAnchor.y=-0.2;
 }
 
 var defaultTextStyle = { font: "16px OpenSans", fill: "#ffffff", align: "left" };

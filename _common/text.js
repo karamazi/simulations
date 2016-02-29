@@ -13,6 +13,8 @@ MyText = function (stage, x, y, text, style, anchor) {
     }
     else if(anchor!==undefined && anchor!==false){
         this.text.anchor=anchor;
+    }else if(anchor===false){
+        this.text.anchor=noAnchor;
     }
     stage.addChild(this.text);
 };

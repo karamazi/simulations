@@ -25,10 +25,9 @@ Ball=function(){
 
 	this.sprite.interactive=true;
 	this.sprite.buttonMode=true;
-	this.sprite.anchor.x=0.5;
-	this.sprite.anchor.y=0.5;
+	this.sprite.anchor = centeredAnchor;
 	this.text.position=this.sprite.position;
-	this.text.anchor=this.sprite.anchor;
+	this.text.anchor=centeredTextAnchor;
 
 	this.sprite.click=this.sprite.tap=function(data){
 		self.isClicked=true;

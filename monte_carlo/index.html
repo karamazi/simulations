@@ -87,6 +87,7 @@
     new Logo(stage);
 
     function init() {
+        var blueTextStyle = { font: "17px OpenSans", fill: "#369bd7", align: "left" };
         genPointsText = new MyText(stage, text_x, text_y, "Wygenerowane punkty: " + mcPointsTotal, blueTextStyle, false);
         hitPointsText = new MyText(stage, text_x, text_y + text_dy, "Trafione punkty: " + mcPointsHit, blueTextStyle, false);
         mcSurfaceText = new MyText(stage, text_x, text_y + text_dy * 2, "Wyliczona powierzchnia: " + mcSurface, blueTextStyle, false);

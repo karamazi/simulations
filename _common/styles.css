@@ -2,7 +2,7 @@ input {
     color: #828282;
     /*font-weight: bold;*/
     border: 1px solid #d2d2d2;
-    text-indent: 5px;
+    text-indent: 3px;
     padding: 3px;
     font-family: OpenSans;
 }
@@ -22,6 +22,9 @@ select {
     background-color: #369bd7;
     color: #ffffff;
     font-family: OpenSans;
+}
+button::-moz-focus-inner {
+    border: 0;
 }
 .button:hover{
     background-color: #7f7f7f;

@@ -235,9 +235,9 @@ function createIpInputs(stage, divInputs) {
     divInputs.appendChild(newInput);
     var texts = [];
     for (i = 0; i < 3; i++) {
-        texts.push(new MyText(stage, inputX + inputWidth + 5 + inputDx * i + 7, inputY, ".", blueTextStyleBold, false));
+        texts.push(new MyText(stage, inputX + inputWidth + 5 + inputDx * i + 7, inputY + 2, ".", blueTextStyleBold, false));
     }
-    texts.push(new MyText(stage, inputX + inputWidth + 5 + inputDx * i + 7, inputY, "/", blueTextStyleBold, false));
+    texts.push(new MyText(stage, inputX + inputWidth + 5 + inputDx * i + 7, inputY + 2, "/", blueTextStyleBold, false));
     //We don't return texts, they never change anyway. They are in array just in case.
     return ip_inputs;
 }
